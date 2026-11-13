@@ -106,7 +106,8 @@ select{font:inherit;font-size:13px;padding:5px 6px;border:1px solid var(--line);
 #guide .key{fill:var(--panel);stroke:var(--ink);stroke-width:1.5}#guide .kt{font:600 13px system-ui;fill:var(--ink)}
 #guide .key.off,#guide .kt.off{opacity:.15}
 #guide .whl{animation:whl 1.1s ease-in-out infinite}@keyframes whl{0%,100%{transform:translateY(-3px)}50%{transform:translateY(4px)}}
-@media (max-width:700px){#zoomBox{display:none}#legend{display:none}#card{left:16px;right:16px;width:auto;top:auto;bottom:16px;max-height:50%}header h1{display:none}}
+@media (max-width:700px){#zoom,#zHint,#bHelp{display:none}header{gap:6px;padding:0 8px}#searchBox{min-width:0}#langSel{max-width:64px}#bTheme{padding:4px 6px}
+ #legend{left:8px;bottom:8px;width:auto;max-width:calc(100% - 16px);max-height:55%}#card{left:8px;right:8px;width:auto;top:auto;bottom:8px;max-height:50%}header h1{display:none}}
 </style>
 </head>
 <body>
@@ -342,7 +343,7 @@ function drawUnits(){const g=document.getElementById('gUnits');g.innerHTML='';
   el('rect',{class:'box',x:u.x,y:u.y,width:u.w,height:u.h,rx:14,fill:u.color,stroke:u.color,'stroke-opacity':.6},gg);
   const tx=el('text',{x:u.x+14,y:u.y+20,fill:u.color},gg);tx.textContent=u.name;u.lw=tx.getBBox().width;
   gg.dataset.u=u.id;tx.classList.add('ulab');tx.style.cursor='pointer';
-  tx.addEventListener('pointerenter',()=>{if(!drag&&!pan)hover(u.id)});tx.addEventListener('pointerleave',()=>hover(null))})}
+  tx.addEventListener('pointerenter',e=>{if(e.pointerType==='mouse'&&!drag&&!pan)hover(u.id)});tx.addEventListener('pointerleave',e=>{if(e.pointerType==='mouse')hover(null)})})}
 function drawNodes(){const g=document.getElementById('gNodes');g.innerHTML='';
  persons.forEach(p=>{const gg=el('g',{class:'node',transform:`translate(${p.x},${p.y})`},g);nodeEl[p.id]=gg;
   el('rect',{class:'body',width:NW,height:NH,rx:10},gg);
@@ -355,7 +356,7 @@ function drawNodes(){const g=document.getElementById('gNodes');g.innerHTML='';
   L.forEach((l,i)=>el('text',{x:52,y:y0+i*14},gg).textContent=l);
   
   gg.addEventListener('pointerdown',ev=>startDrag(ev,p));
-  gg.addEventListener('pointerenter',()=>{if(!drag&&!pan)hover(p.id)});gg.addEventListener('pointerleave',()=>hover(null))})}
+  gg.addEventListener('pointerenter',e=>{if(e.pointerType==='mouse'&&!drag&&!pan)hover(p.id)});gg.addEventListener('pointerleave',e=>{if(e.pointerType==='mouse')hover(null)})})}
 /* Наведение: сам объект (h0) → прямые связи и соседи (h1) → та же категория (h2) и связи внутри неё. */
 /* Однократная «бегущая точка» по связям — от начала стрелки к концу. */
 let runT=0,hoverEdges=[];
@@ -395,8 +396,8 @@ function drawGhosts(){const g=document.getElementById('gNodes');
  Object.values(GHOSTS).forEach(h=>{const c=nodeEl[h.of].cloneNode(true);c.setAttribute('class','node ghost');c.setAttribute('transform',`translate(${h.x},${h.y})`);
   if(GHOST_NAME[h.of]){c.querySelectorAll('text[x="52"]').forEach(x=>x.remove());const nm=L(GHOST_NAME[h.of]);el('text',{x:52,y:NH/2+4},c).textContent=nm}
   el('text',{class:'gtag',x:NW/2,y:NH+13,'text-anchor':'middle'},c).textContent=t('servesHere');
-  c.addEventListener('pointerenter',()=>{if(!drag&&!pan)hover(h.of,'up')});c.addEventListener('pointerleave',()=>hover(null));
-  c.addEventListener('pointerdown',ev=>{ev.stopPropagation();select(h.of)});g.appendChild(c);nodeEl[h.id]=c})}
+  c.addEventListener('pointerenter',e=>{if(e.pointerType==='mouse'&&!drag&&!pan)hover(h.of,'up')});c.addEventListener('pointerleave',e=>{if(e.pointerType==='mouse')hover(null)});
+  c.addEventListener('pointerdown',ev=>{ev.stopPropagation();if(ev.pointerType!=='mouse'&&curHover!==h.of){hideCard();hover(h.of,'up')}else select(h.of)});g.appendChild(c);nodeEl[h.id]=c})}
 function drawPairs(){const g=document.getElementById('gPairs');g.innerHTML='';
  PAIRS.forEach(pr=>['',''+'~'].forEach(pre=>{const R=pr.map(i=>byId[pre+i]).filter(Boolean).map(p=>rectOf(p.id));if(R.length<2)return;
   const x0=Math.min(...R.map(r=>r.x))-12,y0=Math.min(...R.map(r=>r.y))-12,x1=Math.max(...R.map(r=>r.x+r.w))+12,y1=Math.max(...R.map(r=>r.y+r.h))+(pre?24:12);
@@ -475,7 +476,7 @@ function bridge(list){if(!splitEl)return;const ps=splitEl.querySelector('svg');
   const v=ps.getAttribute('viewBox').split(' ').map(Number),x0=v[0],t0=performance.now();
   const st=now=>{const t=Math.min(1,(now-t0)/220),k=1-Math.pow(1-t,3);v[0]=x0-dx*k;ps.setAttribute('viewBox',v.join(' '));if(t<1&&splitEl?.querySelector('svg')===ps)requestAnimationFrame(st)};
   requestAnimationFrame(st);return}}
-function transfer(id,up){if(id&&flyEls.id===id+(up||''))return;if(!id)hideSplit(flyEls.split?0:450);if(flyEls.length){if(flyEls.split){flyEls.tgt=-1;clearTimeout(flyEls.timer);flyEls.ov?.remove();flyEls.forEach(f=>f.c.remove())}else animFly(flyEls,0)}flyEls=[];if(!id)return;
+function transfer(id,up){if(id&&flyEls.id===id+(up||''))return;if(!id)hideSplit(flyEls.split?0:450);if(flyEls.length){if(flyEls.split){flyEls.tgt=-1;clearTimeout(flyEls.timer);flyEls.ov?.remove();flyEls.forEach(f=>f.c.remove())}else animFly(flyEls,0)}flyEls=[];if(!id)return;if(document.getElementById('card').style.display==='block')return; // открыто описание — без перелёта
  const P=byId[id];if(!up&&P.fuse?.length){const fx=document.getElementById('gFx');
   flyEls=P.fuse.map(i=>{const c=nodeEl[i].cloneNode(true);c.setAttribute('class','node fly h0');c.querySelector('title')?.remove();fx.appendChild(c);return{c,a:byId[i],b:P}});
   flyEls.id=id;const sp=showSplit(flyEls.map(f=>rectOf(f.a.id)),rectOf(id),t('links')+': '+flyEls.map(f=>f.a.name.split(' — ')[0]).join(', '));
@@ -508,15 +509,24 @@ svg.addEventListener('wheel',ev=>{ev.preventDefault();
  const k=Math.exp(ev.deltaY*0.0015),p=toWorld(ev.clientX,ev.clientY);
  const nw=Math.min(Math.max(vb.w*k,250),W*3);const kk=nw/vb.w;vb={x:p.x-(p.x-vb.x)*kk,y:p.y-(p.y-vb.y)*kk,w:vb.w*kk,h:vb.h*kk};setVB()},{passive:false});
 let pan=null,drag=null;
-svg.addEventListener('pointerdown',ev=>{ev.preventDefault();window.getSelection()?.removeAllRanges();if(drag)return;pan={x:ev.clientX,y:ev.clientY,vb:{...vb},s:1/svg.getScreenCTM().a,moved:false,unit:ev.target.classList?.contains('ulab')?ev.target.parentNode.dataset.u:null,node:ev.target.closest?.('.node')?.dataset.pid||null};svg.classList.add('panning');svg.setPointerCapture(ev.pointerId)});
+/* Сенсорный экран: два пальца — масштаб; касание карточки — связи, повторное касание — описание. */
+const tp=new Map();let pinch=null;
+svg.addEventListener('pointerdown',ev=>{tp.set(ev.pointerId,{x:ev.clientX,y:ev.clientY});if(tp.size===2){const[a,b]=[...tp.values()],B=svg.getBoundingClientRect(),mx=(a.x+b.x)/2,my=(a.y+b.y)/2;
+ pinch={d0:Math.hypot(a.x-b.x,a.y-b.y),vb0:{...vb},wx:vb.x+(mx-B.left)/B.width*vb.w,wy:vb.y+(my-B.top)/B.height*vb.h};pan=null;svg.setPointerCapture(ev.pointerId);return}},true);
+svg.addEventListener('pointerdown',ev=>{if(pinch)return;ev.preventDefault();window.getSelection()?.removeAllRanges();if(drag)return;pan={x:ev.clientX,y:ev.clientY,vb:{...vb},s:1/svg.getScreenCTM().a,moved:false,unit:ev.target.classList?.contains('ulab')?ev.target.parentNode.dataset.u:null,node:ev.target.closest?.('.node')?.dataset.pid||null};svg.classList.add('panning');svg.setPointerCapture(ev.pointerId)});
 svg.addEventListener('pointermove',ev=>{
+ if(tp.has(ev.pointerId))tp.set(ev.pointerId,{x:ev.clientX,y:ev.clientY});
+ if(pinch&&tp.size>=2){const[a,b]=[...tp.values()],B=svg.getBoundingClientRect(),mx=(a.x+b.x)/2,my=(a.y+b.y)/2,v=pinch.vb0;
+  const w=Math.min(Math.max(v.w*pinch.d0/Math.max(10,Math.hypot(a.x-b.x,a.y-b.y)),250),W*3),h=v.h*w/v.w;vb={x:pinch.wx-(mx-B.left)/B.width*w,y:pinch.wy-(my-B.top)/B.height*h,w,h};setVB();return}
  if(drag){if(!EDIT)return;const p=toWorld(ev.clientX,ev.clientY),dx=p.x-drag.sx,dy=p.y-drag.sy;if(Math.abs(dx)+Math.abs(dy)>3)drag.moved=true;if(!drag.moved)return;
   drag.p.x=drag.ox+dx;drag.p.y=drag.oy+dy;nodeEl[drag.p.id].setAttribute('transform',`translate(${drag.p.x},${drag.p.y})`);
   edges.forEach(e=>{if(e.from===drag.p.id||e.to===drag.p.id){const d=pathD(straight(e));edgeEl.get(e).querySelectorAll('path').forEach(x=>x.setAttribute('d',d))}});return}
  if(pan){const dx=(ev.clientX-pan.x)*pan.s,dy=(ev.clientY-pan.y)*pan.s;if(Math.abs(dx)+Math.abs(dy)>2)pan.moved=true;vb.x=pan.vb.x-dx;vb.y=pan.vb.y-dy;setVB()}});
-svg.addEventListener('pointerup',ev=>{
+const tpEnd=ev=>{tp.delete(ev.pointerId);if(pinch&&tp.size<2){pinch=null;pan=null;svg.classList.remove('panning')}};
+svg.addEventListener('pointercancel',tpEnd);
+svg.addEventListener('pointerup',ev=>{const wasPinch=!!pinch||tp.size>1;tpEnd(ev);if(wasPinch)return;
  if(drag){const p=drag.p;if(drag.moved){p.x=Math.round(p.x/G)*G;p.y=Math.round(p.y/G)*G;nodeEl[p.id].setAttribute('transform',`translate(${p.x},${p.y})`);undoStack.push({id:p.id,x:drag.ox,y:drag.oy});updUndo();savePos();routeAll();drawEdges();reapply()}else select(p.id);drag=null;return}
- if(pan){svg.classList.remove('panning');if(!pan.moved)pan.node?select(pan.node):pan.unit?select(pan.unit):clearSel();pan=null}});
+ if(pan){svg.classList.remove('panning');if(!pan.moved){const touch=ev.pointerType!=='mouse';if(pan.node&&touch&&curHover!==pan.node){hideCard();hover(pan.node)}else if(pan.node)select(pan.node);else if(pan.unit)select(pan.unit);else{if(touch)hover(null);clearSel()}}pan=null}});
 function startDrag(ev,p){if(!EDIT){ev.target.closest('.node').dataset.pid=p.id;return}ev.stopPropagation();const w=toWorld(ev.clientX,ev.clientY);drag={p,sx:w.x,sy:w.y,ox:p.x,oy:p.y,moved:false};svg.setPointerCapture(ev.pointerId)}
 let anim=null;
 function flyTo(r){const asp=svg.clientWidth/svg.clientHeight;let w=Math.max(r.w*3.2,700),h=w/asp;if(h<r.h*3){h=r.h*3;w=h*asp}
@@ -554,7 +564,7 @@ function selectCat(c){sel=null;selCat=selCat===c?null:c;markChips();hideCard();
 function clearSel(){sel=null;selCat=null;hl=null;markChips();hideCard();reapply()}
 const link=id=>`<a data-id="${id}">${byId[id].name}</a>`;
 function unitChain(u){const r=[];let cur=unitById[u];while(cur){r.unshift(cur.name.split(' — ')[0]);cur=cur.parent}return r.join(' › ')}
-function showCard(id){const p=byId[id],c=document.getElementById('card');
+function showCard(id){const p=byId[id],c=document.getElementById('card');if(splitEl||flyEls.length)hover(null,0,1);if(matchMedia('(max-width:700px)').matches){const lg=document.getElementById('legend');lg.classList.add('min');document.getElementById('lgToggle').textContent='☰'}
  const par=edges.filter(e=>e.to===id&&e.type==='origin').map(e=>link(e.from)),ch=edges.filter(e=>e.from===id&&e.type==='origin').map(e=>link(e.to)),
   as=edges.filter(e=>e.type==='ascent'&&(e.from===id||e.to===id)).map(e=>(e.to===id?'← ':'→ ')+link(e.from===id?e.to:e.from)),
   sv=edges.filter(e=>e.type==='service'&&(e.from===id||e.to===id)).map(e=>link(e.from===id?e.to:e.from));
@@ -674,6 +684,7 @@ if(!store.get('ku-guide')&&matchMedia('(pointer:fine)').matches)setTimeout(()=>g
 (()=>{const K='ku-legend',lg=document.getElementById('legend'),bt=document.getElementById('lgToggle'),ids=['tOrigin','tService','tAscent','tLong'];
  const save=()=>store.set(K,JSON.stringify({min:lg.classList.contains('min'),...Object.fromEntries(ids.map(i=>[i,document.getElementById(i).checked]))}));
  let st=null;try{st=JSON.parse(store.get(K))}catch(e){}
+ const mq=matchMedia('(max-width:700px)'),mini=()=>{lg.classList.add('min');bt.textContent='☰'};if(!st&&mq.matches)mini();mq.addEventListener?.('change',e=>{if(e.matches)mini()});
  if(st){lg.classList.toggle('min',!!st.min);bt.textContent=st.min?'☰':'–';
   ids.forEach(i=>{const c=document.getElementById(i);if(i in st&&c.checked!==st[i]){c.checked=st[i];c.dispatchEvent(new Event('change'))}})}
  bt.addEventListener('click',save);ids.forEach(i=>document.getElementById(i).addEventListener('change',save))})();
