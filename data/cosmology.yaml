@@ -3,7 +3,7 @@
 # Проверка: python tools/validate.py   Сборка: python tools/build.py
 
 meta:
-  version: "1.2.2"
+  version: "1.2.3"
   base_language: en   # если перевода нет, показывается en, затем ru
 
 # Класс по происхождению: ровно один у личности, задаёт тон заливки карточки.

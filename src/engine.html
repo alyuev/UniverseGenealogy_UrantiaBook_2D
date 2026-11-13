@@ -92,6 +92,7 @@ select{font:inherit;font-size:13px;padding:5px 6px;border:1px solid var(--line);
 #card{right:16px;top:72px;width:320px;padding:16px;display:none;max-height:calc(100% - 90px);overflow:auto}
 #card h2{margin:0 0 2px;font-size:18px}
 #card .en{color:var(--muted);font-size:12px;margin-bottom:10px}
+#card .aka{font-size:14px;font-weight:600;margin:-4px 0 4px}
 #card dt{font-size:11px;text-transform:uppercase;color:var(--muted);margin-top:10px;letter-spacing:.05em}
 #card dd{margin:2px 0}
 #card a{color:var(--accent);cursor:pointer;text-decoration:none;border-bottom:1px dotted}
@@ -174,7 +175,7 @@ const FUNCS=Object.fromEntries(Object.entries(D.functions||{}).map(([k,g])=>[k,{
 const OCLS=Object.fromEntries(Object.entries(D.classes).map(([k,c])=>[k,{color:c.color,name:c.name}]));
 const conv=u=>({id:u.id,color:u.color,w:u.width,beside:u.beside,endpoint:u.linkable,_name:u.name,_desc:u.desc,ref:(u.refs||[])[0],kids:u.content.map(k=>Array.isArray(k)?k:conv(k))});
 const TREE={kids:D.units.map(conv)};
-const persons=Object.entries(D.persons).map(([id,p])=>({id,oc:p.class,origin:p.origin,cats:p.groups||[],fn:p.func||[],fuse:p.fuse||[],ref:(p.refs||[])[0]||'',x:0,y:0,unit:'',_name:p.name,_desc:p.desc}));
+const persons=Object.entries(D.persons).map(([id,p])=>({id,oc:p.class,origin:p.origin,cats:p.groups||[],fn:p.func||[],fuse:p.fuse||[],ref:(p.refs||[])[0]||'',x:0,y:0,unit:'',_name:p.name,_aka:p.aka,_desc:p.desc}));
 const edges=D.links.map(([from,to,type])=>({from,to,type:type||'origin'}));
 const PAIR_OF={},SERVES={},GHOST_NAME={};
 Object.entries(D.persons).forEach(([id,p])=>{if(p.pair)PAIR_OF[id]=p.pair;if(p.serves)SERVES[id]=p.serves;if(p.there)GHOST_NAME[id]=p.there});
@@ -229,9 +230,9 @@ let LANG=qs.get('lang')||store.get('ku-lang')||((navigator.language||'').startsW
 const L=o=>o==null?'':typeof o==='string'?o:(o[LANG]??o.en??o.ru??Object.values(o)[0]);
 const t=k=>UI[LANG]?.[k]??UI.en[k]??k;
 function intl(o,f,v){o['_'+f]=v;Object.defineProperty(o,f,{get(){return L(o['_'+f])},configurable:true})}
-const allNames=o=>Object.values(o._name||{}).join(' ');
+const allNames=o=>[...Object.values(o._name||{}),...Object.values(o._aka||{})].join(' ');
 const otherNames=o=>Object.entries(o._name||{}).filter(([k,v])=>k!==LANG&&v).map(([,v])=>v).join(' · ');
-persons.forEach(p=>{intl(p,'name',p._name);intl(p,'desc',p._desc)});
+persons.forEach(p=>{intl(p,'name',p._name);if(p._aka)intl(p,'aka',p._aka);intl(p,'desc',p._desc)});
 UNITS.forEach(u=>{intl(u,'name',u._name);if(u._desc)intl(u,'desc',u._desc)});
 Object.entries(CATS).forEach(([k,c])=>intl(c,'name',c._name));
 Object.entries(FUNCS).forEach(([k,c])=>intl(c,'name',c._name));
@@ -582,7 +583,7 @@ function showCard(id){const p=byId[id],c=document.getElementById('card');if(spli
   as=edges.filter(e=>e.type==='ascent'&&(e.from===id||e.to===id)).map(e=>(e.to===id?'← ':'→ ')+link(e.from===id?e.to:e.from)),
   sv=edges.filter(e=>e.type==='service'&&(e.from===id||e.to===id)).map(e=>link(e.from===id?e.to:e.from));
  const orig=p.origin?(p.origin==='T'?t('oT'):p.origin.split('').map(k=>`<span class="dot" style="background:${OC[k]}"></span> ${t(ONAME[k])}`).join('<br>')):'';
- c.innerHTML=`<button class="x" title="${t('close')}">×</button><h2>${p.name}</h2><div class="en">${otherNames(p)}</div><div>${p.desc||''}</div><dl>
+ c.innerHTML=`<button class="x" title="${t('close')}">×</button><h2>${p.name}</h2>${p.aka?`<div class="aka">${p.aka}</div>`:""}<div class="en">${otherNames(p)}</div><div>${p.desc||''}</div><dl>
  ${SERVES[p.id]?`<dt>${t('serves')}</dt><dd>${unitById[GHOSTS['~'+p.id].unit].name} — ${L(SERVES[p.id])}${PAIR_OF[p.id]?'; '+t('pairT')+': '+byId[PAIR_OF[p.id]].name:''}</dd>`:''}
  ${p.oc?`<dt>${t('cClass')}</dt><dd><span class="chip" data-cat="oc:${p.oc}"><i style="background:${OCLS[p.oc].color};opacity:.55"></i>${L(OCLS[p.oc].name)}</span></dd>`:''}
  ${p.cats?`<dt>${t('cats')}</dt><dd>${p.cats.map(k=>`<span class="chip" data-cat="${k}"><i style="background:${CATS[k].color}"></i>${CATS[k].name}</span>`).join('')}</dd>`:''}

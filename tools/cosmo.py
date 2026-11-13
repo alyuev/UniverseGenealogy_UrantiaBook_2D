@@ -31,7 +31,7 @@ def load(path='data/cosmology.yaml'):
             put(u, 'units', u['id'], ['name', 'desc'])
             walk([x for x in u.get('content', []) if isinstance(x, dict)])
     walk(d.get('units', []))
-    for pid, p in d.get('persons', {}).items(): put(p, 'persons', pid, ['name', 'desc', 'terms', 'serves', 'there'])
+    for pid, p in d.get('persons', {}).items(): put(p, 'persons', pid, ['name', 'aka', 'desc', 'terms', 'serves', 'there'])
     # тексты для id, которых нет в структуре
     d['orphans'] = [(lg, s, k) for lg, t in langs.items() for s in ('classes', 'groups', 'functions', 'persons')
                     for k in (t.get(s) or {}) if k not in d.get(s, {})]

@@ -98,7 +98,7 @@ def save(d, root='data'):
         for pid, p in d['persons'].items():
             w(f"  {pid}:")
             w(f"    name: {q(g(p, 'name') or '')}")
-            for f in ('desc', 'serves', 'there'):
+            for f in ('aka', 'desc', 'serves', 'there'):
                 if g(p, f): w(f"    {f}: {q(g(p, f))}")
             if g(p, 'terms'): w(f"    terms: {lst(g(p, 'terms'))}")
         open(os.path.join(root, 'lang', f'{lg}.yaml'), 'w', encoding='utf-8').write('\n'.join(o) + '\n')

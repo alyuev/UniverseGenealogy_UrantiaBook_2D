@@ -105,7 +105,7 @@ units:
   mortal:
     name: The mortal and his Adjuster
 
-# serves — подпись к месту служения; there — имя на месте служения (если иное).
+# aka — другие имена (в карточке и в поиске); serves — подпись к месту служения; there — имя на месте служения (если иное).
 persons:
   father:
     name: Universal Father
@@ -141,15 +141,18 @@ persons:
     name: Faithfuls of Days
     desc: Trinity counselors to the constellation rulers.
   daynal:
-    name: Daynal Sons
+    name: Trinity Teacher Sons
+    aka: Daynal Sons
     desc: "Paradise Sons, teachers of worlds and races; serve in the local universes."
     serves: teachers of worlds and races in the local universe
   michael:
-    name: Michael Sons
+    name: Creator Sons
+    aka: Michael Sons
     desc: Creators and rulers of local universes; Michael of Nebadon incarnated as Jesus.
     serves: rules his local universe
   avonal:
-    name: Avonal Sons
+    name: Magisterial Sons
+    aka: Avonal Sons
     desc: "Paradise Sons of ministry: judicial actions and bestowals on the worlds."
     serves: Paradise Sons of planetary service and bestowal
   mother:
@@ -157,7 +160,8 @@ persons:
     desc: The Divine Minister — co-ruler of the local universe with the Creator Son.
     serves: co-ruler of the local universe
   gabriel:
-    name: Bright and Morning Star — Gabriel
+    name: Bright and Morning Star
+    aka: Gabriel
     desc: "The Bright and Morning Star — first-born, chief executive of Nebadon."
   melch:
     name: Melchizedeks
@@ -467,10 +471,12 @@ persons:
     name: Unclassified Centers
     desc: "Seventh group of the Supreme Power Centers: they function in special local situations, but not on the inhabited planets (29:2)."
   supbeing:
-    name: Supreme Being — God the Supreme
+    name: Supreme Being
+    aka: God the Supreme
     desc: "The evolving experiential Deity of time and space, the synthesis of creature experience. The creation of Majeston was its first supreme creative act (17:2.5)."
   deityabs:
-    name: Deity Absolute — Qualified Absolute
+    name: Deity Absolute
+    aka: Qualified Absolute
     desc: "The potential segregated from infinite reality by the free-will choice of the Universal Father, within which all divinity activities take place. This is the Qualified Absolute, in contradistinction to the Unqualified Absolute (0:11.6)."
   unqabs:
     name: Unqualified Absolute
