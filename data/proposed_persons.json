@@ -1,0 +1,1961 @@
+[
+ {
+  "id": "reflective",
+  "ru": "Отражательные Духи",
+  "en": "Reflective Spirits",
+  "class": "T",
+  "origin": "T",
+  "groups": [
+   "trin",
+   "coord"
+  ],
+  "unit": "uversa",
+  "parents": [
+   "trinity"
+  ],
+  "refs": [
+   "17:3"
+  ],
+  "desc_ru": "Пятьдесят Духов троичного происхождения, обеспечивающих отражательность сверхвселенных.",
+  "desc_en": "Fifty Trinity-origin spirits who make reflectivity possible on the superuniverse capitals."
+ },
+ {
+  "id": "execs",
+  "ru": "Верховные Администраторы",
+  "en": "Supreme Executives",
+  "class": "T",
+  "origin": "T",
+  "groups": [
+   "trin",
+   "coord"
+  ],
+  "unit": "paradise",
+  "serves": "uversa",
+  "serves_ru": "в сверхвселенных",
+  "serves_en": "in the superuniverses",
+  "parents": [
+   "trinity"
+  ],
+  "refs": [
+   "17:1"
+  ],
+  "desc_ru": "Семь Верховных Администраторов управляют семью сверхвселенными из Рая.",
+  "desc_en": "The Seven Supreme Executives co-ordinate the administration of the seven superuniverses from Paradise."
+ },
+ {
+  "id": "refimage",
+  "ru": "Вспомогательные Образы Отражения",
+  "en": "Reflective Image Aids",
+  "class": "D",
+  "origin": "D",
+  "groups": [
+   "spirit",
+   "coord"
+  ],
+  "unit": "uversa",
+  "parents": [
+   "reflective"
+  ],
+  "refs": [
+   "17:4"
+  ],
+  "desc_ru": "Вспомогательные Образы Отражения представляют группы существ в правительствах сверхвселенных.",
+  "desc_en": "The Reflective Image Aids represent groups of beings influential in the superuniverse governments."
+ },
+ {
+  "id": "circspirits",
+  "ru": "Кольцевые Духи",
+  "en": "Spirits of the Circuits",
+  "class": "D",
+  "origin": "D",
+  "groups": [
+   "spirit",
+   "coord"
+  ],
+  "unit": "havona",
+  "parents": [
+   "msp",
+   "spirit"
+  ],
+  "refs": [
+   "17:5"
+  ],
+  "desc_ru": "Кольцевые Духи – потомство Главных Духов, служащие семи кольцам Хавоны.",
+  "desc_en": "The Spirits of the Circuits, offspring of the Master Spirits, serve the seven circuits of Havona."
+ },
+ {
+  "id": "inspired",
+  "ru": "Вдохновенные Троичные Духи",
+  "en": "Inspired Trinity Spirits",
+  "class": "T",
+  "origin": "T",
+  "groups": [
+   "trin",
+   "spirit"
+  ],
+  "unit": "paradise",
+  "parents": [
+   "trinity"
+  ],
+  "refs": [
+   "19:5"
+  ],
+  "desc_ru": "Тайный орден существ, возникших по акту Райской Троицы.",
+  "desc_en": "A wholly secret order of beings brought into existence by the act of the Paradise Trinity."
+ },
+ {
+  "id": "havnat",
+  "ru": "Уроженцы Хавоны",
+  "en": "Havona Natives",
+  "class": "T",
+  "origin": "T",
+  "groups": [
+   "trin"
+  ],
+  "unit": "havona",
+  "parents": [
+   "trinity"
+  ],
+  "refs": [
+   "19:6",
+   "31:1"
+  ],
+  "desc_ru": "Уроженцы Хавоны воплощаются в божественном совершенстве как существа троичного происхождения.",
+  "desc_en": "Havona natives, Trinity-origin personalities projected in divine perfection."
+ },
+ {
+  "id": "parcit",
+  "ru": "Граждане Рая",
+  "en": "Paradise Citizens",
+  "class": "T",
+  "origin": "T",
+  "groups": [
+   "trin"
+  ],
+  "unit": "paradise",
+  "parents": [
+   "trinity"
+  ],
+  "refs": [
+   "19:7"
+  ],
+  "desc_ru": "Граждане Рая – существа троичного происхождения, постоянные жители Рая.",
+  "desc_en": "Paradise Citizens, Trinity-origin personalities who are permanent residents of Paradise."
+ },
+ {
+  "id": "trinatt",
+  "ru": "Тринитизованные Сыны Достижения",
+  "en": "Trinitized Sons of Attainment",
+  "class": "E",
+  "origin": "E",
+  "groups": [
+   "trin",
+   "asc",
+   "par"
+  ],
+  "unit": "paradise",
+  "parents": [
+   "trinity",
+   "adjfused"
+  ],
+  "refs": [
+   "22:1"
+  ],
+  "desc_ru": "Слившиеся с Настройщиками смертные, достигшие Рая и принятые Троицей.",
+  "desc_en": "Adjuster-fused ascendant mortals who attained Paradise and were embraced by the Trinity."
+ },
+ {
+  "id": "trinsel",
+  "ru": "Тринитизованные Сыны Отбора",
+  "en": "Trinitized Sons of Selection",
+  "class": "E",
+  "origin": "E",
+  "groups": [
+   "trin",
+   "asc",
+   "par"
+  ],
+  "unit": "paradise",
+  "parents": [
+   "trinity",
+   "seraph"
+  ],
+  "refs": [
+   "22:1"
+  ],
+  "desc_ru": "Тринитизованные Опекуны и Послы, отобранные из восходящих серафимов и других созданий.",
+  "desc_en": "Trinitized Custodians and Ambassadors, recruited from ascendant seraphim and other creatures."
+ },
+ {
+  "id": "trinperf",
+  "ru": "Тринитизованные Сыны Совершенства",
+  "en": "Trinitized Sons of Perfection",
+  "class": "T",
+  "origin": "T",
+  "groups": [
+   "trin",
+   "par"
+  ],
+  "unit": "paradise",
+  "parents": [
+   "trinity",
+   "execs"
+  ],
+  "refs": [
+   "22:1",
+   "22:9"
+  ],
+  "desc_ru": "Тринитизованные Сыны Совершенства – Хранители и Помощники Высоких Сынов.",
+  "desc_en": "Trinitized Sons of Perfection: the Celestial Guardians and High Son Assistants."
+ },
+ {
+  "id": "fmelch",
+  "ru": "Отцы-Мелхиседеки",
+  "en": "Father Melchizedeks",
+  "class": "L",
+  "origin": "FSD",
+  "groups": [
+   "local"
+  ],
+  "unit": "salv",
+  "parents": [
+   "michael",
+   "mother"
+  ],
+  "refs": [
+   "35:1"
+  ],
+  "desc_ru": "Отец-Мелхиседек – первый, исходный Сын-Мелхиседек локальной вселенной.",
+  "desc_en": "The Father Melchizedek, the original Melchizedek Son of the local universe."
+ },
+ {
+  "id": "abandon",
+  "ru": "Абандонтеры",
+  "en": "Abandonters",
+  "class": "T",
+  "origin": "T",
+  "groups": [
+   "coord"
+  ],
+  "unit": "uversa",
+  "parents": [
+   "ancients",
+   "reflective"
+  ],
+  "refs": [
+   "37:9"
+  ],
+  "desc_ru": "Абандонтеры – постоянные граждане столицы сверхвселенной Уверсы.",
+  "desc_en": "The abandonters, the permanent citizens fostering the superuniverse capital Uversa."
+ },
+ {
+  "id": "susatia",
+  "ru": "Сузаты",
+  "en": "Susatia",
+  "class": "L",
+  "origin": "FSD",
+  "groups": [
+   "local"
+  ],
+  "unit": "salv",
+  "parents": [
+   "michael",
+   "mother"
+  ],
+  "refs": [
+   "37:9"
+  ],
+  "desc_ru": "Сузаты – потомство Сына-Создателя и Созидательного Духа, граждане Сальвингтона.",
+  "desc_en": "The Susatia, offspring of the Creator Son and Creative Spirit, permanent citizens of Salvington."
+ },
+ {
+  "id": "univit",
+  "ru": "Унивитаты",
+  "en": "Univitatia",
+  "class": "L",
+  "origin": "FSD",
+  "groups": [
+   "local"
+  ],
+  "unit": "edentia",
+  "parents": [
+   "michael",
+   "mother"
+  ],
+  "refs": [
+   "37:9",
+   "43:7"
+  ],
+  "desc_ru": "Унивитаты – постоянное население столиц созвездий и их миров.",
+  "desc_en": "The Univitatia, the permanent population of the constellation headquarters worlds."
+ },
+ {
+  "id": "spironga",
+  "ru": "Спиронги",
+  "en": "Spironga",
+  "class": "L",
+  "origin": "FSD",
+  "groups": [
+   "local"
+  ],
+  "unit": "salv",
+  "parents": [
+   "gabriel",
+   "fmelch"
+  ],
+  "refs": [
+   "37:10"
+  ],
+  "desc_ru": "Спиронги – духовное потомство Светлой Утренней Звезды и Отца-Мелхиседека.",
+  "desc_en": "The Spironga, spirit offspring of the Bright and Morning Star and the Father Melchizedek."
+ },
+ {
+  "id": "adjfused",
+  "ru": "Смертные, слившиеся с Настройщиком",
+  "en": "Adjuster-fused Mortals",
+  "class": "E",
+  "origin": "E",
+  "groups": [
+   "asc"
+  ],
+  "unit": "paradise",
+  "parents": [
+   "human",
+   "tadj"
+  ],
+  "refs": [
+   "40:7"
+  ],
+  "desc_ru": "Смертные, слившиеся с Настройщиком, – восходящие к Раю и Корпусу Завершения.",
+  "desc_en": "Adjuster-fused mortals, ascenders destined for Paradise and the Corps of the Finality."
+ },
+ {
+  "id": "sonfused",
+  "ru": "Смертные, слившиеся с Сыном",
+  "en": "Son-fused Mortals",
+  "class": "E",
+  "origin": "E",
+  "groups": [
+   "asc"
+  ],
+  "unit": "uversa",
+  "parents": [
+   "human",
+   "michael"
+  ],
+  "refs": [
+   "40:8"
+  ],
+  "desc_ru": "Смертные, слившиеся с Сыном, малочисленны и ограничены сверхвселенной.",
+  "desc_en": "Son-fused mortals, few in number and restricted to the superuniverse."
+ },
+ {
+  "id": "spiritfused",
+  "ru": "Смертные, слившиеся с Духом",
+  "en": "Spirit-fused Mortals",
+  "class": "E",
+  "origin": "E",
+  "groups": [
+   "asc"
+  ],
+  "unit": "salv",
+  "parents": [
+   "human",
+   "mother"
+  ],
+  "refs": [
+   "40:9"
+  ],
+  "desc_ru": "Смертные, слившиеся с Духом, обычно ограничены локальной вселенной.",
+  "desc_en": "Spirit-fused mortals, generally confined to a local universe."
+ },
+ {
+  "id": "transmid",
+  "ru": "Преобразованные промежуточные создания",
+  "en": "Translated Midwayers",
+  "class": "E",
+  "origin": "E",
+  "groups": [
+   "asc"
+  ],
+  "unit": "paradise",
+  "parents": [
+   "midway"
+  ],
+  "refs": [
+   "40:3"
+  ],
+  "desc_ru": "Преобразованные промежуточные создания – восходящие бывшие промежуточные создания.",
+  "desc_en": "Translated midway creatures, who ascend toward Paradise."
+ },
+ {
+  "id": "persadj",
+  "ru": "Личностные Настройщики",
+  "en": "Personalized Adjusters",
+  "class": "F",
+  "origin": "F",
+  "groups": [
+   "asc"
+  ],
+  "unit": "paradise",
+  "parents": [
+   "tadj"
+  ],
+  "refs": [
+   "40:4"
+  ],
+  "desc_ru": "Личностные Настройщики – обретшие личность и опыт Настройщики.",
+  "desc_en": "Personalized Adjusters, Adjusters that have experientialized and attained personality."
+ },
+ {
+  "id": "ascmat",
+  "ru": "Восходящие Материальные сыны",
+  "en": "Ascending Material Sons",
+  "class": "E",
+  "origin": "E",
+  "groups": [
+   "asc",
+   "desc"
+  ],
+  "unit": "jerusem",
+  "parents": [
+   "adam"
+  ],
+  "refs": [
+   "40:2"
+  ],
+  "desc_ru": "Восходящие Материальные сыны – Адамы и Евы, восходящие к Раю.",
+  "desc_en": "Ascending Material Sons, Adamic Sons and Daughters who ascend toward Paradise."
+ },
+ {
+  "id": "gravmess",
+  "ru": "Гравитационные Посланники",
+  "en": "Gravity Messengers",
+  "class": "F",
+  "origin": "F",
+  "groups": [
+   "spirit"
+  ],
+  "unit": "paradise",
+  "serves": "uversa",
+  "serves_ru": "на Уверсе",
+  "serves_en": "on Uversa",
+  "parents": [
+   "tadj"
+  ],
+  "refs": [
+   "31:2"
+  ],
+  "desc_ru": "Гравитационные Посланники – видоизмененные и персонализированные Настройщики из Дивинингтона.",
+  "desc_en": "Gravity Messengers, modified and personalized Adjusters from Divinington."
+ },
+ {
+  "id": "adjhav",
+  "ru": "Двенадцатичастные Кольцевые Помощники Хавоны",
+  "en": "Twelvefold Adjutants of the Havona Circuits",
+  "class": "D",
+  "origin": "D",
+  "groups": [
+   "spirit",
+   "coord"
+  ],
+  "unit": "havona",
+  "parents": [
+   "circspirits"
+  ],
+  "refs": [
+   "17:5"
+  ],
+  "desc_ru": "Двенадцатичастные Кольцевые Помощники Хавоны служат на кольцах центральной вселенной.",
+  "desc_en": "The Twelvefold Adjutants of the Havona Circuits serve the circuits of the central universe."
+ },
+ {
+  "id": "circsup",
+  "ru": "Смотрители Вселенских Контуров",
+  "en": "Universe Circuit Supervisors",
+  "class": "D",
+  "origin": "D",
+  "groups": [
+   "spirit"
+  ],
+  "unit": "uversa",
+  "parents": [
+   "spirit"
+  ],
+  "refs": [
+   "24:1"
+  ],
+  "desc_ru": "Смотрители Вселенских Контуров – исключительное творение Бесконечного Духа.",
+  "desc_en": "Universe Circuit Supervisors, the exclusive creation of the Infinite Spirit."
+ },
+ {
+  "id": "census",
+  "ru": "Регистраторы Волевых Созданий",
+  "en": "Census Directors",
+  "class": "D",
+  "origin": "D",
+  "groups": [
+   "spirit"
+  ],
+  "unit": "uversa",
+  "parents": [
+   "spirit"
+  ],
+  "refs": [
+   "24:2"
+  ],
+  "desc_ru": "Регистраторы Волевых Созданий отмечают появление и смерть волевых созданий.",
+  "desc_en": "Census Directors register the existence and death of will creatures."
+ },
+ {
+  "id": "persaids",
+  "ru": "Личные Помощники Бесконечного Духа",
+  "en": "Personal Aids of the Infinite Spirit",
+  "class": "D",
+  "origin": "D",
+  "groups": [
+   "spirit"
+  ],
+  "unit": "paradise",
+  "parents": [
+   "spirit"
+  ],
+  "refs": [
+   "24:3"
+  ],
+  "desc_ru": "Личные Помощники находятся при Бесконечном Духе на Рае и служат ему повсюду.",
+  "desc_en": "Personal Aids of the Infinite Spirit, located on Paradise and attached directly to him."
+ },
+ {
+  "id": "associnsp",
+  "ru": "Ассоциированные Инспекторы",
+  "en": "Associate Inspectors",
+  "class": "D",
+  "origin": "D",
+  "groups": [
+   "spirit",
+   "coord"
+  ],
+  "unit": "paradise",
+  "serves": "salv",
+  "serves_ru": "в локальных вселенных",
+  "serves_en": "in the local universes",
+  "parents": [
+   "spirit",
+   "execs"
+  ],
+  "refs": [
+   "24:4"
+  ],
+  "desc_ru": "Ассоциированные Инспекторы – личные представители Верховных Администраторов в локальных вселенных.",
+  "desc_en": "Associate Inspectors, personal representatives of the Supreme Executives in the local universes."
+ },
+ {
+  "id": "sentinels",
+  "ru": "Полномочные Стражи",
+  "en": "Assigned Sentinels",
+  "class": "D",
+  "origin": "D",
+  "groups": [
+   "spirit",
+   "coord"
+  ],
+  "unit": "paradise",
+  "serves": "jerusem",
+  "serves_ru": "в локальных системах",
+  "serves_en": "in the local systems",
+  "parents": [
+   "spirit",
+   "execs"
+  ],
+  "refs": [
+   "24:5"
+  ],
+  "desc_ru": "Полномочные Стражи представляют Верховных Администраторов в каждой локальной системе.",
+  "desc_en": "Assigned Sentinels represent the Supreme Executives in each local system."
+ },
+ {
+  "id": "gradguides",
+  "ru": "Проводники смертных кандидатов",
+  "en": "Graduate Guides",
+  "class": "D",
+  "origin": "D",
+  "groups": [
+   "spirit"
+  ],
+  "unit": "havona",
+  "parents": [
+   "servitals"
+  ],
+  "refs": [
+   "24:6"
+  ],
+  "desc_ru": "Проводники смертных кандидатов наставляют выпускников времени и пространства в Хавоне.",
+  "desc_en": "Graduate Guides, devoted to the guidance of the graduate pilgrims of time and space in Havona."
+ },
+ {
+  "id": "servitals",
+  "ru": "Хавонские сервиталы",
+  "en": "Havona Servitals",
+  "class": "D",
+  "origin": "D",
+  "groups": [
+   "spirit"
+  ],
+  "unit": "havona",
+  "parents": [
+   "msp"
+  ],
+  "refs": [
+   "25:1"
+  ],
+  "desc_ru": "Хавонские сервиталы – «промежуточные создания» центральной вселенной.",
+  "desc_en": "Havona Servitals, the midway creatures of the central universe."
+ },
+ {
+  "id": "conciliators",
+  "ru": "Всеобщие примирители",
+  "en": "Universal Conciliators",
+  "class": "D",
+  "origin": "D",
+  "groups": [
+   "spirit",
+   "coord"
+  ],
+  "unit": "uversa",
+  "parents": [
+   "servitals",
+   "reflective"
+  ],
+  "refs": [
+   "25:2"
+  ],
+  "desc_ru": "Всеобщие примирители – семь на каждого хавонского сервитала, по одному в сверхвселенной.",
+  "desc_en": "Universal Conciliators, seven for every Havona Servital, one in each superuniverse."
+ },
+ {
+  "id": "techadv",
+  "ru": "Юридические советники",
+  "en": "Technical Advisers",
+  "class": "D",
+  "origin": "D",
+  "groups": [
+   "spirit"
+  ],
+  "unit": "uversa",
+  "parents": [
+   "spirit"
+  ],
+  "refs": [
+   "25:4"
+  ],
+  "desc_ru": "Юридические советники – правовые и технические умы духовного мира.",
+  "desc_en": "Technical Advisers, the legal and technical minds of the spirit world."
+ },
+ {
+  "id": "custrec",
+  "ru": "Хранители Райских архивов",
+  "en": "Custodians of Records on Paradise",
+  "class": "D",
+  "origin": "D",
+  "groups": [
+   "spirit"
+  ],
+  "unit": "paradise",
+  "parents": [
+   "tertiaphim"
+  ],
+  "refs": [
+   "25:5"
+  ],
+  "desc_ru": "Хранители Райских архивов – хранители формальных архивов Острова Света.",
+  "desc_en": "Custodians of Records, keepers of the formal archives of the Isle of Light on Paradise."
+ },
+ {
+  "id": "recorders",
+  "ru": "Небесные Регистраторы",
+  "en": "Celestial Recorders",
+  "class": "E",
+  "origin": "E",
+  "groups": [
+   "angel",
+   "asc"
+  ],
+  "unit": "uversa",
+  "parents": [
+   "seraph"
+  ],
+  "refs": [
+   "25:6"
+  ],
+  "desc_ru": "Небесные Регистраторы – восходящие серафимы, ведущие двойные записи.",
+  "desc_en": "Celestial Recorders, ascendant seraphim who keep records in duplicate."
+ },
+ {
+  "id": "parcomp",
+  "ru": "Райские спутники",
+  "en": "Paradise Companions",
+  "class": "D",
+  "origin": "D",
+  "groups": [
+   "spirit",
+   "angel"
+  ],
+  "unit": "paradise",
+  "parents": [
+   "seraph",
+   "supernaphim"
+  ],
+  "refs": [
+   "25:8"
+  ],
+  "desc_ru": "Райские спутники – временная группа из ангельских воинств, спутники восходящих в Раю.",
+  "desc_en": "Paradise Companions, a temporary group of angels recruited as companions of arriving ascenders."
+ },
+ {
+  "id": "tertiaphim",
+  "ru": "Тертиафимы",
+  "en": "Tertiaphim",
+  "class": "D",
+  "origin": "D",
+  "groups": [
+   "angel",
+   "spirit"
+  ],
+  "unit": "uversa",
+  "parents": [
+   "spirit"
+  ],
+  "refs": [
+   "28:1"
+  ],
+  "desc_ru": "Тертиафимы – третий порядок ангелов, служащих во всей большой вселенной.",
+  "desc_en": "Tertiaphim, the third order of angels serving the grand universe."
+ },
+ {
+  "id": "omniaphim",
+  "ru": "Омниафимы",
+  "en": "Omniaphim",
+  "class": "D",
+  "origin": "D",
+  "groups": [
+   "angel",
+   "spirit"
+  ],
+  "unit": "paradise",
+  "serves": "uversa",
+  "serves_ru": "в сверхвселенных",
+  "serves_en": "in the superuniverses",
+  "parents": [
+   "spirit",
+   "execs"
+  ],
+  "refs": [
+   "28:2"
+  ],
+  "desc_ru": "Омниафимы – слуги и посланники Верховных Администраторов.",
+  "desc_en": "Omniaphim, the servants and messengers of the Supreme Executives."
+ },
+ {
+  "id": "highauth",
+  "ru": "Наделенные Высокими Полномочиями",
+  "en": "Those High in Authority",
+  "class": "E",
+  "origin": "E",
+  "groups": [
+   "trin",
+   "asc",
+   "par"
+  ],
+  "unit": "paradise",
+  "parents": [
+   "trinatt"
+  ],
+  "refs": [
+   "22:3"
+  ],
+  "desc_ru": "Наделенные Высокими Полномочиями – смертные с выдающимися административными способностями.",
+  "desc_en": "Those High in Authority, ascended mortals of superior administrative ability."
+ },
+ {
+  "id": "noname",
+  "ru": "Не Имеющие Имени и Числа",
+  "en": "Those without Name and Number",
+  "class": "E",
+  "origin": "E",
+  "groups": [
+   "trin",
+   "asc",
+   "par"
+  ],
+  "unit": "paradise",
+  "parents": [
+   "trinatt"
+  ],
+  "refs": [
+   "22:4"
+  ],
+  "desc_ru": "Не Имеющие Имени и Числа – восходящие души, превзошедшие всех в способности к поклонению.",
+  "desc_en": "Those without Name and Number, ascendant souls of unsurpassed worship ability."
+ },
+ {
+  "id": "trincust",
+  "ru": "Тринитизованные Опекуны",
+  "en": "Trinitized Custodians",
+  "class": "E",
+  "origin": "E",
+  "groups": [
+   "trin",
+   "asc",
+   "par"
+  ],
+  "unit": "paradise",
+  "serves": "uversa",
+  "serves_ru": "при Древних Дней",
+  "serves_en": "under the Ancients of Days",
+  "parents": [
+   "trinsel",
+   "seraph"
+  ],
+  "refs": [
+   "22:5"
+  ],
+  "desc_ru": "Тринитизованные Опекуны – восходящие серафимы и преобразованные промежуточные создания.",
+  "desc_en": "Trinitized Custodians, ascendant seraphim and translated midway creatures embraced by the Trinity."
+ },
+ {
+  "id": "trinamb",
+  "ru": "Тринитизованные Послы",
+  "en": "Trinitized Ambassadors",
+  "class": "E",
+  "origin": "E",
+  "groups": [
+   "trin",
+   "asc",
+   "par"
+  ],
+  "unit": "paradise",
+  "parents": [
+   "trinsel"
+  ],
+  "refs": [
+   "22:6"
+  ],
+  "desc_ru": "Тринитизованные Послы – вторая категория Сынов Отбора из восходящих созданий.",
+  "desc_en": "Trinitized Ambassadors, the second order of Sons of Selection, recruited from ascendant creatures."
+ },
+ {
+  "id": "celguard",
+  "ru": "Небесные Хранители",
+  "en": "Celestial Guardians",
+  "class": "T",
+  "origin": "T",
+  "groups": [
+   "trin",
+   "par"
+  ],
+  "unit": "paradise",
+  "parents": [
+   "trinperf"
+  ],
+  "refs": [
+   "22:9"
+  ],
+  "desc_ru": "Небесные Хранители – первая категория Тринитизованных Сынов Совершенства.",
+  "desc_en": "Celestial Guardians, an order of the Trinitized Sons of Perfection."
+ },
+ {
+  "id": "highassist",
+  "ru": "Помощники Высоких Сынов",
+  "en": "High Son Assistants",
+  "class": "T",
+  "origin": "T",
+  "groups": [
+   "trin",
+   "par"
+  ],
+  "unit": "paradise",
+  "parents": [
+   "trinperf"
+  ],
+  "refs": [
+   "22:10"
+  ],
+  "desc_ru": "Помощники Высоких Сынов – воплощения необъятных концепций и важнейших идеалов.",
+  "desc_en": "High Son Assistants, unique personalizations of tremendous concepts and stupendous ideals."
+ },
+ {
+  "id": "asctrin",
+  "ru": "Сыны, тринитизованные восходящими созданиями",
+  "en": "Ascender-trinitized Sons",
+  "class": "T",
+  "origin": "T",
+  "groups": [
+   "trin"
+  ],
+  "unit": "paradise",
+  "parents": [
+   "finaliters"
+  ],
+  "refs": [
+   "22:7"
+  ],
+  "desc_ru": "Сыны, тринитизованные восходящими созданиями, – творение завершителей.",
+  "desc_en": "Ascender-trinitized Sons, trinitized through the creative efforts of the finaliters."
+ },
+ {
+  "id": "parhav",
+  "ru": "Сыны, тринитизованные в системе Рай-Хавона",
+  "en": "Paradise-Havona-trinitized Sons",
+  "class": "T",
+  "origin": "T",
+  "groups": [
+   "trin"
+  ],
+  "unit": "paradise",
+  "parents": [
+   "parcit",
+   "havnat"
+  ],
+  "refs": [
+   "22:7"
+  ],
+  "desc_ru": "Сыны, тринитизованные в системе Рай-Хавона, – творение Граждан Рая и обитателей Хавоны.",
+  "desc_en": "Paradise-Havona-trinitized Sons, born of the creative efforts of Paradise Citizens and Havoners."
+ },
+ {
+  "id": "destiny",
+  "ru": "Тринитизованные сыны судьбы",
+  "en": "Trinitized Sons of Destiny",
+  "class": "T",
+  "origin": "T",
+  "groups": [
+   "trin"
+  ],
+  "unit": "paradise",
+  "parents": [
+   "finaliters",
+   "parcit"
+  ],
+  "refs": [
+   "22:7"
+  ],
+  "desc_ru": "Тринитизованные сыны судьбы – совместное творение завершителя и существа системы Рай-Хавона.",
+  "desc_en": "Trinitized Sons of Destiny, trinitized jointly by a finaliter and a Paradise-Havoner."
+ },
+ {
+  "id": "sppd",
+  "ru": "Верховные Управляющие Энергией",
+  "en": "Supreme Power Directors",
+  "class": "D",
+  "origin": "D",
+  "groups": [
+   "spirit",
+   "coord"
+  ],
+  "unit": "paradise",
+  "parents": [
+   "msp"
+  ],
+  "refs": [
+   "29:1"
+  ],
+  "desc_ru": "Семь Верховных Управляющих Энергией руководят энергиями большой вселенной.",
+  "desc_en": "The Seven Supreme Power Directors, personalized by the Master Spirits, direct universe power."
+ },
+ {
+  "id": "pcenters",
+  "ru": "Верховные Силовые Центры",
+  "en": "Supreme Power Centers",
+  "class": "D",
+  "origin": "D",
+  "groups": [
+   "spirit",
+   "coord"
+  ],
+  "unit": "uversa",
+  "parents": [
+   "sppd"
+  ],
+  "refs": [
+   "29:2",
+   "29:3"
+  ],
+  "desc_ru": "Верховные Силовые Центры – потомство Управляющих Энергией и Главных Духов.",
+  "desc_en": "Supreme Power Centers, offspring of the Power Directors and the Master Spirits."
+ },
+ {
+  "id": "supcentsup",
+  "ru": "Верховные Управляющие Центрами",
+  "en": "Supreme Center Supervisors",
+  "class": "D",
+  "origin": "D",
+  "groups": [
+   "spirit",
+   "coord"
+  ],
+  "unit": "paradise",
+  "parents": [
+   "sppd"
+  ],
+  "refs": [
+   "29:2"
+  ],
+  "desc_ru": "Семь Верховных Управляющих Центрами регулируют главные энергетические контуры.",
+  "desc_en": "Seven Supreme Center Supervisors regulate the master energy circuits."
+ },
+ {
+  "id": "havcenters",
+  "ru": "Хавонские Центры",
+  "en": "Havona Centers",
+  "class": "D",
+  "origin": "D",
+  "groups": [
+   "spirit",
+   "coord"
+  ],
+  "unit": "havona",
+  "parents": [
+   "pcenters"
+  ],
+  "refs": [
+   "29:2"
+  ],
+  "desc_ru": "Хавонские Центры: миллион, каждый наблюдает тысячу миров Хавоны.",
+  "desc_en": "Havona Centers, one million, each supervising a thousand Havona worlds."
+ },
+ {
+  "id": "sucenters",
+  "ru": "Центры сверхвселенных",
+  "en": "Superuniverse Centers",
+  "class": "D",
+  "origin": "D",
+  "groups": [
+   "spirit",
+   "coord"
+  ],
+  "unit": "uversa",
+  "parents": [
+   "pcenters"
+  ],
+  "refs": [
+   "29:2"
+  ],
+  "desc_ru": "Центры сверхвселенных: тысяча на столичной сфере каждой сверхвселенной.",
+  "desc_en": "Superuniverse Centers, one thousand on each superuniverse capital sphere."
+ },
+ {
+  "id": "lucenters",
+  "ru": "Центры локальных вселенных",
+  "en": "Local Universe Centers",
+  "class": "D",
+  "origin": "D",
+  "groups": [
+   "spirit",
+   "coord"
+  ],
+  "unit": "salv",
+  "parents": [
+   "pcenters"
+  ],
+  "refs": [
+   "29:2"
+  ],
+  "desc_ru": "Центры локальных вселенных: сто на столице каждой локальной вселенной.",
+  "desc_en": "Local Universe Centers, one hundred on each local universe headquarters."
+ },
+ {
+  "id": "concenters",
+  "ru": "Центры созвездий",
+  "en": "Constellation Centers",
+  "class": "D",
+  "origin": "D",
+  "groups": [
+   "spirit",
+   "coord"
+  ],
+  "unit": "edentia",
+  "parents": [
+   "pcenters"
+  ],
+  "refs": [
+   "29:2"
+  ],
+  "desc_ru": "Центры созвездий: десять в каждом созвездии.",
+  "desc_en": "Constellation Centers, ten stationed in each constellation."
+ },
+ {
+  "id": "syscenters",
+  "ru": "Центры систем",
+  "en": "System Centers",
+  "class": "D",
+  "origin": "D",
+  "groups": [
+   "spirit",
+   "coord"
+  ],
+  "unit": "jerusem",
+  "parents": [
+   "pcenters"
+  ],
+  "refs": [
+   "29:2"
+  ],
+  "desc_ru": "Центры систем: по одному Силовому Центру в каждой локальной системе.",
+  "desc_en": "System Centers, one Supreme Power Center in each local system."
+ },
+ {
+  "id": "mpc",
+  "ru": "Главные Физические Регуляторы",
+  "en": "Master Physical Controllers",
+  "class": "D",
+  "origin": "D",
+  "groups": [
+   "spirit"
+  ],
+  "unit": "uversa",
+  "serves": "urantia",
+  "serves_ru": "на планетах",
+  "serves_en": "on the inhabited planets",
+  "parents": [
+   "sppd"
+  ],
+  "refs": [
+   "29:4"
+  ],
+  "desc_ru": "Главные Физические Регуляторы служат по всей большой вселенной.",
+  "desc_en": "The Master Physical Controllers serve throughout the grand universe."
+ },
+ {
+  "id": "assocpd",
+  "ru": "Ассоциированные управляющие энергией",
+  "en": "Associate Power Directors",
+  "class": "D",
+  "origin": "D",
+  "groups": [
+   "spirit"
+  ],
+  "unit": "uversa",
+  "parents": [
+   "mpc"
+  ],
+  "refs": [
+   "29:4"
+  ],
+  "desc_ru": "Ассоциированные управляющие энергией – первая категория Физических Регуляторов.",
+  "desc_en": "Associate Power Directors, the first order of Master Physical Controllers."
+ },
+ {
+  "id": "mechcon",
+  "ru": "Механические регуляторы",
+  "en": "Mechanical Controllers",
+  "class": "D",
+  "origin": "D",
+  "groups": [
+   "spirit"
+  ],
+  "unit": "urantia",
+  "parents": [
+   "mpc"
+  ],
+  "refs": [
+   "29:4"
+  ],
+  "desc_ru": "Механические регуляторы – вторая категория Физических Регуляторов.",
+  "desc_en": "Mechanical Controllers, the second order of Master Physical Controllers."
+ },
+ {
+  "id": "enertrans",
+  "ru": "Преобразователи энергии",
+  "en": "Energy Transformers",
+  "class": "D",
+  "origin": "D",
+  "groups": [
+   "spirit"
+  ],
+  "unit": "urantia",
+  "parents": [
+   "mpc"
+  ],
+  "refs": [
+   "29:4"
+  ],
+  "desc_ru": "Преобразователи энергии – третья категория Физических Регуляторов.",
+  "desc_en": "Energy Transformers, the third order of Master Physical Controllers."
+ },
+ {
+  "id": "energytx",
+  "ru": "Передатчики энергии",
+  "en": "Energy Transmitters",
+  "class": "D",
+  "origin": "D",
+  "groups": [
+   "spirit"
+  ],
+  "unit": "urantia",
+  "parents": [
+   "mpc"
+  ],
+  "refs": [
+   "29:4"
+  ],
+  "desc_ru": "Передатчики энергии обеспечивают каналы экстренной связи в системах и на планетах.",
+  "desc_en": "Energy Transmitters provide emergency communication lines in the systems and on the planets."
+ },
+ {
+  "id": "primassoc",
+  "ru": "Первичные объединители",
+  "en": "Primary Associators",
+  "class": "D",
+  "origin": "D",
+  "groups": [
+   "spirit"
+  ],
+  "unit": "urantia",
+  "parents": [
+   "mpc"
+  ],
+  "refs": [
+   "29:4"
+  ],
+  "desc_ru": "Первичные объединители – пятая категория Физических Регуляторов.",
+  "desc_en": "Primary Associators, the fifth order of Master Physical Controllers."
+ },
+ {
+  "id": "secdissoc",
+  "ru": "Вторичные разъединители",
+  "en": "Secondary Dissociators",
+  "class": "D",
+  "origin": "D",
+  "groups": [
+   "spirit"
+  ],
+  "unit": "urantia",
+  "parents": [
+   "mpc"
+  ],
+  "refs": [
+   "29:4"
+  ],
+  "desc_ru": "Вторичные разъединители – шестая категория Физических Регуляторов.",
+  "desc_en": "Secondary Dissociators, the sixth order of Master Physical Controllers."
+ },
+ {
+  "id": "frandal",
+  "ru": "Франдаланки и хронолдеки",
+  "en": "Frandalanks and Chronoldeks",
+  "class": "D",
+  "origin": "D",
+  "groups": [
+   "spirit"
+  ],
+  "unit": "urantia",
+  "parents": [
+   "mpc"
+  ],
+  "refs": [
+   "29:4"
+  ],
+  "desc_ru": "Франдаланки и хронолдеки – седьмая категория Физических Регуляторов.",
+  "desc_en": "Frandalanks and Chronoldeks, the seventh order of Master Physical Controllers."
+ },
+ {
+  "id": "mps",
+  "ru": "Управляющие Моронтийной Энергией",
+  "en": "Morontia Power Supervisors",
+  "class": "L",
+  "origin": "FSD",
+  "groups": [
+   "local",
+   "spirit"
+  ],
+  "unit": "salv",
+  "parents": [
+   "mother"
+  ],
+  "refs": [
+   "48:2"
+  ],
+  "desc_ru": "Управляющие Моронтийной Энергией – потомки Материнского Духа локальной вселенной.",
+  "desc_en": "Morontia Power Supervisors, offspring of a local universe Mother Spirit."
+ },
+ {
+  "id": "circreg",
+  "ru": "Регуляторы контуров",
+  "en": "Circuit Regulators",
+  "class": "L",
+  "origin": "FSD",
+  "groups": [
+   "local",
+   "spirit"
+  ],
+  "unit": "salv",
+  "parents": [
+   "mps"
+  ],
+  "refs": [
+   "48:2"
+  ],
+  "desc_ru": "Регуляторы контуров подчиняют материальную энергию управлению и генерируют моронтийную энергию.",
+  "desc_en": "Circuit Regulators initiate changes in material energies and generate morontia power."
+ },
+ {
+  "id": "syscoord",
+  "ru": "Координаторы систем",
+  "en": "System Co-ordinators",
+  "class": "L",
+  "origin": "FSD",
+  "groups": [
+   "local",
+   "spirit"
+  ],
+  "unit": "jerusem",
+  "parents": [
+   "mps"
+  ],
+  "refs": [
+   "48:2"
+  ],
+  "desc_ru": "Координаторы систем – вторая категория Управляющих Моронтийной Энергией.",
+  "desc_en": "System Co-ordinators, the second order of Morontia Power Supervisors."
+ },
+ {
+  "id": "plancust",
+  "ru": "Планетарные опекуны",
+  "en": "Planetary Custodians",
+  "class": "L",
+  "origin": "FSD",
+  "groups": [
+   "local",
+   "spirit"
+  ],
+  "unit": "urantia",
+  "parents": [
+   "mps"
+  ],
+  "refs": [
+   "48:2"
+  ],
+  "desc_ru": "Планетарные опекуны – третья категория Управляющих Моронтийной Энергией.",
+  "desc_en": "Planetary Custodians, the third order of Morontia Power Supervisors."
+ },
+ {
+  "id": "combcon",
+  "ru": "Универсальные регуляторы",
+  "en": "Combined Controllers",
+  "class": "L",
+  "origin": "FSD",
+  "groups": [
+   "local",
+   "spirit"
+  ],
+  "unit": "urantia",
+  "parents": [
+   "mps"
+  ],
+  "refs": [
+   "48:2"
+  ],
+  "desc_ru": "Универсальные регуляторы – четвертая категория Управляющих Моронтийной Энергией.",
+  "desc_en": "Combined Controllers, the fourth order of Morontia Power Supervisors."
+ },
+ {
+  "id": "liaisonstab",
+  "ru": "Стабилизаторы связи",
+  "en": "Liaison Stabilizers",
+  "class": "L",
+  "origin": "FSD",
+  "groups": [
+   "local",
+   "spirit"
+  ],
+  "unit": "jerusem",
+  "parents": [
+   "mps"
+  ],
+  "refs": [
+   "48:2"
+  ],
+  "desc_ru": "Стабилизаторы связи – пятая категория Управляющих Моронтийной Энергией.",
+  "desc_en": "Liaison Stabilizers, the fifth order of Morontia Power Supervisors."
+ },
+ {
+  "id": "selassort",
+  "ru": "Выборочные группирователи",
+  "en": "Selective Assorters",
+  "class": "L",
+  "origin": "FSD",
+  "groups": [
+   "local",
+   "spirit"
+  ],
+  "unit": "urantia",
+  "parents": [
+   "mps"
+  ],
+  "refs": [
+   "48:2"
+  ],
+  "desc_ru": "Выборочные группирователи – шестая категория Управляющих Моронтийной Энергией.",
+  "desc_en": "Selective Assorters, the sixth order of Morontia Power Supervisors."
+ },
+ {
+  "id": "assocreg",
+  "ru": "Ассоциированные регистраторы",
+  "en": "Associate Registrars",
+  "class": "L",
+  "origin": "FSD",
+  "groups": [
+   "local",
+   "spirit"
+  ],
+  "unit": "jerusem",
+  "parents": [
+   "mps"
+  ],
+  "refs": [
+   "48:2"
+  ],
+  "desc_ru": "Ассоциированные регистраторы – седьмая категория Управляющих Моронтийной Энергией.",
+  "desc_en": "Associate Registrars, the seventh order of Morontia Power Supervisors."
+ },
+ {
+  "id": "spiritnat",
+  "ru": "Уроженцы Райских сфер Духа",
+  "en": "Natives of the Paradise Spheres of the Spirit",
+  "class": "D",
+  "origin": "D",
+  "groups": [
+   "spirit"
+  ],
+  "unit": "paradise",
+  "parents": [
+   "spirit"
+  ],
+  "refs": [
+   "30:2"
+  ],
+  "desc_ru": "Уроженцы Райских сфер Духа – постоянные граждане Рая.",
+  "desc_en": "Natives of the Paradise Spheres of the Spirit, permanent citizens of Paradise."
+ },
+ {
+  "id": "fathernat",
+  "ru": "Уроженцы Райских сфер Отца",
+  "en": "Natives of the Father’s Paradise Spheres",
+  "class": "F",
+  "origin": "F",
+  "groups": [
+   "deity"
+  ],
+  "unit": "paradise",
+  "parents": [
+   "father"
+  ],
+  "refs": [
+   "30:2"
+  ],
+  "desc_ru": "Уроженцы Райских сфер Отца – постоянные граждане Рая.",
+  "desc_en": "Natives of the Father’s Paradise Spheres, permanent citizens of Paradise."
+ },
+ {
+  "id": "adjcit",
+  "ru": "Слившиеся с Настройщиком смертные Граждане Рая",
+  "en": "Adjuster-fused Mortal Citizens of Paradise",
+  "class": "E",
+  "origin": "E",
+  "groups": [
+   "asc"
+  ],
+  "unit": "paradise",
+  "parents": [
+   "adjfused"
+  ],
+  "refs": [
+   "30:2"
+  ],
+  "desc_ru": "Слившиеся с Настройщиком смертные Граждане Рая – постоянные жители Рая.",
+  "desc_en": "Adjuster-fused mortal Citizens of Paradise, permanent residents of Paradise."
+ },
+ {
+  "id": "mortfin",
+  "ru": "Корпус Смертных Завершителей",
+  "en": "Corps of Mortal Finaliters",
+  "class": "E",
+  "origin": "E",
+  "groups": [
+   "asc"
+  ],
+  "unit": "paradise",
+  "parents": [
+   "finaliters",
+   "adjfused"
+  ],
+  "refs": [
+   "31:0"
+  ],
+  "desc_ru": "Корпус Смертных Завершителей – цель слившихся с Настройщиком восходящих смертных.",
+  "desc_en": "The Corps of Mortal Finaliters, the present known destination of Adjuster-fused ascenders."
+ },
+ {
+  "id": "parfin",
+  "ru": "Корпус Райских Завершителей",
+  "en": "Corps of Paradise Finaliters",
+  "class": "T",
+  "origin": "T",
+  "groups": [
+   "trin"
+  ],
+  "unit": "paradise",
+  "parents": [
+   "finaliters",
+   "parcit"
+  ],
+  "refs": [
+   "31:10"
+  ],
+  "desc_ru": "Корпус Райских Завершителей – часть Корпуса Завершения.",
+  "desc_en": "The Corps of Paradise Finaliters, a division of the Corps of the Finality."
+ },
+ {
+  "id": "trinfin",
+  "ru": "Корпус Тринитизованных Завершителей",
+  "en": "Corps of Trinitized Finaliters",
+  "class": "T",
+  "origin": "T",
+  "groups": [
+   "trin"
+  ],
+  "unit": "paradise",
+  "parents": [
+   "finaliters"
+  ],
+  "refs": [
+   "31:10"
+  ],
+  "desc_ru": "Корпус Тринитизованных Завершителей – часть Корпуса Завершения.",
+  "desc_en": "The Corps of Trinitized Finaliters, a division of the Corps of the Finality."
+ },
+ {
+  "id": "conjfin",
+  "ru": "Корпус Совместных Тринитизованных Завершителей",
+  "en": "Corps of Conjoint Trinitized Finaliters",
+  "class": "T",
+  "origin": "T",
+  "groups": [
+   "trin"
+  ],
+  "unit": "paradise",
+  "parents": [
+   "finaliters"
+  ],
+  "refs": [
+   "31:10"
+  ],
+  "desc_ru": "Корпус Совместных Тринитизованных Завершителей – часть Корпуса Завершения.",
+  "desc_en": "The Corps of Conjoint Trinitized Finaliters, a division of the Corps of the Finality."
+ },
+ {
+  "id": "havfin",
+  "ru": "Корпус Хавонских Завершителей",
+  "en": "Corps of Havona Finaliters",
+  "class": "T",
+  "origin": "T",
+  "groups": [
+   "trin"
+  ],
+  "unit": "paradise",
+  "parents": [
+   "finaliters",
+   "havnat"
+  ],
+  "refs": [
+   "31:10"
+  ],
+  "desc_ru": "Корпус Хавонских Завершителей – часть Корпуса Завершения.",
+  "desc_en": "The Corps of Havona Finaliters, a division of the Corps of the Finality."
+ },
+ {
+  "id": "transfin",
+  "ru": "Корпус Трансцендентальных Завершителей",
+  "en": "Corps of Transcendental Finaliters",
+  "class": "T",
+  "origin": "T",
+  "groups": [
+   "trin"
+  ],
+  "unit": "paradise",
+  "parents": [
+   "finaliters"
+  ],
+  "refs": [
+   "31:10"
+  ],
+  "desc_ru": "Корпус Трансцендентальных Завершителей – часть Корпуса Завершения.",
+  "desc_en": "The Corps of Transcendental Finaliters, a division of the Corps of the Finality."
+ },
+ {
+  "id": "mosthigh",
+  "ru": "Всевышние Помощники",
+  "en": "Most High Assistants",
+  "class": "D",
+  "origin": "D",
+  "groups": [
+   "spirit",
+   "coord"
+  ],
+  "unit": "salv",
+  "parents": [
+   "trinity"
+  ],
+  "refs": [
+   "37:4"
+  ],
+  "desc_ru": "Всевышние Помощники – добровольцы из-за пределов локальной вселенной, временные наблюдатели.",
+  "desc_en": "Most High Assistants, volunteers of outside origin temporarily assigned to the local creations."
+ },
+ {
+  "id": "highcomm",
+  "ru": "Высокие Уполномоченные",
+  "en": "High Commissioners",
+  "class": "E",
+  "origin": "E",
+  "groups": [
+   "asc"
+  ],
+  "unit": "salv",
+  "parents": [
+   "spiritfused"
+  ],
+  "refs": [
+   "37:5"
+  ],
+  "desc_ru": "Высокие Уполномоченные – слившиеся с Духом восходящие смертные.",
+  "desc_en": "High Commissioners, Spirit-fused ascendant mortals."
+ },
+ {
+  "id": "celoverseers",
+  "ru": "Небесные Наблюдатели",
+  "en": "Celestial Overseers",
+  "class": "L",
+  "origin": "FSD",
+  "groups": [
+   "local"
+  ],
+  "unit": "salv",
+  "parents": [
+   "michael"
+  ],
+  "refs": [
+   "37:6"
+  ],
+  "desc_ru": "Небесные Наблюдатели – набранный корпус, связанный с обучением восходящих смертных.",
+  "desc_en": "Celestial Overseers, a recruited corps connected with the education of ascending mortals."
+ },
+ {
+  "id": "mansteach",
+  "ru": "Учителя Обительских Миров",
+  "en": "Mansion World Teachers",
+  "class": "L",
+  "origin": "FSD",
+  "groups": [
+   "local",
+   "angel"
+  ],
+  "unit": "jerusem",
+  "parents": [
+   "cherub"
+  ],
+  "refs": [
+   "37:7"
+  ],
+  "desc_ru": "Учителя Обительских Миров – набранные и прославленные херувимы.",
+  "desc_en": "Mansion World Teachers, recruited and glorified cherubim."
+ },
+ {
+  "id": "starstud",
+  "ru": "Исследователи звезд",
+  "en": "Star Students",
+  "class": "E",
+  "origin": "E",
+  "groups": [
+   "asc"
+  ],
+  "unit": "uversa",
+  "parents": [
+   "pilgrims"
+  ],
+  "refs": [
+   "30:3"
+  ],
+  "desc_ru": "Исследователи звезд – небесные астрономы, трудящиеся на столичных сферах.",
+  "desc_en": "Star Students, the celestial astronomers working on the capital spheres."
+ },
+ {
+  "id": "artisans",
+  "ru": "Небесные мастеровые",
+  "en": "Celestial Artisans",
+  "class": "E",
+  "origin": "E",
+  "groups": [
+   "asc"
+  ],
+  "unit": "uversa",
+  "parents": [
+   "pilgrims"
+  ],
+  "refs": [
+   "30:3",
+   "44:0"
+  ],
+  "desc_ru": "Небесные мастеровые – отобранный корпус, служащий по всем сверхвселенным.",
+  "desc_en": "Celestial Artisans, a selected and recruited corps serving throughout the superuniverses."
+ },
+ {
+  "id": "reversion",
+  "ru": "Управляющие реверсией",
+  "en": "Reversion Directors",
+  "class": "E",
+  "origin": "E",
+  "groups": [
+   "asc"
+  ],
+  "unit": "uversa",
+  "parents": [
+   "pilgrims"
+  ],
+  "refs": [
+   "30:3",
+   "48:4"
+  ],
+  "desc_ru": "Управляющие реверсией способствуют расслаблению и чувству юмора.",
+  "desc_en": "Reversion Directors, promoters of relaxation and humor."
+ },
+ {
+  "id": "extschool",
+  "ru": "Преподаватели подготовительных школ",
+  "en": "Extension-school Instructors",
+  "class": "E",
+  "origin": "E",
+  "groups": [
+   "asc"
+  ],
+  "unit": "uversa",
+  "parents": [
+   "pilgrims"
+  ],
+  "refs": [
+   "30:3"
+  ],
+  "desc_ru": "Преподаватели подготовительных школ учат жителей нижележащего мира.",
+  "desc_en": "Extension-school Instructors, teachers of the residents of the world just below."
+ },
+ {
+  "id": "visitors",
+  "ru": "Приезжие исследователи",
+  "en": "Student Visitors",
+  "class": "E",
+  "origin": "E",
+  "groups": [
+   "asc"
+  ],
+  "unit": "uversa",
+  "parents": [],
+  "refs": [
+   "30:3"
+  ],
+  "desc_ru": "Приезжие исследователи – небесные посетители, проходящие через столичные миры.",
+  "desc_en": "Student Visitors, celestial visitors passing through the headquarters worlds."
+ },
+ {
+  "id": "pilgrims",
+  "ru": "Восходящие Паломники",
+  "en": "Ascending Pilgrims",
+  "class": "E",
+  "origin": "E",
+  "groups": [
+   "asc"
+  ],
+  "unit": "uversa",
+  "parents": [
+   "human"
+  ],
+  "refs": [
+   "30:3",
+   "30:4"
+  ],
+  "desc_ru": "Восходящие паломники – смертные, получившие назначение для восхождения к Раю.",
+  "desc_en": "Ascending pilgrims, mortal survivors accredited for the progressive ascent to Paradise."
+ },
+ {
+  "id": "architects",
+  "ru": "Творцы Совокупной Вселенной",
+  "en": "Architects of the Master Universe",
+  "class": "T",
+  "origin": "T",
+  "groups": [
+   "trin"
+  ],
+  "unit": "paradise",
+  "parents": [
+   "trinity"
+  ],
+  "refs": [
+   "31:9"
+  ],
+  "desc_ru": "Творцы Совокупной Вселенной – правящий корпус Райских Трансценденталов.",
+  "desc_en": "The Architects of the Master Universe, the governing corps of the Paradise Transcendentalers."
+ },
+ {
+  "id": "transrec",
+  "ru": "Трансцендентальные Регистраторы",
+  "en": "Transcendental Recorders",
+  "class": "T",
+  "origin": "T",
+  "groups": [
+   "trin"
+  ],
+  "unit": "paradise",
+  "parents": [
+   "architects"
+  ],
+  "refs": [
+   "23:3"
+  ],
+  "desc_ru": "Трансцендентальные Регистраторы – личности, использующие гравитацию для перемещения.",
+  "desc_en": "Transcendental Recorders, personal gravity traversers."
+ },
+ {
+  "id": "mfo",
+  "ru": "Первичные Возникшие Главные Организаторы Сил",
+  "en": "Primary Eventuated Master Force Organizers",
+  "class": "T",
+  "origin": "T",
+  "groups": [
+   "trin"
+  ],
+  "unit": "paradise",
+  "parents": [
+   "architects"
+  ],
+  "refs": [
+   "29:5"
+  ],
+  "desc_ru": "Первичные Возникшие Главные Организаторы Сил организуют силы пространства.",
+  "desc_en": "Primary Eventuated Master Force Organizers."
+ },
+ {
+  "id": "amfo",
+  "ru": "Ассоциированные Трансцендентальные Главные Организаторы Сил",
+  "en": "Associate Transcendental Master Force Organizers",
+  "class": "T",
+  "origin": "T",
+  "groups": [
+   "trin"
+  ],
+  "unit": "paradise",
+  "parents": [
+   "architects"
+  ],
+  "refs": [
+   "29:5"
+  ],
+  "desc_ru": "Ассоциированные Трансцендентальные Главные Организаторы Сил.",
+  "desc_en": "Associate Transcendental Master Force Organizers."
+ },
+ {
+  "id": "consummator",
+  "ru": "Свершитель Вселенского Пути",
+  "en": "Consummator of Universe Destiny",
+  "class": "T",
+  "origin": "T",
+  "groups": [
+   "deity"
+  ],
+  "unit": "paradise",
+  "parents": [
+   "trinity"
+  ],
+  "refs": [
+   "106:8"
+  ],
+  "desc_ru": "Свершитель Вселенского Пути – из нераскрытых групп Райской Троицы.",
+  "desc_en": "The Consummator of Universe Destiny, a being of the unclassified and unrevealed orders."
+ },
+ {
+  "id": "vicegerents",
+  "ru": "Условные Наместники Предельного",
+  "en": "Qualified Vicegerents of the Ultimate",
+  "class": "T",
+  "origin": "T",
+  "groups": [
+   "coord"
+  ],
+  "unit": "paradise",
+  "parents": [
+   "trinity"
+  ],
+  "refs": [
+   "117:7"
+  ],
+  "desc_ru": "Условные Наместники Предельного – нераскрытая группа.",
+  "desc_en": "The Qualified Vicegerents of the Ultimate, an unrevealed group."
+ },
+ {
+  "id": "supervisors",
+  "ru": "Безусловные Смотрители Верховного",
+  "en": "Unqualified Supervisors of the Supreme",
+  "class": "T",
+  "origin": "T",
+  "groups": [
+   "coord"
+  ],
+  "unit": "paradise",
+  "parents": [
+   "trinity"
+  ],
+  "refs": [
+   "55:12"
+  ],
+  "desc_ru": "Безусловные Смотрители Верховного – персонализация сверхвселенской верховности.",
+  "desc_en": "The Unqualified Supervisors of the Supreme, personalization of time-space supremacy."
+ },
+ {
+  "id": "majeston",
+  "ru": "Мажестон",
+  "en": "Majeston",
+  "class": "T",
+  "origin": "T",
+  "groups": [
+   "coord"
+  ],
+  "unit": "paradise",
+  "parents": [
+   "trinity"
+  ],
+  "refs": [
+   "17:2"
+  ],
+  "desc_ru": "Мажестон – Глава Отражательности, живущий в Раю.",
+  "desc_en": "Majeston, chief of reflectivity, resident on Paradise."
+ },
+ {
+  "id": "midsonite",
+  "ru": "Мидсониты",
+  "en": "midsoniters",
+  "class": "L",
+  "origin": "FSD",
+  "groups": [
+   "local"
+  ],
+  "unit": "jerusem",
+  "parents": [
+   "melch",
+   "eve"
+  ],
+  "refs": [
+   "36:4"
+  ],
+  "desc_ru": "Мидсониты – потомство Мелхиседека-носителя жизни и Материальной Дочери.",
+  "desc_en": "Midsoniters, the progeny of a Melchizedek life carrier and a Material Daughter."
+ }
+]

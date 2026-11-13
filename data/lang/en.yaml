@@ -1,0 +1,483 @@
+# Тексты на языке «en». Ключи — id из data/cosmology.yaml.
+
+language: { code: en, name: English }
+
+classes:
+  T: Trinity origin
+  A: Absolutes
+  F: Of the Universal Father
+  S: Of the Eternal Son
+  FS: Of the Father and the Son
+  SD: Of the Son and the Spirit
+  D: Of the Infinite Spirit
+  L: Local universe (Creator Son and Mother Spirit)
+  DU: Dual-origin (other creators)
+  E: Evolutionary origin
+  X: Eventuated transcendental
+  U: Origin unrevealed
+  C: Composite groups
+
+groups:
+  deity: Deities
+  trin: Trinity Sons
+  supreme: Supreme Trinity Personalities
+  par: Paradise Sons of God
+  desc: Descending
+  local: Local universe sons
+  spirit: "Spirits & ministers of the Spirit"
+  angel: Angelic
+  asc: Ascending
+  coord: Co-ordinate Trinity-Origin Beings
+  supspirit: The Seven Supreme Spirit Groups
+  stationary: Stationary Orders (dual-origin)
+  unclass: Unclassified and Unrevealed Orders
+  powercenters: Supreme Power Centers
+  transcg: Eventuated Transcendental Beings
+  finality: Corps of the Finality
+
+functions:
+  gov: Administration
+  justice: Justice and oversight
+  teach: Teaching
+  messeng: Messengers
+  minist: Ministry and guardianship
+  create: Creation and life
+  energy: Energy control
+  reflect: Reflectivity and communication
+
+units:
+  paradise:
+    name: Paradise
+  trinity:
+    name: Trinity
+    desc: The Paradise Trinity — union of the three Deities. Source of the Trinity Sons.
+  absolutes:
+    name: Absolutes
+  transc:
+    name: Eventuated Transcendental Beings
+    desc: Paradise beings whose origin is not ordinarily disclosed.
+  creattrin:
+    name: Creature-trinitized Sons
+    desc: Trinitized by ascenders or Paradise-Havona beings.
+  trinsons:
+    name: Trinitized Sons of God
+    desc: "Three orders: Sons of Attainment, Selection and Perfection."
+  trinatt:
+    name: Trinitized Sons of Attainment
+    desc: Adjuster-fused ascendant mortals who attained Paradise and were embraced by the Trinity.
+  finaliters:
+    name: Corps of the Finality
+    desc: Ascenders who have attained Paradise; their destiny is yet unrevealed.
+  havona:
+    name: Havona — central universe
+  super:
+    name: Superuniverse Orvonton
+  uversa:
+    name: Uversa — superuniverse capital
+  mpc:
+    name: Master Physical Controllers
+    desc: The Master Physical Controllers serve throughout the grand universe.
+  major:
+    name: Major sector Splandon
+  umajor:
+    name: Umajor the fifth — major sector capital
+  minor:
+    name: Minor sector Ensa
+  uminor:
+    name: Uminor the third — minor sector capital
+  local:
+    name: Local universe Nebadon
+  salv:
+    name: Salvington — local universe capital
+  const:
+    name: Constellation Norlatiadek
+  edentia:
+    name: Edentia — constellation capital
+  system:
+    name: System Satania
+  jerusem:
+    name: Jerusem — system capital
+  mps:
+    name: Morontia Power Supervisors
+    desc: "Morontia Power Supervisors, offspring of a local universe Mother Spirit."
+  urantia:
+    name: Urantia — inhabited planet
+  mortal:
+    name: The mortal and his Adjuster
+
+# serves — подпись к месту служения; there — имя на месте служения (если иное).
+persons:
+  father:
+    name: Universal Father
+    desc: "First Source and Center; the personal God, Creator of all."
+  son:
+    name: Eternal Son
+    desc: Second Source and Center; the absolute and personal Word of God.
+  spirit:
+    name: Infinite Spirit
+    desc: "Third Source and Center, the Conjoint Actor; source of mind."
+  msp:
+    name: Seven Master Spirits
+    desc: Personal expressions of the Deities in seven combinations; each oversees one superuniverse.
+  secrets:
+    name: Trinitized Secrets of Supremacy
+    desc: Direct the seven sacred spheres of the Father near Paradise.
+  eternals:
+    name: Eternals of Days
+    desc: Rulers of the Havona worlds — one for each world.
+  ancients:
+    name: Ancients of Days
+    desc: The three rulers of each superuniverse.
+  perfections:
+    name: Perfections of Days
+    desc: Rulers of the major sectors of a superuniverse.
+  recents:
+    name: Recents of Days
+    desc: Rulers of the minor sectors of a superuniverse.
+  unions:
+    name: Unions of Days
+    desc: Trinity ambassadors-counselors to a local universe government.
+  faithfuls:
+    name: Faithfuls of Days
+    desc: Trinity counselors to the constellation rulers.
+  daynal:
+    name: Daynal Sons
+    desc: "Paradise Sons, teachers of worlds and races; serve in the local universes."
+    serves: teachers of worlds and races in the local universe
+  michael:
+    name: Michael Sons
+    desc: Creators and rulers of local universes; Michael of Nebadon incarnated as Jesus.
+    serves: rules his local universe
+  avonal:
+    name: Avonal Sons
+    desc: "Paradise Sons of ministry: judicial actions and bestowals on the worlds."
+    serves: Paradise Sons of planetary service and bestowal
+  mother:
+    name: Universe Mother Spirit
+    desc: The Divine Minister — co-ruler of the local universe with the Creator Son.
+    serves: co-ruler of the local universe
+  gabriel:
+    name: Bright and Morning Star — Gabriel
+    desc: "The Bright and Morning Star — first-born, chief executive of Nebadon."
+  melch:
+    name: Melchizedeks
+    desc: Teacher sons and emergency ministers of the local universe.
+    serves: minister directly to the evolutionary races
+  lifec:
+    name: Life Carriers
+    desc: Carry and implant life on the evolutionary worlds.
+  arch:
+    name: Archangels
+    desc: Ministry of resurrection; circuit of communication with the worlds.
+  lanon:
+    name: Lanonandek Sons
+    desc: "Administrative sons: System Sovereigns, Planetary Princes."
+  adam:
+    name: Material Sons
+    desc: Biologic uplifters of the evolutionary races.
+    serves: sent to a planet as its Adam
+    there: Adam
+  eve:
+    name: Material Daughters
+    desc: Material Daughters — biologic uplifters with the Material Sons; the Eve of a planet.
+    serves: sent to a planet as its Eve
+    there: Eve
+  cherub:
+    name: Cherubim
+    desc: "Aids to the seraphim, lesser angelic ministers."
+  tadj:
+    name: Thought Adjuster
+    desc: A fragment of the Father indwelling the mortal mind.
+  human:
+    name: Mortal man
+    desc: An evolutionary being beginning the ascent to Paradise.
+  seraph:
+    name: Seraphim
+    desc: Ministering angels; guardians of mortal destiny.
+  perfectors:
+    name: Perfectors of Wisdom
+    desc: Embody the wisdom of Deity in superuniverse governments.
+  counselors:
+    name: Divine Counselors
+    desc: Provide the counsel of the Trinity in superuniverse governments.
+  censors:
+    name: Universal Censors
+    desc: Render the judgment of Deity; assess deeds and records.
+  mighty:
+    name: Mighty Messengers
+    desc: Trinity-embraced ascendant mortals serving superuniverse governments.
+  solitary:
+    name: Solitary Messengers
+    desc: Personal corps of the Infinite Spirit; instant communication throughout creation.
+  supernaphim:
+    name: Supernaphim
+    desc: Angels of the central universe and Paradise.
+  seconaphim:
+    name: Seconaphim
+    desc: "Angels of the superuniverses, created through the Reflective Spirits."
+  stars:
+    name: Brilliant Evening Stars
+    desc: Superangelic administrators and messengers of the local universe.
+  vorondadek:
+    name: Vorondadek Sons
+    desc: "Rulers of constellations, the Most High Fathers."
+  morontia:
+    name: Morontia mortals
+    desc: "Ascenders on the mansion worlds after death, in morontia form."
+  mcomp:
+    name: Morontia Companions
+    desc: Companions and guides of ascenders on the morontia worlds.
+  adjutants:
+    name: Adjutant Mind-Spirits
+    desc: "The Mother Spirit's ministry to the mind of evolutionary creatures."
+  truth:
+    name: Spirit of Truth
+    desc: "The spirit of the Creator Son, poured out on all mankind after Pentecost."
+  midway:
+    name: Midway creatures
+    desc: "Permanent citizens of the planet, unseen helpers of mankind."
+  reflective:
+    name: Reflective Spirits
+    desc: Fifty Trinity-origin spirits who make reflectivity possible on the superuniverse capitals.
+  execs:
+    name: Supreme Executives
+    desc: The Seven Supreme Executives co-ordinate the administration of the seven superuniverses from Paradise.
+    serves: in the superuniverses
+  refimage:
+    name: Reflective Image Aids
+    desc: The Reflective Image Aids represent groups of beings influential in the superuniverse governments.
+  circspirits:
+    name: Spirits of the Circuits
+    desc: "The Spirits of the Circuits, offspring of the Master Spirits, serve the seven circuits of Havona."
+  inspired:
+    name: Inspired Trinity Spirits
+    desc: A wholly secret order of beings brought into existence by the act of the Paradise Trinity.
+  havnat:
+    name: Havona Natives
+    desc: "Havona natives, Trinity-origin personalities projected in divine perfection."
+  parcit:
+    name: Paradise Citizens
+    desc: "Paradise Citizens, Trinity-origin personalities who are permanent residents of Paradise."
+  fmelch:
+    name: Father Melchizedeks
+    desc: "The Father Melchizedek, the original Melchizedek Son of the local universe."
+  abandon:
+    name: Abandonters
+    desc: "Dual-origin beings: the creation of the unrevealed agents of the Ancients of Days and the seven Reflective Spirits of Uversa (37:9). Permanent citizens of the superuniverse capital; they administer the routine affairs of Uversa under the supervision of the Son-fused mortals."
+  susatia:
+    name: Susatia
+    desc: "The Susatia, offspring of the Creator Son and Creative Spirit, permanent citizens of Salvington."
+  univit:
+    name: Univitatia
+    desc: "The Univitatia, the permanent population of the constellation headquarters worlds."
+  spironga:
+    name: Spironga
+    desc: "The Spironga, spirit offspring of the Bright and Morning Star and the Father Melchizedek."
+  adjfused:
+    name: Adjuster-fused Mortals
+    desc: "Adjuster-fused mortals, ascenders destined for Paradise and the Corps of the Finality."
+  sonfused:
+    name: Son-fused Mortals
+    desc: "Son-fused mortals, few in number and restricted to the superuniverse."
+  spiritfused:
+    name: Spirit-fused Mortals
+    desc: "Spirit-fused mortals, generally confined to a local universe."
+  transmid:
+    name: Translated Midwayers
+    desc: "Translated midway creatures, who ascend toward Paradise."
+  persadj:
+    name: Personalized Adjusters
+    desc: "Personalized Adjusters, Adjusters that have experientialized and attained personality."
+  gravmess:
+    name: Gravity Messengers
+    desc: "Gravity Messengers, modified and personalized Adjusters from Divinington."
+    serves: on Uversa
+  adjhav:
+    name: Twelvefold Adjutants of the Havona Circuits
+    desc: The Twelvefold Adjutants of the Havona Circuits serve the circuits of the central universe.
+  circsup:
+    name: Universe Circuit Supervisors
+    desc: "Universe Circuit Supervisors, the exclusive creation of the Infinite Spirit."
+  census:
+    name: Census Directors
+    desc: Census Directors register the existence and death of will creatures.
+  persaids:
+    name: Personal Aids of the Infinite Spirit
+    desc: "Personal Aids of the Infinite Spirit, located on Paradise and attached directly to him."
+  associnsp:
+    name: Associate Inspectors
+    desc: "Joint offspring of the Infinite Spirit and the Seven Master Spirits; subordinates of the Supreme Executives, embodying their authority in the local universes."
+    serves: in the local universes
+  sentinels:
+    name: Assigned Sentinels
+    desc: Personalized on Paradise by the Infinite Spirit; co-ordinating and liaison representatives of the Seven Supreme Executives in the local systems.
+    serves: in the local systems
+  gradguides:
+    name: Graduate Guides
+    desc: "Graduate Guides, devoted to the guidance of the graduate pilgrims of time and space in Havona."
+  servitals:
+    name: Havona Servitals
+    desc: "Havona Servitals, the midway creatures of the central universe."
+  conciliators:
+    name: Universal Conciliators
+    desc: "Universal Conciliators, seven for every Havona Servital, one in each superuniverse."
+  tertiaphim:
+    name: Tertiaphim
+    desc: "Tertiaphim, the third order of angels serving the grand universe."
+  omniaphim:
+    name: Omniaphim
+    desc: "Omniaphim, the servants and messengers of the Supreme Executives."
+    serves: in the superuniverses
+  highauth:
+    name: Those High in Authority
+    desc: "Those High in Authority, ascended mortals of superior administrative ability."
+  noname:
+    name: Those without Name and Number
+    desc: "Those without Name and Number, ascendant souls of unsurpassed worship ability."
+  asctrin:
+    name: Ascender-trinitized Sons
+    desc: "Ascender-trinitized Sons, trinitized through the creative efforts of the finaliters."
+  parhav:
+    name: Paradise-Havona-trinitized Sons
+    desc: "Paradise-Havona-trinitized Sons, born of the creative efforts of Paradise Citizens and Havoners."
+  destiny:
+    name: Trinitized Sons of Destiny
+    desc: "Trinitized Sons of Destiny, trinitized jointly by a finaliter and a Paradise-Havoner."
+  sppd:
+    name: Supreme Power Directors
+    desc: "The Seven Supreme Power Directors, personalized by the Master Spirits, direct universe power."
+  supcentsup:
+    name: Supreme Center Supervisors
+    desc: "First group of the Supreme Power Centers: seven regulators of the master energy circuits of the grand universe, associates of the Supreme Power Directors, each on a special world of one of the Seven Supreme Executives (29:2)."
+  havcenters:
+    name: Havona Centers
+    desc: "Second group of the Supreme Power Centers. Havona once needed no power centers; since the appearance of the time-space universes a million of them function here, each controlling a thousand Havona worlds (29:2)."
+  sucenters:
+    name: Superuniverse Centers
+    desc: "Third group: one thousand power centers on the capital sphere of each superuniverse; from them proceeds the sevenfold energy circuit pervading the supercreation (29:2)."
+  lucenters:
+    name: Local Universe Centers
+    desc: "Fourth group: one hundred centers at the headquarters of each local universe; they downstep and modify the seven power circuits from the superuniverse headquarters (29:2)."
+  concenters:
+    name: Constellation Centers
+    desc: "Fifth group: ten centers in each constellation, energy projectors to its one hundred tributary local systems (29:2)."
+  syscenters:
+    name: System Centers
+    desc: "Sixth group: one Supreme Power Center in each local system; they dispatch the power circuits to the inhabited worlds and co-ordinate the subordinate physical controllers (29:2)."
+  assocpd:
+    name: Associate Power Directors
+    desc: "Associate Power Directors, the first order of Master Physical Controllers."
+  mechcon:
+    name: Mechanical Controllers
+    desc: "Mechanical Controllers, the second order of Master Physical Controllers."
+  enertrans:
+    name: Energy Transformers
+    desc: "Energy Transformers, the third order of Master Physical Controllers."
+  energytx:
+    name: Energy Transmitters
+    desc: Energy Transmitters provide emergency communication lines in the systems and on the planets.
+  primassoc:
+    name: Primary Associators
+    desc: "Primary Associators, the fifth order of Master Physical Controllers."
+  secdissoc:
+    name: Secondary Dissociators
+    desc: "Secondary Dissociators, the sixth order of Master Physical Controllers."
+  frandal:
+    name: Frandalanks and Chronoldeks
+    desc: "Frandalanks and Chronoldeks, the seventh order of Master Physical Controllers."
+  circreg:
+    name: Circuit Regulators
+    desc: Circuit Regulators initiate changes in material energies and generate morontia power.
+  syscoord:
+    name: System Co-ordinators
+    desc: "System Co-ordinators, the second order of Morontia Power Supervisors."
+  plancust:
+    name: Planetary Custodians
+    desc: "Planetary Custodians, the third order of Morontia Power Supervisors."
+  combcon:
+    name: Combined Controllers
+    desc: "Combined Controllers, the fourth order of Morontia Power Supervisors."
+  liaisonstab:
+    name: Liaison Stabilizers
+    desc: "Liaison Stabilizers, the fifth order of Morontia Power Supervisors."
+  selassort:
+    name: Selective Assorters
+    desc: "Selective Assorters, the sixth order of Morontia Power Supervisors."
+  assocreg:
+    name: Associate Registrars
+    desc: "Associate Registrars, the seventh order of Morontia Power Supervisors."
+  spiritnat:
+    name: Natives of the Paradise Spheres of the Spirit
+    desc: "Natives of the Paradise Spheres of the Spirit, permanent citizens of Paradise."
+  fathernat:
+    name: Natives of the Father’s Paradise Spheres
+    desc: "Natives of the Father’s Paradise Spheres, permanent citizens of Paradise."
+  adjcit:
+    name: Adjuster-fused Mortal Citizens of Paradise
+    desc: "Adjuster-fused mortal Citizens of Paradise, permanent residents of Paradise."
+  mortfin:
+    name: Corps of Mortal Finaliters
+    desc: "The Corps of Mortal Finaliters, the present known destination of Adjuster-fused ascenders."
+  parfin:
+    name: Corps of Paradise Finaliters
+    desc: "The Corps of Paradise Finaliters, a division of the Corps of the Finality."
+  trinfin:
+    name: Corps of Trinitized Finaliters
+    desc: "The Corps of Trinitized Finaliters, a division of the Corps of the Finality."
+  conjfin:
+    name: Corps of Conjoint Trinitized Finaliters
+    desc: "The Corps of Conjoint Trinitized Finaliters, a division of the Corps of the Finality."
+  havfin:
+    name: Corps of Havona Finaliters
+    desc: "The Corps of Havona Finaliters, a division of the Corps of the Finality."
+  transfin:
+    name: Corps of Transcendental Finaliters
+    desc: "The Corps of Transcendental Finaliters, a division of the Corps of the Finality."
+  mosthigh:
+    name: Most High Assistants
+    desc: "Most High Assistants, volunteers of outside origin temporarily assigned to the local creations."
+  architects:
+    name: Architects of the Master Universe
+    desc: "The Architects of the Master Universe, the governing corps of the Paradise Transcendentalers."
+  transrec:
+    name: Transcendental Recorders
+    desc: "Transcendental Recorders, personal gravity traversers."
+  mfo:
+    name: Primary Eventuated Master Force Organizers
+    desc: Primary Eventuated Master Force Organizers.
+  amfo:
+    name: Associate Transcendental Master Force Organizers
+    desc: Associate Transcendental Master Force Organizers.
+  consummator:
+    name: Consummator of Universe Destiny
+    desc: "The Consummator of Universe Destiny, a being of the unclassified and unrevealed orders."
+  vicegerents:
+    name: Qualified Vicegerents of the Ultimate
+    desc: "The Qualified Vicegerents of the Ultimate, an unrevealed group."
+  supervisors:
+    name: Unqualified Supervisors of the Supreme
+    desc: "The Unqualified Supervisors of the Supreme, personalization of time-space supremacy."
+  majeston:
+    name: Majeston
+    desc: "Chief of Reflectivity, resident on Paradise. The only personality of divinity created by the Supreme Being in functional liaison with the Deity Absolute (17:2.4)."
+  midsonite:
+    name: Midsoniters
+    desc: "Midsoniters, the progeny of a Melchizedek life carrier and a Material Daughter."
+  unclcenters:
+    name: Unclassified Centers
+    desc: "Seventh group of the Supreme Power Centers: they function in special local situations, but not on the inhabited planets (29:2)."
+  supbeing:
+    name: Supreme Being — God the Supreme
+    desc: "The evolving experiential Deity of time and space, the synthesis of creature experience. The creation of Majeston was its first supreme creative act (17:2.5)."
+  deityabs:
+    name: Deity Absolute — Qualified Absolute
+    desc: "The potential segregated from infinite reality by the free-will choice of the Universal Father, within which all divinity activities take place. This is the Qualified Absolute, in contradistinction to the Unqualified Absolute (0:11.6)."
+  unqabs:
+    name: Unqualified Absolute
+    desc: "Nonpersonal, extradivine, and undeified; devoid of personality, divinity, and creator prerogatives. A positive reality pervading the grand universe and extending into the prematerial evolutions of space (0:11.7–8)."
+  univabs:
+    name: Universal Absolute
+    desc: "Unifies the Qualified and Unqualified Absolutes and is superadditive to both, encompassing all absolute potential (0:3.18, 0:11.6)."
+  calstaff:
+    name: "Caligastia One Hundred — corporeal members of the Prince's staff"
+    desc: "One hundred rematerialized ascending citizens of Jerusem, volunteers chosen by Caligastia for the Urantia experiment (66:2). The primary midwayers had their genesis in their unique interassociation of the material and the spiritual (77:1)."

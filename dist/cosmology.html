@@ -1,0 +1,633 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Космология Книги Урантии</title>
+<style>
+:root{--bg:#f6f7f9;--ink:#1d2433;--muted:#6b7280;--panel:#fff;--line:#e3e6eb;--accent:#5b3fa0;--hov:#f0ecfa;--dot:#d9dce2;--node:#fff;--nodeS:#c3c8d1;--nodeL:#f3f4f7;--edge:#8b93a1;--edgeHi:#5b3fa0;--svc:#43a047;--asc:#1e88e5;--tintA:.13;--lpA:.22;--unitA:.05;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14161c;--ink:#e6e8ee;--muted:#9aa1ad;--panel:#1d2028;--line:#2e323d;--accent:#b49cf0;--hov:#2b2540;--dot:#2a2e38;--node:#232733;--nodeS:#3a3f4d;--nodeL:#2b303d;--edge:#6f7889;--edgeHi:#c3adff;--svc:#5cc165;--asc:#64b5f6;--tintA:.2;--lpA:.32;--unitA:.09;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#14161c;--ink:#e6e8ee;--muted:#9aa1ad;--panel:#1d2028;--line:#2e323d;--accent:#b49cf0;--hov:#2b2540;--dot:#2a2e38;--node:#232733;--nodeS:#3a3f4d;--nodeL:#2b303d;--edge:#6f7889;--edgeHi:#c3adff;--svc:#5cc165;--asc:#64b5f6;--tintA:.2;--lpA:.32;--unitA:.09;color-scheme:dark}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;font:14px/1.4 system-ui,"Segoe UI",Roboto,sans-serif;color:var(--ink);background:var(--bg)}
+header{position:fixed;top:0;left:0;right:0;height:56px;display:flex;gap:12px;align-items:center;padding:0 16px;background:var(--panel);border-bottom:1px solid var(--line);z-index:5}
+header h1{font-size:16px;margin:0;white-space:nowrap}
+#searchBox{position:relative;flex:1;max-width:460px}
+#q{width:100%;padding:8px 12px;border:1px solid var(--line);border-radius:8px;font:inherit;background:var(--bg);color:var(--ink)}
+#q:focus{outline:2px solid #c9b8f0;border-color:#a08ad8}
+#res{position:absolute;top:40px;left:0;right:0;background:var(--panel);border:1px solid var(--line);border-radius:8px;box-shadow:0 8px 24px #0002;max-height:60vh;overflow:auto;display:none}
+#res div{padding:6px 10px;cursor:pointer;display:flex;gap:8px;align-items:center}
+#res div.on,#res div:hover{background:var(--hov)}
+#res small{color:var(--muted);margin-left:auto}
+header label{white-space:nowrap;color:var(--muted);font-size:13px}
+#map{position:fixed;top:56px;left:0;right:0;bottom:0;width:100%;height:calc(100% - 56px);cursor:grab;touch-action:none;
+ background-image:radial-gradient(var(--dot) 1px,transparent 1px);background-size:20px 20px}
+#map.panning{cursor:grabbing}
+#map,#map *,header h1,#legend{-webkit-user-select:none;user-select:none}
+.unit rect.box{stroke-width:1.5}
+.unit text{font-size:13px;font-weight:600;letter-spacing:.03em;text-transform:uppercase}
+.node{cursor:pointer}
+.split{position:fixed;z-index:4;background:var(--bg);opacity:0;transition:opacity .3s;pointer-events:auto;box-shadow:0 0 0 2px var(--accent),0 0 30px #0004}.split.on{opacity:1}
+.flyov{position:fixed;left:0;top:0;width:100vw;height:100vh;z-index:6;pointer-events:none;overflow:visible}.flyov .node{filter:drop-shadow(0 8px 14px #0005)}
+.runner{fill:var(--accent);filter:drop-shadow(0 0 5px var(--accent));pointer-events:none}
+.split svg{width:100%;height:100%;display:block}.splab{position:absolute;left:12px;top:8px;font-size:12px;padding:3px 9px;border-radius:6px;background:var(--panel);color:var(--ink);border:1px solid var(--line)}
+.node.ghost{opacity:.55}.node.ghost rect.body{stroke-dasharray:5 4}.gtag{font-size:10px!important;fill:var(--muted)!important;font-style:italic}
+.pair{fill:none;stroke:#9a6fc4;stroke-opacity:.7;stroke-width:1.6}.pair.ghost{stroke-dasharray:6 5;stroke-opacity:.5}
+.node.fly{pointer-events:none;filter:drop-shadow(0 8px 14px #0005)}
+.node rect.body{fill:var(--node);stroke:var(--nodeS);stroke-width:1.2;filter:drop-shadow(0 1px 2px #0001)}
+.node:hover rect.body{stroke:var(--accent)}
+.node .tint{fill-opacity:var(--tintA);pointer-events:none}.node .lp{fill-opacity:var(--lpA)}.node .sep{stroke:var(--nodeS)}
+.unit rect.box{fill-opacity:var(--unitA)}
+.node text{font-size:12px;fill:var(--ink);pointer-events:none}
+.node.sel rect.body{stroke:var(--accent);stroke-width:2.5}
+.edge path.halo{fill:none;stroke:var(--bg);stroke-width:6;stroke-linejoin:round}
+.edge path.line{fill:none;stroke-width:1.5;stroke-linejoin:round;transition:stroke .2s,stroke-width .2s}
+.edge.origin path.line{stroke:var(--edge)}
+.edge.service path.line{stroke:var(--svc);stroke-dasharray:6 4}
+.edge.ascent path.line{stroke:var(--asc);stroke-width:2;stroke-dasharray:1 4;stroke-linecap:round}
+.edge.ascent.hi path.line,.edge.ascent.he1 path.line{stroke:var(--asc)!important}
+svg.hideAscent .edge.ascent{display:none}
+svg.far .node text,svg.far .gtag{display:none}svg.far .unit text{font-size:28px;font-weight:600}svg.far .node:not(.h0):not(.h1):not(.h2) rect.body{stroke-width:2}
+svg:not(.showLong) .edge.long:not(.he1):not(.he2):not(.hi){display:none}
+.edge.hi path.line{stroke-width:2.6}
+.edge.origin.hi path.line{stroke:var(--edgeHi)}
+.edge.service.hi path.line{stroke:var(--svc);stroke-width:3}
+.node,.edge,.unit{transition:opacity .35s}
+svg.dim .node:not(.hi){opacity:.14}
+svg.dim .edge:not(.hi){opacity:.06}
+svg.dim .unit{opacity:.55}
+svg.hideOrigin .edge.origin,svg.hideService .edge.service{display:none}
+/* --- наведение: блоки --- */
+.unit rect.box{transition:fill-opacity .25s,stroke-width .25s,stroke-opacity .25s}
+.unit:hover rect.box{fill-opacity:calc(var(--unitA) * 2.6);stroke-width:2.6;stroke-opacity:1}
+.unit text{transition:opacity .25s}.unit:hover text{opacity:1;font-weight:700}
+/* --- наведение: личность (градация h0 > h1 > h2) --- */
+.node rect.body{transition:stroke .2s,stroke-width .2s,filter .25s}
+svg.hovering .node:not(.h0):not(.h1):not(.h2){opacity:.28}
+svg.hovering .edge:not(.he1):not(.he2){opacity:.08}
+svg.hovering .node.h0,svg.hovering .node.h1,svg.hovering .node.h2,svg.hovering .edge.he1,svg.hovering .edge.he2{opacity:1!important}
+.node.h0 rect.body{stroke:var(--accent);stroke-width:2.8;filter:drop-shadow(0 0 7px var(--accent))}
+.node.h1 rect.body{stroke:var(--accent);stroke-width:1.8;filter:drop-shadow(0 0 3px var(--accent))}
+.node.h2 rect.body{stroke:var(--accent);stroke-width:2.2;stroke-dasharray:6 3;filter:drop-shadow(0 0 2px var(--accent))}
+.edge.he1 path.line{stroke:var(--edgeHi)!important;stroke-width:2.8}
+.edge.he2 path.line{stroke:var(--edgeHi)!important;stroke-width:2.2;stroke-opacity:.85}
+.pulse{fill:none;stroke:#5b3fa0;stroke-width:3;animation:pulse 1.2s ease-out 2}
+@keyframes pulse{from{opacity:1;stroke-width:6}to{opacity:0;stroke-width:1;transform:scale(1.25)}}
+aside{position:fixed;background:var(--panel);border:1px solid var(--line);border-radius:12px;box-shadow:0 6px 24px #0001;z-index:4}
+#legend{left:16px;bottom:16px;width:260px;padding:12px 14px;font-size:13px;max-height:calc(100% - 100px);overflow:auto}
+#legend h3{font-size:12px;text-transform:uppercase;color:var(--muted);margin:10px 0 6px;letter-spacing:.05em}
+#legend h3:first-child{margin-top:0}
+#legend.min>:not(#lgToggle){display:none}#legend.min{width:auto;padding:6px}
+#lgToggle{float:right;border:0;padding:0 4px;font-size:16px;background:none}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:3px 8px;border-radius:999px;border:1px solid var(--line);margin:2px;cursor:pointer;font-size:12px;background:var(--panel);color:var(--ink)}
+body:not(.edit) .edit-only{display:none!important}
+.chip i{width:10px;height:10px;border-radius:3px;display:inline-block;box-shadow:0 0 0 1px #0003}
+.chip.on{background:var(--hov);border-color:#a08ad8}
+.row{display:flex;align-items:center;gap:8px;margin:3px 0}
+button{font:inherit;font-size:12px;padding:5px 10px;border:1px solid var(--line);border-radius:7px;background:var(--panel);color:var(--ink);cursor:pointer}
+button:hover{background:var(--hov)}
+select{font:inherit;font-size:13px;padding:5px 6px;border:1px solid var(--line);border-radius:7px;background:var(--panel);color:var(--ink)}
+#status{color:var(--muted);font-size:12px;margin-top:6px}
+#card{right:16px;top:72px;width:320px;padding:16px;display:none;max-height:calc(100% - 90px);overflow:auto}
+#card h2{margin:0 0 2px;font-size:18px}
+#card .en{color:var(--muted);font-size:12px;margin-bottom:10px}
+#card dt{font-size:11px;text-transform:uppercase;color:var(--muted);margin-top:10px;letter-spacing:.05em}
+#card dd{margin:2px 0}
+#card a{color:var(--accent);cursor:pointer;text-decoration:none;border-bottom:1px dotted}
+#card .x{position:absolute;right:10px;top:8px;border:0;font-size:18px;background:none}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;vertical-align:-1px}
+@media (max-width:700px){#legend{display:none}#card{left:16px;right:16px;width:auto;top:auto;bottom:16px;max-height:50%}header h1{display:none}}
+</style>
+</head>
+<body>
+<header>
+  <h1 data-i18n="title">Космология Книги Урантии</h1>
+  <div id="searchBox"><input id="q" data-i18n-ph="search" placeholder="Поиск: личность или категория…" autocomplete="off"><div id="res"></div></div>
+  <input type="checkbox" id="dimToggle" checked hidden>
+  <select id="langSel" title="Language"></select>
+  <button id="bTheme" title="Тема"></button>
+</header>
+<svg id="map" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,1 L10,5 L0,9 z" fill="context-stroke"/>
+    </marker>
+  </defs>
+  <g id="world"><g id="gUnits"></g><g id="gPairs"></g><g id="gEdges"></g><g id="gNodes"></g><g id="gFx"></g></g>
+</svg>
+<aside id="legend">
+  <button id="lgToggle" title="Свернуть/развернуть" onclick="this.parentNode.classList.toggle('min');this.textContent=this.parentNode.classList.contains('min')?'☰':'–'">–</button>
+  <h3 data-i18n="origin">Происхождение</h3>
+  <div class="row"><svg width="22" height="18"><circle cx="11" cy="9" r="8" fill="none" stroke="#1e6fd9" stroke-width="1.4"/><circle cx="11" cy="9" r="5" fill="none" stroke="#1e6fd9" stroke-width="1.4"/><circle cx="11" cy="9" r="2.2" fill="none" stroke="#1e6fd9" stroke-width="1.4"/></svg> <span data-i18n="oT">Троица</span></div>
+  <div class="row"><span class="dot" style="background:#e53935"></span> <span data-i18n="oF2">Отец</span> <span class="dot" style="background:#1e63d6"></span> <span data-i18n="oS2">Сын</span> <span class="dot" style="background:#f2b705"></span> <span data-i18n="oD2">Дух</span> <span class="dot" style="background:#43a047"></span> <span data-i18n="oE2">эволюц.</span></div>
+  <h3 data-i18n="icons">Пиктограммы</h3>
+  <div style="font-size:12px;color:var(--muted)" data-i18n="iconsTxt">○ Божество · ◎ три лазурных круга — происхождение от Троицы · ▽ нисходящий Сын · крылья — ангел · ◯ дух · ◇ сын локальной вселенной · △ восходящий. Щелчок по названию блока — выделить блок и открыть описание. Точки внутри — происхождение.</div>
+  <h3><span data-i18n="cats">Категории</span> <small style="text-transform:none;color:#999" data-i18n="catsHint">(клик — выделить)</small></h3>
+  <div id="cats"></div>
+  <h3 data-i18n="funcs">Функции</h3>
+  <div id="funcs"></div>
+  <h3 data-i18n="classes">Класс (заливка карточки)</h3>
+  <div id="classes"></div>
+  <h3 data-i18n="links">Связи</h3>
+  <div class="row"><label><input type="checkbox" id="tOrigin" checked> <svg width="30" height="8"><line x1="0" y1="4" x2="30" y2="4" stroke="#8b93a1" stroke-width="2"/></svg> <span data-i18n="lOrigin">происхождение</span></label></div>
+  <div class="row"><label><input type="checkbox" id="tService" checked> <svg width="30" height="8"><line x1="0" y1="4" x2="30" y2="4" stroke="#43a047" stroke-width="2" stroke-dasharray="6 4"/></svg> <span data-i18n="lService">служение / пребывание</span></label></div>
+  <div class="row"><label><input type="checkbox" id="tLong"> <span data-i18n="lLong">дальние связи всегда</span></label></div>
+  <div class="row"><label><input type="checkbox" id="tAscent" checked> <svg width="30" height="8"><line x1="2" y1="4" x2="30" y2="4" stroke="#1e88e5" stroke-width="2.5" stroke-dasharray="1 4" stroke-linecap="round"/></svg> <span data-i18n="lAscent">восхождение</span></label></div>
+  <h3 class="edit-only" data-i18n="layout">Раскладка</h3>
+  <div class="edit-only" style="color:var(--muted);font-size:12px" data-i18n="dragHint">Карточки можно перетаскивать — линии перестраиваются в обход.</div>
+  <div class="row" style="flex-wrap:wrap;margin-top:6px"><button id="bFit" data-i18n="fit">Вся схема</button><button id="bExport" class="edit-only" data-i18n="export">Экспорт раскладки</button><button id="bUndo" class="edit-only" disabled title="Ctrl+Z"><span data-i18n="undo">Отменить</span> <small id="undoN"></small></button><button id="bReset" class="edit-only" data-i18n="reset">Сброс</button></div>
+  <div id="ver" style="margin-top:10px;font-size:11px;color:var(--muted)"></div>
+  <div id="status"></div>
+</aside>
+<aside id="card"></aside>
+
+<script>window.COSMO={"meta":{"version":"1.0","base_language":"en","languages":["en","ru"]},"classes":{"T":{"color":"#8e44ad","name":{"en":"Trinity origin","ru":"Троичного происхождения"}},"A":{"color":"#ffffff","name":{"en":"Absolutes","ru":"Абсолюты"}},"F":{"color":"#e53935","name":{"en":"Of the Universal Father","ru":"От Всеобщего Отца"}},"S":{"color":"#1e63d6","name":{"en":"Of the Eternal Son","ru":"От Вечного Сына"}},"FS":{"color":"#5c4ee5","name":{"en":"Of the Father and the Son","ru":"От Отца и Сына"}},"SD":{"color":"#0f9d8a","name":{"en":"Of the Son and the Spirit","ru":"От Сына и Духа"}},"D":{"color":"#f08c00","name":{"en":"Of the Infinite Spirit","ru":"От Бесконечного Духа"}},"L":{"color":"#c2408f","name":{"en":"Local universe (Creator Son and Mother Spirit)","ru":"Локальной вселенной (Сын-Создатель и Материнский Дух)"}},"DU":{"color":"#8d6e63","name":{"en":"Dual-origin (other creators)","ru":"Двуединого происхождения (иные создатели)"}},"E":{"color":"#43a047","name":{"en":"Evolutionary origin","ru":"Эволюционного происхождения"}},"X":{"color":"#b0bec5","name":{"en":"Eventuated transcendental","ru":"Возникшие трансцендентальные"}},"U":{"color":"#e0e0e0","name":{"en":"Origin unrevealed","ru":"Происхождение не раскрыто"}},"C":{"color":"#a5d6a7","name":{"en":"Composite groups","ru":"Сборные группы"}}},"groups":{"deity":{"color":"#b71c1c","name":{"en":"Deities","ru":"Божества"}},"trin":{"color":"#7b3fa0","name":{"en":"Trinity Sons","ru":"Сыны Троицы"}},"supreme":{"color":"#283593","name":{"en":"Supreme Trinity Personalities","ru":"Верховные Троичные Личности"}},"par":{"color":"#1565c0","name":{"en":"Paradise Sons of God","ru":"Райские Божьи Сыны"}},"desc":{"color":"#00897b","name":{"en":"Descending","ru":"Нисходящие"}},"local":{"color":"#8d6e63","name":{"en":"Local universe sons","ru":"Сыны локальной вселенной"}},"spirit":{"color":"#ef6c00","name":{"en":"Spirits & ministers of the Spirit","ru":"Духи и служители Духа"}},"angel":{"color":"#ec407a","name":{"en":"Angelic","ru":"Ангельские"}},"asc":{"color":"#2e7d32","name":{"en":"Ascending","ru":"Восходящие"}},"coord":{"color":"#3949ab","name":{"en":"Co-ordinate Trinity-Origin Beings","ru":"Однородные Существа Троичного Происхождения"}},"supspirit":{"color":"#00695c","name":{"en":"The Seven Supreme Spirit Groups","ru":"Семь групп Верховных Духов"}},"stationary":{"color":"#795548","name":{"en":"Stationary Orders (dual-origin)","ru":"Неизменные категории (двуединого происхождения)"}},"unclass":{"color":"#616161","name":{"en":"Unclassified and Unrevealed Orders","ru":"Неклассифицированные и нераскрытые категории"}},"powercenters":{"color":"#e65100","name":{"en":"Supreme Power Centers","ru":"Верховные Силовые Центры"}},"transcg":{"color":"#78909c","name":{"en":"Eventuated Transcendental Beings","ru":"Возникшие трансцендентальные существа"}},"finality":{"color":"#2e7d32","name":{"en":"Corps of the Finality","ru":"Корпуса Завершения"}}},"functions":{"gov":{"color":"#c62828","name":{"en":"Administration","ru":"Управление"}},"justice":{"color":"#6d4c41","name":{"en":"Justice and oversight","ru":"Суд и надзор"}},"teach":{"color":"#1565c0","name":{"en":"Teaching","ru":"Обучение"}},"messeng":{"color":"#00838f","name":{"en":"Messengers","ru":"Посланники"}},"minist":{"color":"#ec407a","name":{"en":"Ministry and guardianship","ru":"Служение и опека"}},"create":{"color":"#f9a825","name":{"en":"Creation and life","ru":"Творение и жизнь"}},"energy":{"color":"#ef6c00","name":{"en":"Energy control","ru":"Управление энергией"}},"reflect":{"color":"#7b1fa2","name":{"en":"Reflectivity and communication","ru":"Отражение и связь"}}},"units":[{"id":"paradise","color":"#d4a000","content":[{"id":"trinity","color":"#7b3fa0","width":760,"linkable":true,"refs":["10"],"content":[["father","son","spirit"]],"name":{"en":"Trinity","ru":"Троица"},"desc":{"en":"The Paradise Trinity — union of the three Deities. Source of the Trinity Sons.","ru":"Райская Троица — союз трёх Божеств. Источник сынов Троицы."}},{"id":"absolutes","color":"#9aa1ad","width":760,"beside":true,"refs":["0:11"],"content":[["deityabs","univabs","unqabs"]],"name":{"en":"Absolutes","ru":"Абсолюты"}},["msp","supbeing"],["michael","mother","avonal","daynal"],["secrets","solitary"],["execs","inspired","parcit"],["persadj","gravmess","persaids","associnsp"],["sentinels","omniaphim"],["sppd","supcentsup","spiritnat","fathernat","adjcit"],["majeston"],{"id":"transc","color":"#7a7a8c","linkable":true,"refs":["30:1"],"content":[["architects","transrec","mfo","amfo","consummator","vicegerents"],["supervisors"]],"name":{"en":"Eventuated Transcendental Beings","ru":"Возникшие трансцендентальные существа"},"desc":{"en":"Paradise beings whose origin is not ordinarily disclosed.","ru":"Существа Рая, происхождение которых обычно не раскрывается."}},{"id":"creattrin","color":"#8e44ad","width":730,"linkable":true,"refs":["22:9"],"content":[["asctrin","parhav","destiny"]],"name":{"en":"Creature-trinitized Sons","ru":"Сыны, тринитизованные созданиями"},"desc":{"en":"Trinitized by ascenders or Paradise-Havona beings.","ru":"Тринитизованы восходящими или райско-хавонскими созданиями."}},{"id":"trinsons","color":"#8e44ad","width":550,"linkable":true,"refs":["22"],"content":[{"id":"trinatt","color":"#43a047","width":490,"linkable":true,"refs":["22:1"],"content":[["highauth","noname"]],"name":{"en":"Trinitized Sons of Attainment","ru":"Тринитизованные Сыны Достижения"},"desc":{"en":"Adjuster-fused ascendant mortals who attained Paradise and were embraced by the Trinity.","ru":"Слившиеся с Настройщиками смертные, достигшие Рая и принятые Троицей."}}],"name":{"en":"Trinitized Sons of God","ru":"Тринитизованные Божьи Сыны"},"desc":{"en":"Three orders: Sons of Attainment, Selection and Perfection.","ru":"Три категории: Сыны Достижения, Отбора и Совершенства."}},{"id":"finaliters","color":"#43a047","linkable":true,"refs":["31"],"content":[["mortfin","parfin","trinfin","conjfin","havfin","transfin"]],"name":{"en":"Corps of the Finality","ru":"Корпус Завершения"},"desc":{"en":"Ascenders who have attained Paradise; their destiny is yet unrevealed.","ru":"Восходящие, достигшие Рая; предназначение ещё не раскрыто."}},["adjfused","transmid"]],"name":{"en":"Paradise","ru":"Рай"}},{"id":"havona","color":"#c08a1e","content":[["eternals","supernaphim"],["circspirits","havnat","adjhav","gradguides","servitals","havcenters"]],"name":{"en":"Havona — central universe","ru":"Хавона — центральная вселенная"}},{"id":"super","color":"#2f6fb3","content":[{"id":"uversa","color":"#2f6fb3","content":[["ancients"],["perfectors","counselors","censors"],["mighty","seconaphim"],["reflective","refimage","abandon","sonfused","circsup","census"],["conciliators","tertiaphim","sucenters"],["~execs","~gravmess","~omniaphim"],{"id":"mpc","color":"#f08c00","linkable":true,"refs":["29:4"],"content":[["assocpd","mechcon","enertrans","energytx","primassoc","secdissoc"],["frandal"]],"name":{"en":"Master Physical Controllers","ru":"Главные Физические Регуляторы"},"desc":{"en":"The Master Physical Controllers serve throughout the grand universe.","ru":"Главные Физические Регуляторы служат по всей большой вселенной."}}],"name":{"en":"Uversa — superuniverse capital","ru":"Уверса — столица сверхвселенной"}},{"id":"major","color":"#3f87c9","content":[{"id":"umajor","color":"#3f87c9","content":[["perfections"]],"name":{"en":"Umajor the fifth — major sector capital","ru":"Умейджор-пятый — столица большого сектора"}},{"id":"minor","color":"#3f87c9","content":[{"id":"uminor","color":"#3f87c9","content":[["recents"]],"name":{"en":"Uminor the third — minor sector capital","ru":"Умайнор-третий — столица малого сектора"}},{"id":"local","color":"#7e57c2","content":[{"id":"salv","color":"#7e57c2","content":[["~michael","~mother"],["unions","~daynal"],["gabriel","stars","melch","lifec","arch"],["fmelch","susatia","spironga","spiritfused","lucenters","unclcenters"],["mosthigh"],["~associnsp"]],"name":{"en":"Salvington — local universe capital","ru":"Салвингтон — столица локальной вселенной"}},{"id":"const","color":"#9c6fd6","content":[{"id":"edentia","color":"#9c6fd6","content":[["faithfuls","vorondadek"],["univit","concenters"]],"name":{"en":"Edentia — constellation capital","ru":"Эдемия — столица созвездия"}},{"id":"system","color":"#2e8b57","content":[{"id":"jerusem","color":"#2e8b57","content":[["lanon","adam","eve","cherub"],["morontia","mcomp"],["syscenters"],["midsonite"],["~sentinels"],{"id":"mps","color":"#c2408f","linkable":true,"refs":["48:2"],"content":[["circreg","syscoord","plancust","combcon","liaisonstab","selassort"],["assocreg"]],"name":{"en":"Morontia Power Supervisors","ru":"Управляющие Моронтийной Энергией"},"desc":{"en":"Morontia Power Supervisors, offspring of a local universe Mother Spirit.","ru":"Управляющие Моронтийной Энергией – потомки Материнского Духа локальной вселенной."}}],"name":{"en":"Jerusem — system capital","ru":"Иерусем — столица системы"}},{"id":"urantia","color":"#00838f","content":[["~adam","~eve","~avonal","~melch"],["truth","adjutants","seraph","calstaff","midway"],{"id":"mortal","color":"#00838f","content":[["tadj","human"]],"name":{"en":"The mortal and his Adjuster","ru":"Смертный и его Настройщик"}}],"name":{"en":"Urantia — inhabited planet","ru":"Урантия — обитаемая планета"}}],"name":{"en":"System Satania","ru":"Система Сатания"}}],"name":{"en":"Constellation Norlatiadek","ru":"Созвездие Норлатиадек"}}],"name":{"en":"Local universe Nebadon","ru":"Локальная вселенная Небадон"}}],"name":{"en":"Minor sector Ensa","ru":"Малый сектор Энса"}}],"name":{"en":"Major sector Splandon","ru":"Большой сектор Спландон"}}],"name":{"en":"Superuniverse Orvonton","ru":"Сверхвселенная Орвонтон"}}],"persons":{"father":{"class":"F","origin":"F","groups":["deity"],"refs":["1"],"func":["create"],"name":{"en":"Universal Father","ru":"Всеобщий Отец"},"desc":{"en":"First Source and Center; the personal God, Creator of all.","ru":"Первый Источник и Центр; личный Бог, Творец всего сущего."}},"son":{"class":"S","origin":"S","groups":["deity"],"refs":["6"],"func":["create"],"name":{"en":"Eternal Son","ru":"Вечный Сын"},"desc":{"en":"Second Source and Center; the absolute and personal Word of God.","ru":"Второй Источник и Центр; абсолютное и личное Слово Бога."}},"spirit":{"class":"D","origin":"D","groups":["deity"],"refs":["8"],"func":["create","minist"],"name":{"en":"Infinite Spirit","ru":"Бесконечный Дух"},"desc":{"en":"Third Source and Center, the Conjoint Actor; source of mind.","ru":"Третий Источник и Центр, Совместный Исполнитель; источник разума."}},"msp":{"class":"D","origin":"FSD","groups":["supspirit","spirit"],"refs":["16"],"func":["gov"],"name":{"en":"Seven Master Spirits","ru":"Семь Главных Духов"},"desc":{"en":"Personal expressions of the Deities in seven combinations; each oversees one superuniverse.","ru":"Личностные выражения Божеств в семи сочетаниях; каждый курирует одну сверхвселенную."}},"secrets":{"class":"T","origin":"T","groups":["supreme"],"refs":["18:1"],"func":["gov"],"name":{"en":"Trinitized Secrets of Supremacy","ru":"Тринитизованные Тайны Верховности"},"desc":{"en":"Direct the seven sacred spheres of the Father near Paradise.","ru":"Управляют семью священными сферами Отца у Рая."}},"eternals":{"class":"T","origin":"T","groups":["supreme"],"refs":["18:2"],"func":["gov"],"name":{"en":"Eternals of Days","ru":"Вечные Дней"},"desc":{"en":"Rulers of the Havona worlds — one for each world.","ru":"Правители миров Хавоны — по одному на каждый мир."}},"ancients":{"class":"T","origin":"T","groups":["supreme"],"refs":["18:3"],"func":["gov","justice"],"name":{"en":"Ancients of Days","ru":"Древние Дней"},"desc":{"en":"The three rulers of each superuniverse.","ru":"Трое правителей каждой сверхвселенной."}},"perfections":{"class":"T","origin":"T","groups":["supreme"],"refs":["18:4"],"func":["gov"],"name":{"en":"Perfections of Days","ru":"Совершенства Дней"},"desc":{"en":"Rulers of the major sectors of a superuniverse.","ru":"Правители больших секторов сверхвселенной."}},"recents":{"class":"T","origin":"T","groups":["supreme"],"refs":["18:5"],"func":["gov"],"name":{"en":"Recents of Days","ru":"Недавние Дней"},"desc":{"en":"Rulers of the minor sectors of a superuniverse.","ru":"Правители малых секторов сверхвселенной."}},"unions":{"class":"T","origin":"T","groups":["supreme"],"refs":["18:6"],"func":["gov"],"name":{"en":"Unions of Days","ru":"Союзы Дней"},"desc":{"en":"Trinity ambassadors-counselors to a local universe government.","ru":"Советники-послы Троицы при правительстве локальной вселенной."}},"faithfuls":{"class":"T","origin":"T","groups":["supreme"],"refs":["18:7"],"func":["gov"],"name":{"en":"Faithfuls of Days","ru":"Верные Дней"},"desc":{"en":"Trinity counselors to the constellation rulers.","ru":"Советники Троицы при правителях созвездий."}},"daynal":{"class":"T","origin":"T","groups":["trin","par","desc"],"refs":["20:7"],"func":["teach"],"name":{"en":"Daynal Sons","ru":"Дайналы — Троичные Сыны-Учителя"},"desc":{"en":"Paradise Sons, teachers of worlds and races; serve in the local universes.","ru":"Райские Божьи Сыны, учителя миров и рас; служат в локальных вселенных."},"serves":{"en":"teachers of worlds and races in the local universe","ru":"учителя миров и рас в локальной вселенной"}},"michael":{"class":"FS","origin":"FS","groups":["par","desc"],"refs":["21"],"func":["create","gov"],"pair":"mother","name":{"en":"Michael Sons","ru":"Михаилы — Сыны-Создатели"},"desc":{"en":"Creators and rulers of local universes; Michael of Nebadon incarnated as Jesus.","ru":"Создатели и правители локальных вселенных; Михаил Небадонский воплотился как Иисус."},"serves":{"en":"rules his local universe","ru":"правит своей локальной вселенной"}},"avonal":{"class":"SD","origin":"SD","groups":["par","desc"],"refs":["20:2"],"func":["justice"],"name":{"en":"Avonal Sons","ru":"Авоналы — Сыны-Арбитры"},"desc":{"en":"Paradise Sons of ministry: judicial actions and bestowals on the worlds.","ru":"Райские Божьи Сыны служения: судебные действия и посвящения на мирах."},"serves":{"en":"Paradise Sons of planetary service and bestowal","ru":"Райские Сыны служения и посвящений на планетах"}},"mother":{"class":"D","origin":"D","groups":["supspirit","spirit"],"refs":["34"],"func":["create","minist"],"pair":"michael","name":{"en":"Universe Mother Spirit","ru":"Материнский Дух локальной вселенной"},"desc":{"en":"The Divine Minister — co-ruler of the local universe with the Creator Son.","ru":"Созидательный Дух — дочь Бесконечного Духа в Раю; в локальной вселенной — соправительница Сына-Создателя."},"serves":{"en":"co-ruler of the local universe","ru":"соправительница локальной вселенной"}},"gabriel":{"class":"L","origin":"FSD","groups":["local"],"refs":["33:4"],"func":["gov","justice"],"name":{"en":"Bright and Morning Star — Gabriel","ru":"Светлая Утренняя Звезда — Гавриил"},"desc":{"en":"The Bright and Morning Star — first-born, chief executive of Nebadon.","ru":"Яркая Утренняя Звезда — первенец, главный исполнитель Небадона."}},"melch":{"class":"L","origin":"FSD","groups":["local","desc"],"refs":["35"],"func":["teach"],"name":{"en":"Melchizedeks","ru":"Мелхиседеки"},"desc":{"en":"Teacher sons and emergency ministers of the local universe.","ru":"Сыны-учителя и чрезвычайные служители локальной вселенной."},"serves":{"en":"minister directly to the evolutionary races","ru":"непосредственно служат эволюционным расам"}},"lifec":{"class":"L","origin":"FSD","groups":["local","desc"],"refs":["36"],"func":["create"],"name":{"en":"Life Carriers","ru":"Носители жизни"},"desc":{"en":"Carry and implant life on the evolutionary worlds.","ru":"Переносят и насаждают жизнь на эволюционных мирах."}},"arch":{"class":"L","origin":"FSD","groups":["local"],"refs":["37:3"],"func":["minist"],"name":{"en":"Archangels","ru":"Архангелы"},"desc":{"en":"Ministry of resurrection; circuit of communication with the worlds.","ru":"Служение воскрешения и пробуждения; цепь связи с мирами."}},"lanon":{"class":"L","origin":"FSD","groups":["local","desc"],"refs":["35:8"],"func":["gov"],"name":{"en":"Lanonandek Sons","ru":"Ланонандеки"},"desc":{"en":"Administrative sons: System Sovereigns, Planetary Princes.","ru":"Административные сыны: Системные Суверены, Планетарные Князья."}},"adam":{"class":"L","origin":"FSD","groups":["local","desc"],"refs":["51:1"],"func":["gov","create"],"pair":"eve","name":{"en":"Material Sons","ru":"Материальные Сыны"},"desc":{"en":"Biologic uplifters of the evolutionary races.","ru":"Биологические возвысители; созданы Сыном-Создателем, живут на столице системы. Посылаются на планету как Адам."},"serves":{"en":"sent to a planet as its Adam","ru":"посылается на планету как Адам"},"there":{"en":"Adam","ru":"Адам"}},"eve":{"class":"L","origin":"FSD","groups":["local","desc"],"refs":["51:1"],"func":["gov","create"],"pair":"adam","name":{"en":"Material Daughters","ru":"Материальные Дочери"},"desc":{"en":"Material Daughters — biologic uplifters with the Material Sons; the Eve of a planet.","ru":"Биологические возвысители вместе с Материальными Сынами. Посылаются на планету как Ева."},"serves":{"en":"sent to a planet as its Eve","ru":"посылается на планету как Ева"},"there":{"en":"Eve","ru":"Ева"}},"cherub":{"class":"D","origin":"D","groups":["angel","spirit"],"refs":["38:7"],"func":["minist"],"name":{"en":"Cherubim","ru":"Херувимы и сановимы"},"desc":{"en":"Aids to the seraphim, lesser angelic ministers.","ru":"Помощники серафимов; младшие ангельские служители."}},"tadj":{"class":"F","origin":"F","groups":["desc"],"refs":["107"],"func":["minist"],"name":{"en":"Thought Adjuster","ru":"Настройщик Мышления"},"desc":{"en":"A fragment of the Father indwelling the mortal mind.","ru":"Фрагмент Отца, пребывающий в разуме смертного."}},"human":{"class":"E","origin":"E","groups":["asc"],"refs":["49"],"name":{"en":"Mortal man","ru":"Человек (смертный)"},"desc":{"en":"An evolutionary being beginning the ascent to Paradise.","ru":"Эволюционное существо, начинающее восхождение к Раю."}},"seraph":{"class":"D","origin":"D","groups":["angel","spirit"],"refs":["39"],"func":["minist"],"name":{"en":"Seraphim","ru":"Серафимы"},"desc":{"en":"Ministering angels; guardians of mortal destiny.","ru":"Ангелы-служители; хранители судьбы смертных."}},"perfectors":{"class":"T","origin":"T","groups":["coord"],"refs":["19:2"],"func":["gov"],"name":{"en":"Perfectors of Wisdom","ru":"Совершенствователи Мудрости"},"desc":{"en":"Embody the wisdom of Deity in superuniverse governments.","ru":"Олицетворяют мудрость Божества в правительствах сверхвселенных."}},"counselors":{"class":"T","origin":"T","groups":["coord"],"refs":["19:3"],"func":["gov"],"name":{"en":"Divine Counselors","ru":"Божественные Советники"},"desc":{"en":"Provide the counsel of the Trinity in superuniverse governments.","ru":"Носители совета Троицы в правительствах сверхвселенных."}},"censors":{"class":"T","origin":"T","groups":["coord"],"refs":["19:4"],"func":["justice"],"name":{"en":"Universal Censors","ru":"Всеобщие Цензоры"},"desc":{"en":"Render the judgment of Deity; assess deeds and records.","ru":"Выносят суждение Божества; оценивают дела и записи."}},"mighty":{"class":"E","origin":"E","groups":["asc","trin"],"refs":["22:2"],"func":["messeng","justice"],"name":{"en":"Mighty Messengers","ru":"Могущественные Посланники"},"desc":{"en":"Trinity-embraced ascendant mortals serving superuniverse governments.","ru":"Восходящие смертные, объятые Троицей; служат при правительствах сверхвселенных."}},"solitary":{"class":"D","origin":"D","groups":["spirit"],"refs":["23"],"func":["messeng"],"name":{"en":"Solitary Messengers","ru":"Одиночные Посланники"},"desc":{"en":"Personal corps of the Infinite Spirit; instant communication throughout creation.","ru":"Личный корпус Бесконечного Духа; мгновенная связь по всему творению."}},"supernaphim":{"class":"D","origin":"D","groups":["angel","spirit"],"refs":["27"],"func":["minist"],"name":{"en":"Supernaphim","ru":"Супернафимы"},"desc":{"en":"Angels of the central universe and Paradise.","ru":"Ангелы центральной вселенной и Рая."}},"seconaphim":{"class":"D","origin":"FSD","groups":["angel","spirit"],"refs":["28"],"func":["minist","reflect"],"name":{"en":"Seconaphim","ru":"Секонафимы"},"desc":{"en":"Angels of the superuniverses, created through the Reflective Spirits.","ru":"Ангелы сверхвселенных, создаются через Отражательных Духов."}},"stars":{"class":"L","origin":"FSD","groups":["local"],"refs":["37:2"],"func":["gov","reflect"],"name":{"en":"Brilliant Evening Stars","ru":"Яркие Вечерние Звезды"},"desc":{"en":"Superangelic administrators and messengers of the local universe.","ru":"Сверхангельские администраторы и посланники локальной вселенной."}},"vorondadek":{"class":"L","origin":"FSD","groups":["local","desc"],"refs":["35:6"],"func":["gov","justice"],"name":{"en":"Vorondadek Sons","ru":"Ворондадеки (Всевышние)"},"desc":{"en":"Rulers of constellations, the Most High Fathers.","ru":"Правители созвездий, «Всевышние Отцы»."}},"morontia":{"class":"E","origin":"E","groups":["asc"],"refs":["48"],"name":{"en":"Morontia mortals","ru":"Моронтийные смертные"},"desc":{"en":"Ascenders on the mansion worlds after death, in morontia form.","ru":"Восходящие на обительских мирах после смерти; моронтийная форма."}},"mcomp":{"class":"D","origin":"D","groups":["spirit"],"refs":["48:3"],"func":["minist"],"name":{"en":"Morontia Companions","ru":"Моронтийные Спутники"},"desc":{"en":"Companions and guides of ascenders on the morontia worlds.","ru":"Спутники и проводники восходящих на моронтийных мирах."}},"adjutants":{"class":"D","origin":"D","groups":["supspirit","spirit"],"refs":["36:5"],"func":["minist"],"name":{"en":"Adjutant Mind-Spirits","ru":"Семь вспомогательных духов разума"},"desc":{"en":"The Mother Spirit's ministry to the mind of evolutionary creatures.","ru":"Служение Материнского Духа разуму эволюционных существ."}},"truth":{"class":"L","origin":"FSD","groups":["spirit","desc"],"refs":["194"],"func":["minist"],"name":{"en":"Spirit of Truth","ru":"Дух Истины"},"desc":{"en":"The spirit of the Creator Son, poured out on all mankind after Pentecost.","ru":"Дух Сына-Создателя, излитый на всех людей после Пятидесятницы."}},"midway":{"class":"E","origin":"E","groups":["asc"],"refs":["77"],"func":["minist"],"name":{"en":"Midway creatures","ru":"Промежуточные создания"},"desc":{"en":"Permanent citizens of the planet, unseen helpers of mankind.","ru":"Постоянные граждане планеты, невидимые помощники людей."}},"reflective":{"class":"T","origin":"T","groups":["supspirit"],"refs":["17:3"],"func":["reflect"],"name":{"en":"Reflective Spirits","ru":"Отражательные Духи"},"desc":{"en":"Fifty Trinity-origin spirits who make reflectivity possible on the superuniverse capitals.","ru":"Пятьдесят Духов троичного происхождения, обеспечивающих отражательность сверхвселенных."}},"execs":{"class":"T","origin":"T","groups":["supspirit"],"refs":["17:1"],"func":["gov"],"name":{"en":"Supreme Executives","ru":"Верховные Администраторы"},"desc":{"en":"The Seven Supreme Executives co-ordinate the administration of the seven superuniverses from Paradise.","ru":"Семь Верховных Администраторов управляют семью сверхвселенными из Рая."},"serves":{"en":"in the superuniverses","ru":"в сверхвселенных"}},"refimage":{"class":"D","origin":"D","groups":["supspirit","spirit"],"refs":["17:4"],"func":["reflect"],"name":{"en":"Reflective Image Aids","ru":"Вспомогательные Образы Отражения"},"desc":{"en":"The Reflective Image Aids represent groups of beings influential in the superuniverse governments.","ru":"Вспомогательные Образы Отражения представляют группы существ в правительствах сверхвселенных."}},"circspirits":{"class":"D","origin":"D","groups":["supspirit","spirit"],"refs":["17:5"],"func":["minist"],"name":{"en":"Spirits of the Circuits","ru":"Кольцевые Духи"},"desc":{"en":"The Spirits of the Circuits, offspring of the Master Spirits, serve the seven circuits of Havona.","ru":"Кольцевые Духи – потомство Главных Духов, служащие семи кольцам Хавоны."}},"inspired":{"class":"T","origin":"T","groups":["trin","spirit","coord"],"refs":["19:5"],"name":{"en":"Inspired Trinity Spirits","ru":"Вдохновенные Троичные Духи"},"desc":{"en":"A wholly secret order of beings brought into existence by the act of the Paradise Trinity.","ru":"Тайный орден существ, возникших по акту Райской Троицы."}},"havnat":{"class":"T","origin":"T","groups":["trin","coord"],"refs":["19:6","31:1"],"name":{"en":"Havona Natives","ru":"Уроженцы Хавоны"},"desc":{"en":"Havona natives, Trinity-origin personalities projected in divine perfection.","ru":"Уроженцы Хавоны воплощаются в божественном совершенстве как существа троичного происхождения."}},"parcit":{"class":"T","origin":"T","groups":["trin","coord"],"refs":["19:7"],"name":{"en":"Paradise Citizens","ru":"Граждане Рая"},"desc":{"en":"Paradise Citizens, Trinity-origin personalities who are permanent residents of Paradise.","ru":"Граждане Рая – существа троичного происхождения, постоянные жители Рая."}},"fmelch":{"class":"L","origin":"FSD","groups":["local"],"refs":["35:1"],"func":["gov"],"name":{"en":"Father Melchizedeks","ru":"Отцы-Мелхиседеки"},"desc":{"en":"The Father Melchizedek, the original Melchizedek Son of the local universe.","ru":"Отец-Мелхиседек – первый, исходный Сын-Мелхиседек локальной вселенной."}},"abandon":{"class":"DU","origin":"","groups":["stationary"],"refs":["37:9"],"name":{"en":"Abandonters","ru":"Абандонтеры"},"desc":{"en":"Dual-origin beings: the creation of the unrevealed agents of the Ancients of Days and the seven Reflective Spirits of Uversa (37:9). Permanent citizens of the superuniverse capital; they administer the routine affairs of Uversa under the supervision of the Son-fused mortals.","ru":"Существа двуединого происхождения: сотворены нераскрытыми посредниками Древних Дней и семью Отражательными Духами Уверсы (37:9). Постоянные граждане столицы сверхвселенной; повседневными делами Уверсы ведают под надзором смертных, слившихся с Сыном."}},"susatia":{"class":"L","origin":"FSD","groups":["local","stationary"],"refs":["37:9"],"name":{"en":"Susatia","ru":"Сузаты"},"desc":{"en":"The Susatia, offspring of the Creator Son and Creative Spirit, permanent citizens of Salvington.","ru":"Сузаты – потомство Сына-Создателя и Созидательного Духа, граждане Сальвингтона."}},"univit":{"class":"L","origin":"FSD","groups":["local","stationary"],"refs":["37:9","43:7"],"func":["gov","teach"],"name":{"en":"Univitatia","ru":"Унивитаты"},"desc":{"en":"The Univitatia, the permanent population of the constellation headquarters worlds.","ru":"Унивитаты – постоянное население столиц созвездий и их миров."}},"spironga":{"class":"DU","origin":"","groups":["local","stationary"],"refs":["37:10"],"func":["minist"],"name":{"en":"Spironga","ru":"Спиронги"},"desc":{"en":"The Spironga, spirit offspring of the Bright and Morning Star and the Father Melchizedek.","ru":"Спиронги – духовное потомство Светлой Утренней Звезды и Отца-Мелхиседека."}},"adjfused":{"class":"E","origin":"E","groups":["asc"],"refs":["40:7"],"fuse":["human","tadj"],"name":{"en":"Adjuster-fused Mortals","ru":"Смертные, слившиеся с Настройщиком"},"desc":{"en":"Adjuster-fused mortals, ascenders destined for Paradise and the Corps of the Finality.","ru":"Смертные, слившиеся с Настройщиком, – восходящие к Раю и Корпусу Завершения."}},"sonfused":{"class":"E","origin":"E","groups":["asc"],"refs":["40:8"],"name":{"en":"Son-fused Mortals","ru":"Смертные, слившиеся с Сыном"},"desc":{"en":"Son-fused mortals, few in number and restricted to the superuniverse.","ru":"Смертные, слившиеся с Сыном, малочисленны и ограничены сверхвселенной."}},"spiritfused":{"class":"E","origin":"E","groups":["asc"],"refs":["40:9"],"name":{"en":"Spirit-fused Mortals","ru":"Смертные, слившиеся с Духом"},"desc":{"en":"Spirit-fused mortals, generally confined to a local universe.","ru":"Смертные, слившиеся с Духом, обычно ограничены локальной вселенной."}},"transmid":{"class":"E","origin":"E","groups":["asc"],"refs":["40:3"],"name":{"en":"Translated Midwayers","ru":"Преобразованные промежуточные создания"},"desc":{"en":"Translated midway creatures, who ascend toward Paradise.","ru":"Преобразованные промежуточные создания – восходящие бывшие промежуточные создания."}},"persadj":{"class":"F","origin":"F","groups":["asc"],"refs":["40:4"],"name":{"en":"Personalized Adjusters","ru":"Личностные Настройщики"},"desc":{"en":"Personalized Adjusters, Adjusters that have experientialized and attained personality.","ru":"Личностные Настройщики – обретшие личность и опыт Настройщики."}},"gravmess":{"class":"F","origin":"F","groups":["spirit"],"refs":["31:2"],"func":["messeng"],"name":{"en":"Gravity Messengers","ru":"Гравитационные Посланники"},"desc":{"en":"Gravity Messengers, modified and personalized Adjusters from Divinington.","ru":"Гравитационные Посланники – видоизмененные и персонализированные Настройщики из Дивинингтона."},"serves":{"en":"on Uversa","ru":"на Уверсе"}},"adjhav":{"class":"D","origin":"D","groups":["spirit"],"refs":["17:5"],"func":["minist"],"name":{"en":"Twelvefold Adjutants of the Havona Circuits","ru":"Двенадцатичастные Кольцевые Помощники Хавоны"},"desc":{"en":"The Twelvefold Adjutants of the Havona Circuits serve the circuits of the central universe.","ru":"Двенадцатичастные Кольцевые Помощники Хавоны служат на кольцах центральной вселенной."}},"circsup":{"class":"D","origin":"D","groups":["spirit"],"refs":["24:1"],"func":["energy"],"name":{"en":"Universe Circuit Supervisors","ru":"Смотрители Вселенских Контуров"},"desc":{"en":"Universe Circuit Supervisors, the exclusive creation of the Infinite Spirit.","ru":"Смотрители Вселенских Контуров – исключительное творение Бесконечного Духа."}},"census":{"class":"D","origin":"D","groups":["spirit"],"refs":["24:2"],"func":["reflect"],"name":{"en":"Census Directors","ru":"Регистраторы Волевых Созданий"},"desc":{"en":"Census Directors register the existence and death of will creatures.","ru":"Регистраторы Волевых Созданий отмечают появление и смерть волевых созданий."}},"persaids":{"class":"D","origin":"D","groups":["spirit"],"refs":["24:3"],"func":["messeng"],"name":{"en":"Personal Aids of the Infinite Spirit","ru":"Личные Помощники Бесконечного Духа"},"desc":{"en":"Personal Aids of the Infinite Spirit, located on Paradise and attached directly to him.","ru":"Личные Помощники находятся при Бесконечном Духе на Рае и служат ему повсюду."}},"associnsp":{"class":"D","origin":"D","groups":["spirit"],"refs":["24:4"],"func":["justice"],"name":{"en":"Associate Inspectors","ru":"Ассоциированные Инспекторы"},"desc":{"en":"Joint offspring of the Infinite Spirit and the Seven Master Spirits; subordinates of the Supreme Executives, embodying their authority in the local universes.","ru":"Совместное потомство Бесконечного Духа и Семи Главных Духов; подчинены Верховным Администраторам и представляют их власть в локальных вселенных."},"serves":{"en":"in the local universes","ru":"в локальных вселенных"}},"sentinels":{"class":"D","origin":"D","groups":["spirit"],"refs":["24:5"],"func":["justice","reflect"],"name":{"en":"Assigned Sentinels","ru":"Полномочные Стражи"},"desc":{"en":"Personalized on Paradise by the Infinite Spirit; co-ordinating and liaison representatives of the Seven Supreme Executives in the local systems.","ru":"Сотворены Бесконечным Духом в Раю; координаторы и связные Семи Верховных Администраторов в локальных системах."},"serves":{"en":"in the local systems","ru":"в локальных системах"}},"gradguides":{"class":"D","origin":"D","groups":["spirit"],"refs":["24:6"],"func":["teach"],"name":{"en":"Graduate Guides","ru":"Проводники смертных кандидатов"},"desc":{"en":"Graduate Guides, devoted to the guidance of the graduate pilgrims of time and space in Havona.","ru":"Проводники смертных кандидатов наставляют выпускников времени и пространства в Хавоне."}},"servitals":{"class":"D","origin":"D","groups":["spirit"],"refs":["25:1"],"func":["minist"],"name":{"en":"Havona Servitals","ru":"Хавонские сервиталы"},"desc":{"en":"Havona Servitals, the midway creatures of the central universe.","ru":"Хавонские сервиталы – «промежуточные создания» центральной вселенной."}},"conciliators":{"class":"D","origin":"D","groups":["spirit"],"refs":["25:2"],"func":["justice"],"name":{"en":"Universal Conciliators","ru":"Всеобщие примирители"},"desc":{"en":"Universal Conciliators, seven for every Havona Servital, one in each superuniverse.","ru":"Всеобщие примирители – семь на каждого хавонского сервитала, по одному в сверхвселенной."}},"tertiaphim":{"class":"D","origin":"D","groups":["angel","spirit"],"refs":["28:1"],"func":["minist"],"name":{"en":"Tertiaphim","ru":"Тертиафимы"},"desc":{"en":"Tertiaphim, the third order of angels serving the grand universe.","ru":"Тертиафимы – третий порядок ангелов, служащих во всей большой вселенной."}},"omniaphim":{"class":"D","origin":"D","groups":["angel","spirit"],"refs":["28:2"],"func":["messeng","justice"],"name":{"en":"Omniaphim","ru":"Омниафимы"},"desc":{"en":"Omniaphim, the servants and messengers of the Supreme Executives.","ru":"Омниафимы – слуги и посланники Верховных Администраторов."},"serves":{"en":"in the superuniverses","ru":"в сверхвселенных"}},"highauth":{"class":"E","origin":"E","groups":["trin","asc","par"],"refs":["22:3"],"func":["gov"],"name":{"en":"Those High in Authority","ru":"Наделенные Высокими Полномочиями"},"desc":{"en":"Those High in Authority, ascended mortals of superior administrative ability.","ru":"Наделенные Высокими Полномочиями – смертные с выдающимися административными способностями."}},"noname":{"class":"E","origin":"E","groups":["trin","asc","par"],"refs":["22:4"],"func":["gov","justice"],"name":{"en":"Those without Name and Number","ru":"Не Имеющие Имени и Числа"},"desc":{"en":"Those without Name and Number, ascendant souls of unsurpassed worship ability.","ru":"Не Имеющие Имени и Числа – восходящие души, превзошедшие всех в способности к поклонению."}},"asctrin":{"class":"T","origin":"T","groups":["trin"],"refs":["22:7"],"name":{"en":"Ascender-trinitized Sons","ru":"Сыны, тринитизованные восходящими созданиями"},"desc":{"en":"Ascender-trinitized Sons, trinitized through the creative efforts of the finaliters.","ru":"Сыны, тринитизованные восходящими созданиями, – творение завершителей."}},"parhav":{"class":"T","origin":"T","groups":["trin"],"refs":["22:7"],"name":{"en":"Paradise-Havona-trinitized Sons","ru":"Сыны, тринитизованные в системе Рай-Хавона"},"desc":{"en":"Paradise-Havona-trinitized Sons, born of the creative efforts of Paradise Citizens and Havoners.","ru":"Сыны, тринитизованные в системе Рай-Хавона, – творение Граждан Рая и обитателей Хавоны."}},"destiny":{"class":"T","origin":"T","groups":["trin"],"refs":["22:7"],"name":{"en":"Trinitized Sons of Destiny","ru":"Тринитизованные сыны судьбы"},"desc":{"en":"Trinitized Sons of Destiny, trinitized jointly by a finaliter and a Paradise-Havoner.","ru":"Тринитизованные сыны судьбы – совместное творение завершителя и существа системы Рай-Хавона."}},"sppd":{"class":"D","origin":"D","groups":["spirit"],"refs":["29:1"],"func":["energy"],"name":{"en":"Supreme Power Directors","ru":"Верховные Управляющие Энергией"},"desc":{"en":"The Seven Supreme Power Directors, personalized by the Master Spirits, direct universe power.","ru":"Семь Верховных Управляющих Энергией руководят энергиями большой вселенной."}},"supcentsup":{"class":"D","origin":"D","groups":["powercenters","spirit"],"refs":["29:2"],"func":["energy"],"name":{"en":"Supreme Center Supervisors","ru":"Верховные Управляющие Центрами"},"desc":{"en":"First group of the Supreme Power Centers: seven regulators of the master energy circuits of the grand universe, associates of the Supreme Power Directors, each on a special world of one of the Seven Supreme Executives (29:2).","ru":"Первая группа Верховных Силовых Центров: семь регуляторов главных энергетических контуров большой вселенной, партнёры Верховных Управляющих Энергией; каждый — на особом мире одного из Семи Верховных Администраторов (29:2)."}},"havcenters":{"class":"D","origin":"D","groups":["powercenters","spirit"],"refs":["29:2"],"func":["energy"],"name":{"en":"Havona Centers","ru":"Хавонские Центры"},"desc":{"en":"Second group of the Supreme Power Centers. Havona once needed no power centers; since the appearance of the time-space universes a million of them function here, each controlling a thousand Havona worlds (29:2).","ru":"Вторая группа Верховных Силовых Центров. Когда-то Хавоне не требовались силовые центры; с появлением вселенных времени и пространства здесь действует миллион центров, каждый контролирует тысячу миров Хавоны (29:2)."}},"sucenters":{"class":"D","origin":"D","groups":["powercenters","spirit"],"refs":["29:2"],"func":["energy"],"name":{"en":"Superuniverse Centers","ru":"Центры сверхвселенных"},"desc":{"en":"Third group: one thousand power centers on the capital sphere of each superuniverse; from them proceeds the sevenfold energy circuit pervading the supercreation (29:2).","ru":"Третья группа: тысяча силовых центров на столичной сфере каждой сверхвселенной; отсюда исходит семичастный контур энергии, пронизывающий сверхвселенную (29:2)."}},"lucenters":{"class":"D","origin":"D","groups":["powercenters","spirit"],"refs":["29:2"],"func":["energy"],"name":{"en":"Local Universe Centers","ru":"Центры локальных вселенных"},"desc":{"en":"Fourth group: one hundred centers at the headquarters of each local universe; they downstep and modify the seven power circuits from the superuniverse headquarters (29:2).","ru":"Четвёртая группа: сто центров на столице каждой локальной вселенной; понижают и видоизменяют семь силовых контуров, приходящих из столицы сверхвселенной (29:2)."}},"concenters":{"class":"D","origin":"D","groups":["powercenters","spirit"],"refs":["29:2"],"func":["energy"],"name":{"en":"Constellation Centers","ru":"Центры созвездий"},"desc":{"en":"Fifth group: ten centers in each constellation, energy projectors to its one hundred tributary local systems (29:2).","ru":"Пятая группа: десять центров в каждом созвездии — проекторы энергии для ста входящих в него локальных систем (29:2)."}},"syscenters":{"class":"D","origin":"D","groups":["powercenters","spirit"],"refs":["29:2"],"func":["energy"],"name":{"en":"System Centers","ru":"Центры систем"},"desc":{"en":"Sixth group: one Supreme Power Center in each local system; they dispatch the power circuits to the inhabited worlds and co-ordinate the subordinate physical controllers (29:2).","ru":"Шестая группа: по одному Верховному Силовому Центру в каждой локальной системе; направляют силовые контуры к обитаемым мирам и координируют работу физических регуляторов (29:2)."}},"assocpd":{"class":"D","origin":"D","groups":["spirit"],"refs":["29:4"],"func":["energy"],"name":{"en":"Associate Power Directors","ru":"Ассоциированные управляющие энергией"},"desc":{"en":"Associate Power Directors, the first order of Master Physical Controllers.","ru":"Ассоциированные управляющие энергией – первая категория Физических Регуляторов."}},"mechcon":{"class":"D","origin":"D","groups":["spirit"],"refs":["29:4"],"func":["energy"],"name":{"en":"Mechanical Controllers","ru":"Механические регуляторы"},"desc":{"en":"Mechanical Controllers, the second order of Master Physical Controllers.","ru":"Механические регуляторы – вторая категория Физических Регуляторов."}},"enertrans":{"class":"D","origin":"D","groups":["spirit"],"refs":["29:4"],"func":["energy"],"name":{"en":"Energy Transformers","ru":"Преобразователи энергии"},"desc":{"en":"Energy Transformers, the third order of Master Physical Controllers.","ru":"Преобразователи энергии – третья категория Физических Регуляторов."}},"energytx":{"class":"D","origin":"D","groups":["spirit"],"refs":["29:4"],"func":["energy"],"name":{"en":"Energy Transmitters","ru":"Передатчики энергии"},"desc":{"en":"Energy Transmitters provide emergency communication lines in the systems and on the planets.","ru":"Передатчики энергии обеспечивают каналы экстренной связи в системах и на планетах."}},"primassoc":{"class":"D","origin":"D","groups":["spirit"],"refs":["29:4"],"func":["energy"],"name":{"en":"Primary Associators","ru":"Первичные объединители"},"desc":{"en":"Primary Associators, the fifth order of Master Physical Controllers.","ru":"Первичные объединители – пятая категория Физических Регуляторов."}},"secdissoc":{"class":"D","origin":"D","groups":["spirit"],"refs":["29:4"],"func":["energy"],"name":{"en":"Secondary Dissociators","ru":"Вторичные разъединители"},"desc":{"en":"Secondary Dissociators, the sixth order of Master Physical Controllers.","ru":"Вторичные разъединители – шестая категория Физических Регуляторов."}},"frandal":{"class":"D","origin":"D","groups":["spirit"],"refs":["29:4"],"func":["energy"],"name":{"en":"Frandalanks and Chronoldeks","ru":"Франдаланки и хронолдеки"},"desc":{"en":"Frandalanks and Chronoldeks, the seventh order of Master Physical Controllers.","ru":"Франдаланки и хронолдеки – седьмая категория Физических Регуляторов."}},"circreg":{"class":"D","origin":"D","groups":["local","spirit"],"refs":["48:2"],"func":["energy"],"name":{"en":"Circuit Regulators","ru":"Регуляторы контуров"},"desc":{"en":"Circuit Regulators initiate changes in material energies and generate morontia power.","ru":"Регуляторы контуров подчиняют материальную энергию управлению и генерируют моронтийную энергию."}},"syscoord":{"class":"D","origin":"D","groups":["local","spirit"],"refs":["48:2"],"func":["energy"],"name":{"en":"System Co-ordinators","ru":"Координаторы систем"},"desc":{"en":"System Co-ordinators, the second order of Morontia Power Supervisors.","ru":"Координаторы систем – вторая категория Управляющих Моронтийной Энергией."}},"plancust":{"class":"D","origin":"D","groups":["local","spirit"],"refs":["48:2"],"func":["energy"],"name":{"en":"Planetary Custodians","ru":"Планетарные опекуны"},"desc":{"en":"Planetary Custodians, the third order of Morontia Power Supervisors.","ru":"Планетарные опекуны – третья категория Управляющих Моронтийной Энергией."}},"combcon":{"class":"D","origin":"D","groups":["local","spirit"],"refs":["48:2"],"func":["energy"],"name":{"en":"Combined Controllers","ru":"Универсальные регуляторы"},"desc":{"en":"Combined Controllers, the fourth order of Morontia Power Supervisors.","ru":"Универсальные регуляторы – четвертая категория Управляющих Моронтийной Энергией."}},"liaisonstab":{"class":"D","origin":"D","groups":["local","spirit"],"refs":["48:2"],"func":["energy"],"name":{"en":"Liaison Stabilizers","ru":"Стабилизаторы связи"},"desc":{"en":"Liaison Stabilizers, the fifth order of Morontia Power Supervisors.","ru":"Стабилизаторы связи – пятая категория Управляющих Моронтийной Энергией."}},"selassort":{"class":"D","origin":"D","groups":["local","spirit"],"refs":["48:2"],"func":["energy"],"name":{"en":"Selective Assorters","ru":"Выборочные группирователи"},"desc":{"en":"Selective Assorters, the sixth order of Morontia Power Supervisors.","ru":"Выборочные группирователи – шестая категория Управляющих Моронтийной Энергией."}},"assocreg":{"class":"D","origin":"D","groups":["local","spirit"],"refs":["48:2"],"func":["energy"],"name":{"en":"Associate Registrars","ru":"Ассоциированные регистраторы"},"desc":{"en":"Associate Registrars, the seventh order of Morontia Power Supervisors.","ru":"Ассоциированные регистраторы – седьмая категория Управляющих Моронтийной Энергией."}},"spiritnat":{"class":"U","origin":"","groups":["spirit"],"refs":["30:2"],"name":{"en":"Natives of the Paradise Spheres of the Spirit","ru":"Уроженцы Райских сфер Духа"},"desc":{"en":"Natives of the Paradise Spheres of the Spirit, permanent citizens of Paradise.","ru":"Уроженцы Райских сфер Духа – постоянные граждане Рая."}},"fathernat":{"class":"U","origin":"","groups":["unclass"],"refs":["30:2"],"name":{"en":"Natives of the Father’s Paradise Spheres","ru":"Уроженцы Райских сфер Отца"},"desc":{"en":"Natives of the Father’s Paradise Spheres, permanent citizens of Paradise.","ru":"Уроженцы Райских сфер Отца – постоянные граждане Рая."}},"adjcit":{"class":"E","origin":"E","groups":["asc"],"refs":["30:2"],"name":{"en":"Adjuster-fused Mortal Citizens of Paradise","ru":"Слившиеся с Настройщиком смертные Граждане Рая"},"desc":{"en":"Adjuster-fused mortal Citizens of Paradise, permanent residents of Paradise.","ru":"Слившиеся с Настройщиком смертные Граждане Рая – постоянные жители Рая."}},"mortfin":{"class":"E","origin":"E","groups":["finality","asc"],"refs":["31:0"],"name":{"en":"Corps of Mortal Finaliters","ru":"Корпус Смертных Завершителей"},"desc":{"en":"The Corps of Mortal Finaliters, the present known destination of Adjuster-fused ascenders.","ru":"Корпус Смертных Завершителей – цель слившихся с Настройщиком восходящих смертных."}},"parfin":{"class":"C","origin":"","groups":["finality"],"refs":["31:10"],"name":{"en":"Corps of Paradise Finaliters","ru":"Корпус Райских Завершителей"},"desc":{"en":"The Corps of Paradise Finaliters, a division of the Corps of the Finality.","ru":"Корпус Райских Завершителей – часть Корпуса Завершения."}},"trinfin":{"class":"C","origin":"","groups":["finality"],"refs":["31:10"],"name":{"en":"Corps of Trinitized Finaliters","ru":"Корпус Тринитизованных Завершителей"},"desc":{"en":"The Corps of Trinitized Finaliters, a division of the Corps of the Finality.","ru":"Корпус Тринитизованных Завершителей – часть Корпуса Завершения."}},"conjfin":{"class":"C","origin":"","groups":["finality"],"refs":["31:10"],"name":{"en":"Corps of Conjoint Trinitized Finaliters","ru":"Корпус Совместных Тринитизованных Завершителей"},"desc":{"en":"The Corps of Conjoint Trinitized Finaliters, a division of the Corps of the Finality.","ru":"Корпус Совместных Тринитизованных Завершителей – часть Корпуса Завершения."}},"havfin":{"class":"C","origin":"","groups":["finality"],"refs":["31:10"],"name":{"en":"Corps of Havona Finaliters","ru":"Корпус Хавонских Завершителей"},"desc":{"en":"The Corps of Havona Finaliters, a division of the Corps of the Finality.","ru":"Корпус Хавонских Завершителей – часть Корпуса Завершения."}},"transfin":{"class":"C","origin":"","groups":["finality"],"refs":["31:10"],"name":{"en":"Corps of Transcendental Finaliters","ru":"Корпус Трансцендентальных Завершителей"},"desc":{"en":"The Corps of Transcendental Finaliters, a division of the Corps of the Finality.","ru":"Корпус Трансцендентальных Завершителей – часть Корпуса Завершения."}},"mosthigh":{"class":"U","origin":"","groups":["spirit"],"refs":["37:4"],"func":["gov"],"name":{"en":"Most High Assistants","ru":"Всевышние Помощники"},"desc":{"en":"Most High Assistants, volunteers of outside origin temporarily assigned to the local creations.","ru":"Всевышние Помощники – добровольцы из-за пределов локальной вселенной, временные наблюдатели."}},"architects":{"class":"X","origin":"","groups":["transcg"],"refs":["31:9"],"func":["create","gov"],"name":{"en":"Architects of the Master Universe","ru":"Творцы Совокупной Вселенной"},"desc":{"en":"The Architects of the Master Universe, the governing corps of the Paradise Transcendentalers.","ru":"Творцы Совокупной Вселенной – правящий корпус Райских Трансценденталов."}},"transrec":{"class":"X","origin":"","groups":["transcg"],"refs":["23:3"],"func":["reflect"],"name":{"en":"Transcendental Recorders","ru":"Трансцендентальные Регистраторы"},"desc":{"en":"Transcendental Recorders, personal gravity traversers.","ru":"Трансцендентальные Регистраторы – личности, использующие гравитацию для перемещения."}},"mfo":{"class":"X","origin":"","groups":["transcg"],"refs":["29:5"],"func":["energy"],"name":{"en":"Primary Eventuated Master Force Organizers","ru":"Первичные Возникшие Главные Организаторы Сил"},"desc":{"en":"Primary Eventuated Master Force Organizers.","ru":"Первичные Возникшие Главные Организаторы Сил организуют силы пространства."}},"amfo":{"class":"X","origin":"","groups":["transcg"],"refs":["29:5"],"func":["energy"],"name":{"en":"Associate Transcendental Master Force Organizers","ru":"Ассоциированные Трансцендентальные Главные Организаторы Сил"},"desc":{"en":"Associate Transcendental Master Force Organizers.","ru":"Ассоциированные Трансцендентальные Главные Организаторы Сил."}},"consummator":{"class":"U","origin":"","groups":["unclass"],"refs":["106:8"],"name":{"en":"Consummator of Universe Destiny","ru":"Свершитель Вселенского Пути"},"desc":{"en":"The Consummator of Universe Destiny, a being of the unclassified and unrevealed orders.","ru":"Свершитель Вселенского Пути – из нераскрытых групп Райской Троицы."}},"vicegerents":{"class":"U","origin":"","groups":["unclass"],"refs":["117:7"],"name":{"en":"Qualified Vicegerents of the Ultimate","ru":"Условные Наместники Предельного"},"desc":{"en":"The Qualified Vicegerents of the Ultimate, an unrevealed group.","ru":"Условные Наместники Предельного – нераскрытая группа."}},"supervisors":{"class":"U","origin":"","groups":["unclass"],"refs":["55:12"],"func":["gov"],"name":{"en":"Unqualified Supervisors of the Supreme","ru":"Безусловные Смотрители Верховного"},"desc":{"en":"The Unqualified Supervisors of the Supreme, personalization of time-space supremacy.","ru":"Безусловные Смотрители Верховного – персонализация сверхвселенской верховности."}},"majeston":{"class":"DU","origin":"","groups":["supspirit","unclass"],"refs":["17:2"],"func":["reflect"],"name":{"en":"Majeston","ru":"Мажестон"},"desc":{"en":"Chief of Reflectivity, resident on Paradise. The only personality of divinity created by the Supreme Being in functional liaison with the Deity Absolute (17:2.4).","ru":"Глава Отражательности, живущий в Раю. Единственная личность божественности, созданная Верховным Существом в функциональной связи с Божеством-Абсолютом (17:2.4)."}},"midsonite":{"class":"L","origin":"FSD","groups":["local","unclass"],"refs":["36:4"],"name":{"en":"Midsoniters","ru":"Мидсониты"},"desc":{"en":"Midsoniters, the progeny of a Melchizedek life carrier and a Material Daughter.","ru":"Мидсониты – потомство Мелхиседека-носителя жизни и Материальной Дочери."}},"unclcenters":{"class":"D","origin":"D","groups":["powercenters","spirit"],"refs":["29:2"],"func":["energy"],"name":{"en":"Unclassified Centers","ru":"Неклассифицированные Центры"},"desc":{"en":"Seventh group of the Supreme Power Centers: they function in special local situations, but not on the inhabited planets (29:2).","ru":"Седьмая группа Верховных Силовых Центров: действуют в особых локальных ситуациях, но не на обитаемых планетах (29:2)."}},"supbeing":{"class":"T","origin":"T","groups":["deity"],"refs":["0:2","115","116","117"],"func":["create"],"name":{"en":"Supreme Being — God the Supreme","ru":"Верховное Существо — Бог-Верховный"},"desc":{"en":"The evolving experiential Deity of time and space, the synthesis of creature experience. The creation of Majeston was its first supreme creative act (17:2.5).","ru":"Эволюционное (опытное) Божество времени и пространства; синтез опыта творения. Создало Мажестона — своё первое верховное творческое деяние (17:2.5)."}},"deityabs":{"class":"A","origin":"A","groups":["deity"],"refs":["0:11"],"name":{"en":"Deity Absolute — Qualified Absolute","ru":"Божество-Абсолют — Условный Абсолют"},"desc":{"en":"The potential segregated from infinite reality by the free-will choice of the Universal Father, within which all divinity activities take place. This is the Qualified Absolute, in contradistinction to the Unqualified Absolute (0:11.6).","ru":"Потенциал, выделенный из бесконечной реальности добровольным решением Всеобщего Отца; в его пределах происходит вся божественная деятельность. Это Условный Абсолют, в отличие от Безусловного (0:11.6)."}},"unqabs":{"class":"A","origin":"A","groups":["deity"],"refs":["0:11"],"name":{"en":"Unqualified Absolute","ru":"Безусловный Абсолют"},"desc":{"en":"Nonpersonal, extradivine, and undeified; devoid of personality, divinity, and creator prerogatives. A positive reality pervading the grand universe and extending into the prematerial evolutions of space (0:11.7–8).","ru":"Неличностный, внебожественный и необожествлённый; лишён личности, божественности и прерогатив создателя. Позитивная реальность, наполняющая большую вселенную и простирающаяся в доматериальные области пространства (0:11.7–8)."}},"univabs":{"class":"A","origin":"A","groups":["deity"],"refs":["0:11"],"name":{"en":"Universal Absolute","ru":"Всеобщий Абсолют"},"desc":{"en":"Unifies the Qualified and Unqualified Absolutes and is superadditive to both, encompassing all absolute potential (0:3.18, 0:11.6).","ru":"Объединяет Условный и Безусловный Абсолюты и сверхаддитивен к обоим, охватывая весь абсолютный потенциал (0:3.18, 0:11.6)."}},"calstaff":{"class":"E","origin":"E","groups":["asc"],"refs":["66:2","66:4","77:1"],"name":{"en":"Caligastia One Hundred — corporeal members of the Prince's staff","ru":"Калигастийская сотня — телесные члены персонала Князя"},"desc":{"en":"One hundred rematerialized ascending citizens of Jerusem, volunteers chosen by Caligastia for the Urantia experiment (66:2). The primary midwayers had their genesis in their unique interassociation of the material and the spiritual (77:1).","ru":"Сто вновь материализованных восходящих граждан Иерусема, добровольцы, отобранные Калигастией для урантийского эксперимента (66:2). От их взаимосвязи материального и духовного произошли первичные промежуточные создания (77:1)."}}},"links":[["trinity","secrets"],["trinity","eternals"],["trinity","ancients"],["trinity","perfections"],["trinity","recents"],["trinity","unions"],["trinity","faithfuls"],["trinity","daynal"],["spirit","msp"],["father","michael"],["son","michael"],["son","avonal"],["spirit","avonal"],["spirit","mother"],["~michael","gabriel"],["~mother","gabriel"],["~michael","melch"],["~mother","melch"],["fmelch","melch"],["~michael","lifec"],["~mother","lifec"],["ancients","lifec"],["~michael","arch"],["~mother","arch"],["~michael","lanon"],["~mother","lanon"],["~michael","adam"],["~michael","eve"],["~mother","cherub"],["~mother","seraph"],["father","tadj"],["lifec","human"],["~adam","human","service"],["~eve","human","service"],["tadj","human","service"],["seraph","human","service"],["trinity","perfectors"],["trinity","counselors"],["trinity","censors"],["spirit","solitary"],["spirit","supernaphim"],["reflective","seconaphim"],["~michael","stars"],["~mother","stars"],["~michael","vorondadek"],["~mother","vorondadek"],["~mother","mcomp"],["~mother","adjutants"],["~michael","truth"],["adjutants","human","service"],["truth","human","service"],["midway","human","service"],["mcomp","morontia","service"],["human","morontia","ascent"],["morontia","mighty","ascent"],["morontia","finaliters","ascent"],["trinity","reflective"],["trinity","execs"],["reflective","refimage"],["msp","circspirits"],["spirit","circspirits"],["trinity","inspired"],["trinity","havnat"],["trinity","parcit"],["trinity","trinatt"],["adjfused","trinatt"],["~michael","fmelch"],["~mother","fmelch"],["ancients","abandon"],["reflective","abandon"],["~michael","susatia"],["~mother","susatia"],["michael","univit"],["mother","univit"],["gabriel","spironga"],["fmelch","spironga"],["human","adjfused"],["tadj","adjfused"],["human","sonfused"],["michael","sonfused"],["human","spiritfused"],["~mother","spiritfused"],["midway","transmid"],["tadj","persadj"],["tadj","gravmess"],["spirit","circsup"],["spirit","census"],["spirit","persaids"],["spirit","associnsp"],["msp","associnsp"],["execs","associnsp","service"],["spirit","sentinels"],["execs","sentinels","service"],["msp","servitals"],["reflective","conciliators"],["spirit","tertiaphim"],["spirit","omniaphim"],["finaliters","asctrin"],["parcit","parhav"],["havnat","parhav"],["finaliters","destiny"],["parcit","destiny"],["msp","sppd"],["~mother","mps"],["adjfused","adjcit"],["parcit","parfin"],["havnat","havfin"],["melch","midsonite"],["eve","midsonite"],["adjfused","mortfin","ascent"],["transmid","mortfin","ascent"],["msp","supcentsup"],["sppd","supcentsup"],["supcentsup","mpc"],["msp","havcenters"],["sppd","havcenters"],["havcenters","mpc"],["msp","sucenters"],["sppd","sucenters"],["sucenters","mpc"],["msp","lucenters"],["sppd","lucenters"],["lucenters","mpc"],["msp","concenters"],["sppd","concenters"],["concenters","mpc"],["msp","syscenters"],["sppd","syscenters"],["syscenters","mpc"],["msp","unclcenters"],["sppd","unclcenters"],["unclcenters","mpc"],["supbeing","majeston"],["deityabs","majeston"],["avonal","truth"],["sppd","servitals"],["msp","conciliators"],["sppd","conciliators"],["circspirits","supernaphim"],["trinity","mighty"],["adjfused","mighty"],["trinity","highauth"],["adjfused","highauth"],["trinity","noname"],["adjfused","noname"],["gravmess","mortfin","ascent"],["havnat","mortfin","ascent"],["asctrin","trinfin","ascent"],["parhav","trinfin","ascent"],["destiny","trinfin","ascent"],["havnat","conjfin","ascent"],["calstaff","midway"],["morontia","calstaff","ascent"]]};</script>
+<script>
+/* ===================== ДАННЫЕ =====================
+   Данные вставляет сборка (tools/build.py) из data/cosmology.yaml + data/lang/*.yaml. Здесь — только перевод в форму движка. */
+const D=window.COSMO;
+const CATS=Object.fromEntries(Object.entries(D.groups).map(([k,g])=>[k,{color:g.color,_name:g.name}]));
+const FUNCS=Object.fromEntries(Object.entries(D.functions||{}).map(([k,g])=>[k,{color:g.color,_name:g.name}]));
+const OCLS=Object.fromEntries(Object.entries(D.classes).map(([k,c])=>[k,{color:c.color,name:c.name}]));
+const conv=u=>({id:u.id,color:u.color,w:u.width,beside:u.beside,endpoint:u.linkable,_name:u.name,_desc:u.desc,ref:(u.refs||[])[0],kids:u.content.map(k=>Array.isArray(k)?k:conv(k))});
+const TREE={kids:D.units.map(conv)};
+const persons=Object.entries(D.persons).map(([id,p])=>({id,oc:p.class,origin:p.origin,cats:p.groups||[],fn:p.func||[],fuse:p.fuse||[],ref:(p.refs||[])[0]||'',x:0,y:0,unit:'',_name:p.name,_desc:p.desc}));
+const edges=D.links.map(([from,to,type])=>({from,to,type:type||'origin'}));
+const PAIR_OF={},SERVES={},GHOST_NAME={};
+Object.entries(D.persons).forEach(([id,p])=>{if(p.pair)PAIR_OF[id]=p.pair;if(p.serves)SERVES[id]=p.serves;if(p.there)GHOST_NAME[id]=p.there});
+const PAIRS=Object.keys(PAIR_OF).filter(a=>a<PAIR_OF[a]).map(a=>[a,PAIR_OF[a]]);
+
+/* ===================== ГЕОМЕТРИЯ ===================== */
+const NW=170,NH=50,G=10,W=1900;
+const byId={};persons.forEach(p=>byId[p.id]=p);
+const UNITS=[];
+/* Автораскладка: блоки вкладываются с отступом PAD, ряды центрируются. */
+const PAD=30,TOP=40,RGAP=60,CGAP=70,sn=v=>Math.round(v/G)*G;
+/* Пары и место функционирования: личность рисуется на уровне происхождения и «тенью» там, где служит. */
+const GHOSTS={};const ghostOf=id=>GHOSTS[id]||(GHOSTS[id]={id,of:id.slice(1),ghost:true});
+function layout(u,x,y,w,parent){u.x=sn(x);u.y=sn(y);u.w=sn(w);u.parent=parent;UNITS.push(u);let cy=u.y+TOP;
+ const ks=u.kids;for(let i=0;i<ks.length;i++){const k=ks[i];
+  if(!Array.isArray(k)&&ks[i+1]&&ks[i+1].beside){const grp=[k];while(ks[i+1]&&!Array.isArray(ks[i+1])&&ks[i+1].beside)grp.push(ks[++i]);
+   const ws=grp.map(g=>g.w||(u.w-2*PAD)/grp.length-20),tot=ws.reduce((a,b)=>a+b,0)+(grp.length-1)*40;let sx=u.x+(u.w-tot)/2,bot=cy;
+   grp.forEach((g,j)=>{layout(g,sx,cy,ws[j],u);sx+=ws[j]+40});const mh=Math.max(...grp.map(g=>g.h));grp.forEach(g=>g.h=sn(mh));cy=cy+mh+30;continue}
+  if(Array.isArray(k)){const tot=k.length*NW+(k.length-1)*CGAP;let sx=u.x+(u.w-tot)/2;
+   k.forEach((id,i)=>{const p=id[0]==='~'?ghostOf(id):byId[id];p.x=sn(sx+i*(NW+CGAP));p.y=sn(cy+10);p.unit=u.id});cy+=NH+RGAP}
+  else{const cw=k.w||u.w-2*PAD;layout(k,u.x+(u.w-cw)/2,cy,cw,u);cy=k.y+k.h+30}}
+ u.h=sn(cy-u.y);return u}
+let H=20;TREE.kids.forEach(u=>{layout(u,20,H,W-40,null);H=u.y+u.h+40});H=sn(H);
+UNITS.forEach(u=>byId[u.id]=byId[u.id]||u);
+Object.values(GHOSTS).forEach(g=>{byId[g.id]=g;Object.defineProperty(g,'name',{get(){return byId[g.of].name}})});
+const unitById={};UNITS.forEach(u=>unitById[u.id]=u);
+
+/* ===================== ЯЗЫКИ =====================
+   Любой текст данных хранится как {ru:'…', en:'…', …}. Добавить язык:
+   1) словарь интерфейса UI.xx;  2) поля xx в данных (имена, описания, блоки, категории).
+   Чего нет на языке — берётся en, затем ru. Язык: ?lang=xx в адресе, иначе выбор пользователя / язык браузера. */
+const UI={
+ ru:{_name:'Русский',title:'Космология Книги Урантии',search:'Поиск: личность или категория…',dim:'затенять остальное',
+  origin:'Происхождение',oA:'Абсолют',oT:'Троица',oF:'Всеобщий Отец',oS:'Вечный Сын',oD:'Бесконечный Дух',oE:'эволюционное происхождение',oF2:'Отец',oS2:'Сын',oD2:'Дух',oE2:'эволюц.',
+  icons:'Пиктограммы',iconsTxt:'○ Божество · ◎ три лазурных круга — происхождение от Троицы · ▽ нисходящий Сын · крылья — ангел · ◯ дух · ◇ сын локальной вселенной · △ восходящий. Щелчок по названию блока — выделить блок и открыть описание. Точки внутри — происхождение.',
+  cats:'Категории',funcs:'Функции',catsHint:'(клик — выделить)',links:'Связи',lOrigin:'происхождение',classes:'Класс по происхождению (заливка)',cClass:'Класс по происхождению',lAscent:'восхождение',lService:'служение / пребывание',layout:'Раскладка',
+  dragHint:'Карточки можно перетаскивать — линии перестраиваются в обход.',fit:'Вся схема',undo:'Отменить',lLong:'дальние связи всегда',links:'Связи вне экрана',target:'Перенос сюда',servesHere:'служит здесь',serves:'Функционирует',pairT:'вместе с',export:'Экспорт раскладки',reset:'Сброс',close:'Закрыть',
+  cOrigin:'Происхождение (линия Божеств)',cPlace:'Место служения',cParents:'Порождён(ы)',cChildren:'Порождает',cSource:'Источник',book:'Книга Урантии',
+  catWord:'категория',none:'Ничего не найдено',theme_auto:'◐ Авто',theme_light:'☀ Светлая',theme_dark:'☾ Тёмная',status:'Линий: {n} · трассировка {ms} мс · пересечений: {x}'},
+ en:{_name:'English',title:'Urantia Book Cosmology',search:'Search: personality or category…',dim:'dim the rest',
+  origin:'Origin',oA:'Absolute',oT:'Trinity',oF:'Universal Father',oS:'Eternal Son',oD:'Infinite Spirit',oE:'evolutionary origin',oF2:'Father',oS2:'Son',oD2:'Spirit',oE2:'evolut.',
+  icons:'Icons',iconsTxt:'○ Deity · ◎ three azure circles — Trinity origin · ▽ descending Son · wings — angel · ◯ spirit · ◇ local universe son · △ ascender. Click a block title to highlight it and open its description. Dots inside show origin.',
+  cats:'Categories',funcs:'Functions',catsHint:'(click to highlight)',links:'Links',lOrigin:'origin',classes:'Origin class (card tint)',cClass:'Origin class',lAscent:'ascent',lService:'ministry / indwelling',layout:'Layout',
+  dragHint:'Cards can be dragged — lines reroute around them.',fit:'Whole map',undo:'Undo',lLong:'always show long links',links:'Off-screen links',target:'Moving here',servesHere:'serves here',serves:'Functions in',pairT:'together with',export:'Export layout',reset:'Reset',close:'Close',
+  cOrigin:'Origin (Deity lineage)',cPlace:'Place of service',cParents:'Created by',cChildren:'Creates',cSource:'Source',book:'The Urantia Book',
+  catWord:'category',none:'Nothing found',theme_auto:'◐ Auto',theme_light:'☀ Light',theme_dark:'☾ Dark',status:'Lines: {n} · routing {ms} ms · crossings: {x}'}};
+const qs=new URLSearchParams(location.search);
+// Режим правки раскладки (перетаскивание карточек): только с ?edit в адресе. В релизе выключен.
+const EDIT=qs.has('edit');document.body.classList.toggle('edit',EDIT);
+const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+let LANG=qs.get('lang')||store.get('ku-lang')||((navigator.language||'').startsWith('ru')?'ru':'en');if(!UI[LANG])LANG='en';
+const L=o=>o==null?'':typeof o==='string'?o:(o[LANG]??o.en??o.ru??Object.values(o)[0]);
+const t=k=>UI[LANG]?.[k]??UI.en[k]??k;
+function intl(o,f,v){o['_'+f]=v;Object.defineProperty(o,f,{get(){return L(o['_'+f])},configurable:true})}
+const allNames=o=>Object.values(o._name||{}).join(' ');
+const otherNames=o=>Object.entries(o._name||{}).filter(([k,v])=>k!==LANG&&v).map(([,v])=>v).join(' · ');
+persons.forEach(p=>{intl(p,'name',p._name);intl(p,'desc',p._desc)});
+UNITS.forEach(u=>{intl(u,'name',u._name);if(u._desc)intl(u,'desc',u._desc)});
+Object.entries(CATS).forEach(([k,c])=>intl(c,'name',c._name));
+Object.entries(FUNCS).forEach(([k,c])=>intl(c,'name',c._name));
+
+const isPerson=id=>persons.some(p=>p.id===id);
+function rectOf(id){const p=byId[id];return p.w?{x:p.x,y:p.y,w:p.w,h:p.h}:{x:p.x,y:p.y,w:NW,h:NH}}
+const labelW=u=>(u.lw||u.name.length*9.5)+28; // u.lw — реальная ширина подписи, меряется при отрисовке
+
+/* ===================== МАРШРУТИЗАТОР =====================
+   Ортогональная сетка 10px, A* с состоянием (клетка, направление).
+   Карточки личностей и подписи блоков — непроходимы.
+   Штрафы: поворот, движение вдоль границ блоков, наложение на чужую линию, пересечение.
+   Линии с общим источником/целью притягиваются друг к другу (жгуты, как шины на схеме). */
+const CW=Math.floor(W/G)+1,CH=Math.floor(H/G)+1,N=CW*CH;
+const DX=[1,0,-1,0],DY=[0,1,0,-1],BEND=6;
+let blocked,penH,penV,useH,useV;
+const gArr=new Float64Array(N*4+1),prev=new Int32Array(N*4+1),stamp=new Uint32Array(N*4+1);let ep=0; // ep — номер поиска: без очистки массивов
+const gv=s=>stamp[s]===ep?gArr[s]:Infinity,gs=(s,v,p)=>{stamp[s]=ep;gArr[s]=v;prev[s]=p};
+class Heap{constructor(){this.k=[];this.v=[]}get size(){return this.k.length}
+ push(k,v){const K=this.k,V=this.v;let i=K.length;K.push(k);V.push(v);while(i>0){const p=(i-1)>>1;if(K[p]<=k)break;K[i]=K[p];V[i]=V[p];i=p}K[i]=k;V[i]=v}
+ pop(){const K=this.k,V=this.v,rk=K[0],rv=V[0],lk=K.pop(),lv=V.pop();const n=K.length;if(n){let i=0;for(;;){let c=2*i+1;if(c>=n)break;if(c+1<n&&K[c+1]<K[c])c++;if(K[c]>=lk)break;K[i]=K[c];V[i]=V[c];i=c}K[i]=lk;V[i]=lv}return[rk,rv]}}
+function buildGrid(){
+ blocked=new Uint8Array(N);penH=new Uint8Array(N);penV=new Uint8Array(N);useH=new Array(N);useV=new Array(N);
+ const blk=(x0,y0,x1,y1)=>{for(let cy=Math.max(0,Math.ceil(y0/G));cy<=Math.min(CH-1,Math.floor(y1/G));cy++)for(let cx=Math.max(0,Math.ceil(x0/G));cx<=Math.min(CW-1,Math.floor(x1/G));cx++)blocked[cy*CW+cx]=1};
+ [...persons,...Object.values(GHOSTS)].forEach(p=>blk(p.x-G,p.y-G,p.x+NW+G,p.y+NH+G));
+ UNITS.forEach(u=>{blk(u.x+4,u.y,u.x+labelW(u),u.y+28);
+  for(const yy of[u.y,u.y+u.h])for(let d=-1;d<=1;d++){const cy=Math.round(yy/G)+d;if(cy<0||cy>=CH)continue;for(let cx=Math.round(u.x/G);cx<=Math.round((u.x+u.w)/G);cx++)penH[cy*CW+cx]=1}
+  for(const xx of[u.x,u.x+u.w])for(let d=-1;d<=1;d++){const cx=Math.round(xx/G)+d;if(cx<0||cx>=CW)continue;for(let cy=Math.round(u.y/G);cy<=Math.round((u.y+u.h)/G);cy++)penV[cy*CW+cx]=1}});
+}
+function ports(r,inbound){const res=[],cx=r.x+r.w/2,cy=r.y+r.h/2;
+ const add=(x,y,d,px,py,side)=>{const c=Math.round(y/G)*CW+Math.round(x/G);if(x<0||y<0||x>W||y>H||blocked[c])return;
+  const sc=inbound?[6,12,6,0][d]:[6,0,6,12][d]; // d: 0 right 1 down 2 left 3 up (наружу)
+  res.push({c,d,pt:[px,py],cost:sc+(side?Math.abs(y-cy):Math.abs(x-cx))/G*0.25})};
+ for(let x=r.x+G;x<=r.x+r.w-G;x+=G){add(x,r.y-2*G,3,x,r.y,0);add(x,r.y+r.h+2*G,1,x,r.y+r.h,0)}
+ for(let y=r.y+G;y<=r.y+r.h-G;y+=G){add(r.x-2*G,y,2,r.x,y,1);add(r.x+r.w+2*G,y,0,r.x+r.w,y,1)}
+ return res}
+function useCost(e,nc,hor){let c=0;const same=hor?useH[nc]:useV[nc],perp=hor?useV[nc]:useH[nc];
+ if(same)for(const f of same)c+=(f.from===e.from||f.to===e.to)?-0.6:8;
+ if(perp)for(const f of perp)if(!(f.from===e.from||f.to===e.to))c+=2;
+ return Math.max(c,-0.6)}
+function routeEdge(e){
+ const rs=rectOf(e.from),rt=rectOf(e.to),tx=rt.x+rt.w/2,ty=rt.y+rt.h/2,GOAL=N*4;
+ ep++;
+ const h=c=>(Math.max(0,Math.abs((c%CW)*G-tx)-rt.w/2-2*G)+Math.max(0,Math.abs(((c/CW)|0)*G-ty)-rt.h/2-2*G))/G;
+ const outs=ports(rs,false),ins=new Map();ports(rt,true).forEach(p=>{const o=ins.get(p.c);if(!o||o.cost>p.cost)ins.set(p.c,p)});
+ const heap=new Heap();
+ outs.forEach((p,i)=>{const s=p.c*4+p.d;if(p.cost<gv(s)){gs(s,p.cost,-2-i);heap.push(p.cost+h(p.c),s)}});
+ let goalFrom=-1,goalCost=Infinity,goalPort=null;
+ while(heap.size){const[f,s]=heap.pop();if(s===GOAL){if(f<=goalCost)break;continue}
+  const c=s>>2,d=s&3,gc=gv(s);if(f>gc+h(c)+1e-6)continue;
+  const tp=ins.get(c);if(tp){const inw=(tp.d+2)&3;const tot=gc+tp.cost+(d===inw?0:BEND);if(tot<goalCost){goalCost=tot;goalFrom=s;goalPort=tp;heap.push(tot,GOAL)}}
+  const cx=c%CW,cy=(c/CW)|0;
+  for(let nd=0;nd<4;nd++){if(nd===((d+2)&3))continue;const nx=cx+DX[nd],ny=cy+DY[nd];if(nx<0||ny<0||nx>=CW||ny>=CH)continue;
+   const nc=ny*CW+nx;if(blocked[nc])continue;const hor=!(nd&1);
+   let cost=1+(nd!==d?BEND:0)+((hor?penH[nc]:penV[nc])?4:0)+useCost(e,nc,hor);
+   const ns=nc*4+nd,ng=gc+cost;if(ng<gv(ns)){gs(ns,ng,s);heap.push(ng+h(nc),ns)}}}
+ if(goalFrom<0){const a=[rs.x+rs.w/2,rs.y+rs.h],b=[tx,rt.y];e.cells=[];e.pts=[a,b];return}
+ const cells=[];let s=goalFrom;while(s>=0){cells.push(s>>2);const p=prev[s];if(p<=-2){e.startPort=outs[-2-p];break}s=p}
+ cells.reverse();e.cells=cells;
+ const pts=[e.startPort.pt,...cells.map(c=>[(c%CW)*G,((c/CW)|0)*G]),goalPort.pt];
+ e.pts=simplify(pts);e.cost=goalCost}
+function simplify(p){const r=[p[0]];for(let i=1;i<p.length-1;i++){const a=r[r.length-1],b=p[i],c=p[i+1];if((a[0]===b[0]&&b[0]===c[0])||(a[1]===b[1]&&b[1]===c[1]))continue;r.push(b)}r.push(p[p.length-1]);return r}
+function mark(e,add){const c=e.cells;if(!c)return;for(let i=0;i+1<c.length;i++){const hor=Math.abs(c[i+1]-c[i])===1,arr=hor?useH:useV;
+ for(const k of[c[i],c[i+1]]){if(add){(arr[k]||(arr[k]=[])).push(e)}else if(arr[k]){const j=arr[k].indexOf(e);if(j>=0)arr[k].splice(j,1)}}}}
+function routeAll(){const t0=performance.now();buildGrid();
+ const L=e=>{const a=rectOf(e.from),b=rectOf(e.to);return Math.abs(a.x-b.x)+Math.abs(a.y-b.y)};
+ const order=[...edges].sort((a,b)=>L(b)-L(a));
+ order.forEach(e=>{routeEdge(e);mark(e,true)});
+ for(let pass=0;pass<2;pass++)order.forEach(e=>{mark(e,false);routeEdge(e);mark(e,true)}); // rip-up & reroute
+ const ms=Math.round(performance.now()-t0);
+ document.getElementById('status').textContent=t('status').replace('{n}',edges.length).replace('{ms}',ms).replace('{x}',countCross());}
+/* Кэш маршрутов: при том же расположении линии не прокладываются заново. */
+function routeCached(){const str=JSON.stringify([persons.map(p=>[p.id,p.x,p.y]),Object.values(GHOSTS).map(g=>[g.id,g.x,g.y]),UNITS.map(u=>[u.id,u.x,u.y,u.w,u.h,Math.round(u.lw||0)]),edges.map(e=>e.from+'>'+e.to)]);
+ let h=0;for(const ch of str)h=(h*31+ch.charCodeAt(0))|0;const k='ku-routes-'+(h>>>0).toString(36);
+ try{const c=JSON.parse(localStorage.getItem(k));if(c&&c.length===edges.length){edges.forEach((e,i)=>e.pts=c[i]);
+  document.getElementById('status').textContent=t('status').replace('{n}',edges.length).replace('{ms}','0').replace('{x}',countCross());return}}catch(e){}
+ routeAll();
+ try{Object.keys(localStorage).filter(x=>x.startsWith('ku-routes-')).forEach(x=>localStorage.removeItem(x));localStorage.setItem(k,JSON.stringify(edges.map(e=>e.pts)))}catch(e){}}
+function countCross(){const S=edges.map(e=>e.pts.slice(1).map((b,i)=>[e.pts[i],b]));let n=0;
+ for(let i=0;i<edges.length;i++)for(let j=i+1;j<edges.length;j++){const a=edges[i],b=edges[j];if(a.from===b.from||a.to===b.to)continue;
+  for(const[p,q]of S[i])for(const[r,s]of S[j]){const ph=p[1]===q[1],rh=r[1]===s[1];if(ph===rh)continue;const[H1,V1]=ph?[[p,q],[r,s]]:[[r,s],[p,q]];
+   const y=H1[0][1],x=V1[0][0];if(x>Math.min(H1[0][0],H1[1][0])&&x<Math.max(H1[0][0],H1[1][0])&&y>Math.min(V1[0][1],V1[1][1])&&y<Math.max(V1[0][1],V1[1][1]))n++}}
+ return n}
+
+/* ===================== ОТРИСОВКА ===================== */
+const NS='http://www.w3.org/2000/svg',svg=document.getElementById('map');
+const el=(t,a,p)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);p&&p.appendChild(e);return e};
+const OC={F:'#e53935',S:'#1e63d6',D:'#f2b705',E:'#43a047'};
+const ONAME={A:'oA',T:'oT',F:'oF',S:'oS',D:'oD',E:'oE'};
+/* Пиктограмма класса (левая часть карточки) + точки происхождения внутри неё.
+   Приоритет: божество, нисходящий сын (▽), сын Троицы (△), ангел (крылья), дух (○), сын лок. вселенной (◇), восходящий (↑). */
+const ICON_PRI=['deity','desc','trin','supreme','supspirit','coord','angel','powercenters','spirit','local','asc','unclass','stationary','transcg','finality'];
+function dots(g,o,cx,cy,s=1){const ks=(o==='T'?'FSD':o||'').split(''),r=(ks.length===1?4.2:2.8)*s,d=3.6*s;
+ const pos=ks.length===1?[[0,0]]:ks.length===2?[[-d,0],[d,0]]:[[0,-d],[-d,d*.8],[d,d*.8]];
+ ks.forEach((k,i)=>el('circle',{cx:cx+pos[i][0],cy:cy+pos[i][1],r,fill:OC[k],stroke:'#fff','stroke-width':.8},g))}
+function originGlyph(g,p,cx,cy){const o=p.origin,pri=ICON_PRI.find(c=>p.cats.includes(c)),col=CATS[pri].color,sw={stroke:col,'stroke-width':1.6};
+ const P=(d,f)=>el('path',{d,fill:f,...sw},g);
+ if(o==='A'){el('circle',{cx,cy,r:12,fill:'#fff',stroke:'#9aa1ad','stroke-width':1.5},g);el('circle',{cx,cy,r:15,fill:'none',stroke:'#9aa1ad','stroke-opacity':.35,'stroke-width':1.5},g);return}
+ const AZ='#1e6fd9';
+ if(pri!=='deity'&&o==='T'){el('circle',{cx,cy,r:14,fill:'#fff',stroke:AZ,'stroke-width':1.7},g);el('circle',{cx,cy,r:9.5,fill:'none',stroke:AZ,'stroke-width':1.7},g);el('circle',{cx,cy,r:5,fill:'none',stroke:AZ,'stroke-width':1.7},g);return}
+ if(pri!=='deity'&&p.cats.includes('asc')){P(`M${cx},${cy-14} L${cx+14},${cy+11} L${cx-14},${cy+11} z`,'#e8f5e9');dots(g,o,cx,cy+3);return}
+ switch(pri){
+  case'deity':el('circle',{cx,cy,r:12,fill:OC[o]||'#1e6fd9',stroke:'#fff','stroke-width':2},g);el('circle',{cx,cy,r:14,fill:'none',stroke:OC[o]||'#1e6fd9','stroke-opacity':.35,'stroke-width':2},g);return;
+  case'desc':P(`M${cx-14},${cy-11} L${cx+14},${cy-11} L${cx},${cy+14} z`,'#e6f4f2');dots(g,o,cx,cy-3);return;
+  case'angel':P(`M${cx},${cy+2} C${cx-4},${cy-12} ${cx-17},${cy-12} ${cx-16},${cy-1} C${cx-15},${cy+7} ${cx-6},${cy+8} ${cx},${cy+2}Z`,'#fde4ee');
+   P(`M${cx},${cy+2} C${cx+4},${cy-12} ${cx+17},${cy-12} ${cx+16},${cy-1} C${cx+15},${cy+7} ${cx+6},${cy+8} ${cx},${cy+2}Z`,'#fde4ee');
+   el('ellipse',{cx,cy:cy-12,rx:5,ry:1.8,fill:'none',...sw},g);dots(g,o,cx,cy+3,.9);return;
+  case'coord':case'trin':case'spirit':case'supspirit':case'powercenters':case'unclass':case'stationary':case'transcg':case'finality':el('circle',{cx,cy,r:13,fill:'#fff3e0',...sw},g);dots(g,o,cx,cy);return;
+  case'local':P(`M${cx},${cy-14} L${cx+13},${cy} L${cx},${cy+14} L${cx-13},${cy}z`,'#f3ece9');dots(g,o,cx,cy);return;
+  case'asc':P(`M${cx},${cy-14} L${cx+12},${cy-1} L${cx+5},${cy-1} L${cx+5},${cy+13} L${cx-5},${cy+13} L${cx-5},${cy-1} L${cx-12},${cy-1}z`,'#e8f5e9');dots(g,o,cx,cy+5,.9);return}}
+function wrap(s,m=18){const w=s.split(' '),L=[];let c='';for(const x of w){if((c+' '+x).trim().length>m&&c){L.push(c);c=x}else c=(c+' '+x).trim()}L.push(c);
+ if(L.length>3){L.length=3;L[2]+='…'}return L}
+const nodeEl={},edgeEl=new Map();
+function drawUnits(){const g=document.getElementById('gUnits');g.innerHTML='';
+ UNITS.forEach(u=>{const gg=el('g',{class:'unit'},g);
+  el('rect',{class:'box',x:u.x,y:u.y,width:u.w,height:u.h,rx:14,fill:u.color,stroke:u.color,'stroke-opacity':.6},gg);
+  const tx=el('text',{x:u.x+14,y:u.y+20,fill:u.color},gg);tx.textContent=u.name;u.lw=tx.getBBox().width;
+  gg.dataset.u=u.id;tx.classList.add('ulab');tx.style.cursor='pointer';
+  tx.addEventListener('pointerenter',()=>{if(!drag&&!pan)hover(u.id)});tx.addEventListener('pointerleave',()=>hover(null))})}
+function drawNodes(){const g=document.getElementById('gNodes');g.innerHTML='';
+ persons.forEach(p=>{const gg=el('g',{class:'node',transform:`translate(${p.x},${p.y})`},g);nodeEl[p.id]=gg;
+  el('rect',{class:'body',width:NW,height:NH,rx:10},gg);
+  el('rect',{class:'tint',width:NW,height:NH,rx:10,fill:OCLS[p.oc].color},gg);
+  el('path',{class:'lp',fill:OCLS[p.oc].color,d:`M10,1 H44 V${NH-1} H10 A9,9 0 0 1 1,${NH-10} V10 A9,9 0 0 1 10,1z`},gg);
+  el('line',{class:'sep',x1:44.5,y1:1,x2:44.5,y2:NH-1},gg);
+  const seg=(NW-58)/p.cats.length;p.cats.forEach((c,i)=>el('rect',{x:52+i*seg,y:-2,width:seg-3,height:5,rx:2.5,fill:CATS[c].color},gg));
+  originGlyph(gg,p,23,NH/2);
+  const L=(()=>{const r=p.name.split(' — ').flatMap(x=>wrap(x,17));if(r.length>3){r.length=3;r[2]+='…'}return r})(),y0=NH/2-(L.length-1)*7+4;
+  L.forEach((l,i)=>el('text',{x:52,y:y0+i*14},gg).textContent=l);
+  
+  gg.addEventListener('pointerdown',ev=>startDrag(ev,p));
+  gg.addEventListener('pointerenter',()=>{if(!drag&&!pan)hover(p.id)});gg.addEventListener('pointerleave',()=>hover(null))})}
+/* Наведение: сам объект (h0) → прямые связи и соседи (h1) → та же категория (h2) и связи внутри неё. */
+/* Однократная «бегущая точка» по связям — от начала стрелки к концу. */
+let runT=0,hoverEdges=[];
+/* Точка бежит только по видимым участкам линии: в разделённом экране — сначала в той части, где начало стрелки,
+   затем в другой; невидимую середину схемы пропускает. */
+function runEdges(list){clearTimeout(runT);document.querySelectorAll('.runner').forEach(x=>x.remove());
+ const fx=document.getElementById('gFx'),ps=splitEl?.querySelector('svg'),M1=svg.getScreenCTM(),M2=ps?.getScreenCTM(),B=svg.getBoundingClientRect(),PB=splitEl?.getBoundingClientRect();
+ const inR=(X,Y,R)=>X>=R.left&&X<=R.right&&Y>=R.top&&Y<=R.bottom;
+ const vis=(x,y)=>{if(ps&&inR(M2.a*x+M2.e,M2.d*y+M2.f,PB))return 2;const X=M1.a*x+M1.e,Y=M1.d*y+M1.f;return inR(X,Y,B)&&!(PB&&inR(X,Y,PB))?1:0};
+ list.forEach(e=>{const p=edgeEl.get(e)?.querySelector('.line');if(!p)return;const L=p.getTotalLength(),S=[];
+  for(let l=0;l<=L;l+=3){const q=p.getPointAtLength(l),v=vis(q.x,q.y);if(v)S.push([q.x,q.y,v])}if(S.length<2)return;
+  const D=Math.min(3200,Math.max(1300,S.length*3*1.6));
+  const cs=[el('circle',{class:'runner',r:4.5},fx)];if(ps)cs.push(el('circle',{class:'runner',r:4.5},ps));const t0=performance.now();
+  const st=now=>{if(!cs[0].isConnected)return;const t=Math.min(1,(now-t0)/D),e2=t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2,q=S[Math.round(e2*(S.length-1))];
+   cs.forEach((c,k)=>{c.setAttribute('cx',q[0]);c.setAttribute('cy',q[1]);c.style.opacity=q[2]===k+1?(t>.85?(1-t)/.15:1):0});
+   if(t<1)requestAnimationFrame(st);else cs.forEach(c=>c.remove())};requestAnimationFrame(st)})}
+function hover(id,noFx,force){if(splitPin&&!force)return;if(!id)splitPin=null;curHover=id;svg.classList.toggle('hovering',!!id);
+ document.querySelectorAll('.h0,.h1,.h2,.he1,.he2').forEach(e=>e.classList.remove('h0','h1','h2','he1','he2'));if(!id){clearTimeout(runT);linkSplit(null);transfer(null);document.querySelectorAll('.runner').forEach(x=>x.remove());return}
+ if(unitById[id]){const U=unitById[id],inU=q=>{let c=unitById[q.unit];while(c){if(c===U)return true;c=c.parent}return false},mem=new Set(persons.filter(inU).map(q=>q.id));
+  if(id==='trinity')['father','son','spirit'].forEach(x=>mem.add(x));const b=x=>String(x).replace('~','');
+  edges.forEach(e=>{const g=edgeEl.get(e);if(e.from===id||e.to===id){g.classList.add('he1');nodeEl[e.from===id?e.to:e.from]?.classList.add('h1')}else if(mem.has(b(e.from))&&mem.has(b(e.to)))g.classList.add('he2')});
+  mem.forEach(x=>nodeEl[x]?.classList.add('h0'));hoverEdges=edges.filter(e=>e.from===id||e.to===id);return}
+ const m=x=>x===id||x==='~'+id,p=byId[id],cat=new Set(persons.filter(q=>q.id!==id&&q.cats.some(c=>p.cats.includes(c))).map(q=>q.id));
+ edges.forEach(e=>{const g=edgeEl.get(e);if(m(e.from)||m(e.to)){g.classList.add('he1');const o=m(e.from)?e.to:e.from;nodeEl[o]?.classList.add('h1')}
+  else if((cat.has(e.from)||e.from===id)&&(cat.has(e.to)||e.to===id))g.classList.add('he2')});
+ cat.forEach(c=>{if(!nodeEl[c].classList.contains('h1'))nodeEl[c].classList.add('h2')});nodeEl[id].classList.add('h0');nodeEl['~'+id]?.classList.add('h1');
+ if(PAIR_OF[id]){nodeEl[PAIR_OF[id]].classList.add('h1');nodeEl['~'+PAIR_OF[id]]?.classList.add('h1')}
+ transfer(id,noFx);linkSplit(id);
+ hoverEdges=edges.filter(e=>m(e.from)||m(e.to));}
+function pathD(pts,r=9){let d=`M${pts[0][0]},${pts[0][1]}`;
+ for(let i=1;i<pts.length-1;i++){const[a,b,c]=[pts[i-1],pts[i],pts[i+1]];
+  const l1=Math.hypot(b[0]-a[0],b[1]-a[1]),l2=Math.hypot(c[0]-b[0],c[1]-b[1]),rr=Math.min(r,l1/2,l2/2);
+  const p1=[b[0]+(a[0]-b[0])*rr/l1,b[1]+(a[1]-b[1])*rr/l1],p2=[b[0]+(c[0]-b[0])*rr/l2,b[1]+(c[1]-b[1])*rr/l2];
+  d+=` L${p1[0]},${p1[1]} Q${b[0]},${b[1]} ${p2[0]},${p2[1]}`}
+ const z=pts[pts.length-1];return d+` L${z[0]},${z[1]}`}
+function drawGhosts(){const g=document.getElementById('gNodes');
+ Object.values(GHOSTS).forEach(h=>{const c=nodeEl[h.of].cloneNode(true);c.setAttribute('class','node ghost');c.setAttribute('transform',`translate(${h.x},${h.y})`);
+  if(GHOST_NAME[h.of]){c.querySelectorAll('text[x="52"]').forEach(x=>x.remove());const nm=L(GHOST_NAME[h.of]);el('text',{x:52,y:NH/2+4},c).textContent=nm}
+  el('text',{class:'gtag',x:NW/2,y:NH+13,'text-anchor':'middle'},c).textContent=t('servesHere');
+  c.addEventListener('pointerenter',()=>{if(!drag&&!pan)hover(h.of,'up')});c.addEventListener('pointerleave',()=>hover(null));
+  c.addEventListener('pointerdown',ev=>{ev.stopPropagation();select(h.of)});g.appendChild(c);nodeEl[h.id]=c})}
+function drawPairs(){const g=document.getElementById('gPairs');g.innerHTML='';
+ PAIRS.forEach(pr=>['',''+'~'].forEach(pre=>{const R=pr.map(i=>byId[pre+i]).filter(Boolean).map(p=>rectOf(p.id));if(R.length<2)return;
+  const x0=Math.min(...R.map(r=>r.x))-12,y0=Math.min(...R.map(r=>r.y))-12,x1=Math.max(...R.map(r=>r.x+r.w))+12,y1=Math.max(...R.map(r=>r.y+r.h))+(pre?24:12);
+  el('rect',{class:'pair'+(pre?' ghost':''),x:x0,y:y0,width:x1-x0,height:y1-y0,rx:18},g)}))}
+/* Перенос пары на уровень функционирования при наведении. */
+let flyEls=[];
+function animFly(list,target){const t0=performance.now(),D=target?850:450,k0=list.map(f=>f.k||0);list.tgt=target;
+ const step=now=>{if(list.tgt!==target)return;const t=Math.min(1,(now-t0)/D),e=t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+  list.forEach((f,i)=>{f.k=k0[i]+(target-k0[i])*e;const x=f.a.x+(f.b.x-f.a.x)*f.k+Math.sin(Math.PI*f.k)*(i?-110:110)*(list.split?.3:1),y=f.a.y+(f.b.y-f.a.y)*f.k;
+   f.c.setAttribute('transform',`translate(${x},${y})`);f.c.style.opacity=target?Math.min(1,Math.max(0,(1-e)/.45)):Math.min(1,f.k*3+(1-e))});
+  if(t<1)requestAnimationFrame(step);else if(!target)list.forEach(f=>f.c.remove());else list.forEach(f=>pulse(f.b.id))};requestAnimationFrame(step)}
+/* Разделённый экран: если цель переноса не видна, показываем её во второй половине экрана. */
+let splitEl=null,splitT=0,splitPin=null,lastP={x:0,y:0},curHover=null;
+/* Плавный сдвиг основного вида (для стыковки с панелью). */
+function glide(to){const fr={...vb},t0=performance.now();const st=now=>{const t=Math.min(1,(now-t0)/250),e=1-Math.pow(1-t,3);
+ vb={x:fr.x+(to.x-fr.x)*e,y:fr.y+(to.y-fr.y)*e,w:to.w,h:to.h};setVB();if(t<1)requestAnimationFrame(st)};requestAnimationFrame(st)}
+// после сдвига карточка уходит из-под курсора: панель держится, пока мышь не сдвинется
+window.addEventListener('pointermove',e=>{lastP={x:e.clientX,y:e.clientY};
+ if(splitPin&&Math.hypot(e.clientX-splitPin.x,e.clientY-splitPin.y)>14){splitPin=null;hover(null,undefined,true)}});
+const inView=r=>r.x>=vb.x&&r.y>=vb.y&&r.x+r.w<=vb.x+vb.w&&r.y+r.h<=vb.y+vb.h;
+/* Видимая область основного вида в мировых координатах. */
+function visArea(){const b=svg.getBoundingClientRect(),M=svg.getScreenCTM(),k=M.a;return{b,k,x:(b.left-M.e)/k,y:(b.top-M.f)/k,w:b.width/k,h:b.height/k}}
+/* Панель занимает 1/3 экрана со стороны, где находится цель (выше — сверху, ниже — снизу).
+   Если источник сам в этой трети — разделения нет. Основной вид не двигается. */
+function showSplit(tg,src,label,top){clearTimeout(splitT);document.querySelectorAll('.split').forEach(x=>x.remove());splitEl=null;
+ if(getComputedStyle(document.getElementById('card')).display!=='none')return null; // открыта карточка описания — без разделения
+ if(tg.every(inView))return null;
+ const x0=Math.min(...tg.map(r=>r.x)),y0=Math.min(...tg.map(r=>r.y)),x1=Math.max(...tg.map(r=>r.x+r.w)),y1=Math.max(...tg.map(r=>r.y+r.h));
+ if(top===undefined)top=(y0+y1)/2<src.y;
+ const V=visArea(),b=V.b,fr=(src.y+src.h/2-V.y)/V.h;if(top?fr<1/3:fr>2/3)return null;
+ const ph=b.height/3,asp=b.width/ph;let w,h,vx,vy;
+ if(x1-x0+40<=V.w&&(y1-y0)<=V.h/3*.85){w=V.w;h=V.h/3;vx=Math.min(Math.max(V.x,x1+20-w),x0-20);vy=(y0+y1)/2-h/2}
+ else{w=Math.max(V.w,(x1-x0)*1.5);h=w/asp;if(h<(y1-y0)*1.6){h=(y1-y0)*1.6;w=h*asp}vx=(x0+x1)/2-w/2;vy=(y0+y1)/2-h/2}
+ const d=document.createElement('div');d.className='split '+(top?'top':'bottom');d.yb=top?b.top+ph:b.top+b.height-ph;
+ Object.assign(d.style,{left:b.left+'px',width:b.width+'px',height:ph+'px',top:(top?b.top:b.top+b.height-ph)+'px'});
+ const u=tg.id?unitById[byId[tg.id].unit]:null;
+ d.innerHTML=`<svg viewBox="${vx} ${vy} ${w} ${h}" class="${svg.getAttribute('class')||''}"></svg><span class="splab">${label||t('target')+': '+(u?u.name:'')}</span>`;
+ // копия мира (а не <use>): тогда работают стили подсветки при наведении
+ const wc=document.getElementById('world').cloneNode(true);wc.removeAttribute('id');wc.querySelectorAll('[id]').forEach(x=>x.removeAttribute('id'));
+ wc.querySelectorAll('.runner').forEach(x=>x.remove());d.querySelector('svg').appendChild(wc);
+ document.body.appendChild(d);splitEl=d;requestAnimationFrame(()=>d.classList.add('on'));
+ return {top:vy,bottom:vy+h,above:!top}}
+function hideSplit(delay){const d=splitEl;splitEl=null;if(!d)return;splitT=setTimeout(()=>{d.classList.remove('on');setTimeout(()=>d.remove(),300)},delay)}
+/* Перелёт между половинами экрана: в экранных координатах, поверх обеих половин. */
+function screenFly(list){if(flyEls!==list||!splitEl)return;
+ const ov=document.createElementNS('http://www.w3.org/2000/svg','svg');ov.setAttribute('class','flyov');document.body.appendChild(ov);list.ov=ov;
+ const M1=svg.getScreenCTM(),M2=splitEl.querySelector('svg').getScreenCTM();
+ const P=(M,x,y)=>({x:M.a*x+M.c*y+M.e,y:M.b*x+M.d*y+M.f,k:M.a});
+ const F=list.map(f=>{const c=f.c.cloneNode(true);c.style.display='';ov.appendChild(c);return{c,f,s:P(list.rev?M2:M1,f.a.x,f.a.y),e:P(list.rev?M1:M2,f.b.x,f.b.y)}});
+ const t0=performance.now(),D=900;
+ const step=now=>{if(flyEls!==list){ov.remove();return}const t=Math.min(1,(now-t0)/D),e=t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+  F.forEach((q,i)=>{const x=q.s.x+(q.e.x-q.s.x)*e+Math.sin(Math.PI*e)*(i?-60:60),y=q.s.y+(q.e.y-q.s.y)*e,k=q.s.k+(q.e.k-q.s.k)*e;
+   q.c.setAttribute('transform',`translate(${x},${y}) scale(${k})`);q.c.style.opacity=Math.min(1,(1-e)/.45)});
+  if(t<1)requestAnimationFrame(step);else{ov.remove();list.forEach(f=>pulse(f.b.id));runEdges(hoverEdges)}};requestAnimationFrame(step)}
+/* Связанные объекты вне экрана: показываем их во второй половине (сверху, если они выше). */
+let linkT=0,linkPending=false;
+function linkSplit(id){clearTimeout(linkT);linkPending=false;if(!id)return;linkPending=true;
+ linkT=setTimeout(()=>{linkPending=false;if(flyEls.split)return;const m=x=>x===id||x==='~'+id;
+  const off=ks=>[...new Set(ks)].map(k=>Object.assign(rectOf(k),{k})).filter(r=>!inView(r));
+  const src=rectOf(id),V=visArea(),fr=(src.y+src.h/2-V.y)/V.h;let R=null,top;
+  // сначала родители (откуда идут стрелки), потом — куда идут; связи «вверх» из верхней трети и «вниз» из нижней не показываем
+  for(const [ks,order] of [[edges.filter(e=>m(e.to)).map(e=>e.from),[true,false]],[edges.filter(e=>m(e.from)).map(e=>e.to),[false,true]]]){
+   const o=off(ks);for(const tp of order){const set=o.filter(r=>tp?r.y<src.y:r.y>=src.y);if(set.length&&!(tp?fr<1/3:fr>2/3)){R=set;top=tp;break}}if(R)break}
+  if(!R){runEdges(hoverEdges);return}
+  const names=[...new Set(R.map(r=>byId[r.k].name.split(' — ')[0]))];
+  const sp=showSplit(R,src,t('links')+': '+names.slice(0,4).join(', ')+(names.length>4?' …':''),top);
+  if(sp){const ks=new Set(R.map(q=>q.k));setTimeout(()=>bridge(edges.filter(e=>(m(e.to)&&ks.has(e.from))||(m(e.from)&&ks.has(e.to)))),300);runT=setTimeout(()=>runEdges(hoverEdges),600)}
+  else runEdges(hoverEdges)},250)}
+/* Линия связи может изгибаться в пропущенной середине схемы. Сдвигаем панель по горизонтали на величину изгиба,
+   чтобы линия выходила из одной половины и входила в другую в одной и той же точке. */
+function crossX(pts,Y){for(let i=1;i<pts.length;i++){const[a,b]=[pts[i-1],pts[i]];if(a[0]===b[0]&&Math.min(a[1],b[1])<=Y&&Math.max(a[1],b[1])>=Y)return a[0]}return null}
+function bridge(list){if(!splitEl)return;const ps=splitEl.querySelector('svg');
+ const Yb=splitEl.yb,M1=svg.getScreenCTM(),M2=ps.getScreenCTM();
+ for(const e of list){if(!e.pts)continue;const x1=crossX(e.pts,(Yb-M1.f)/M1.d),x2=crossX(e.pts,(Yb-M2.f)/M2.d);if(x1==null||x2==null)continue;
+  const dx=(M1.a*x1+M1.e-(M2.a*x2+M2.e))/M2.a;if(Math.abs(dx)<.5)return;   // сдвиг в мировых единицах панели
+  const v=ps.getAttribute('viewBox').split(' ').map(Number),x0=v[0],t0=performance.now();
+  const st=now=>{const t=Math.min(1,(now-t0)/220),k=1-Math.pow(1-t,3);v[0]=x0-dx*k;ps.setAttribute('viewBox',v.join(' '));if(t<1&&splitEl?.querySelector('svg')===ps)requestAnimationFrame(st)};
+  requestAnimationFrame(st);return}}
+function transfer(id,up){if(id&&flyEls.id===id+(up||''))return;if(!id)hideSplit(flyEls.split?0:450);if(flyEls.length){if(flyEls.split){flyEls.tgt=-1;clearTimeout(flyEls.timer);flyEls.ov?.remove();flyEls.forEach(f=>f.c.remove())}else animFly(flyEls,0)}flyEls=[];if(!id)return;
+ const P=byId[id];if(!up&&P.fuse?.length){const fx=document.getElementById('gFx');
+  flyEls=P.fuse.map(i=>{const c=nodeEl[i].cloneNode(true);c.setAttribute('class','node fly h0');c.querySelector('title')?.remove();fx.appendChild(c);return{c,a:byId[i],b:P}});
+  flyEls.id=id;const sp=showSplit(flyEls.map(f=>rectOf(f.a.id)),rectOf(id),t('links')+': '+flyEls.map(f=>f.a.name.split(' — ')[0]).join(', '));
+  if(sp){const list=flyEls;list.split=list.rev=true;list.forEach(f=>{f.c.style.display='none';f.c.setAttribute('transform',`translate(${f.b.x},${f.b.y})`)});list.timer=setTimeout(()=>screenFly(list),330);return}
+  animFly(flyEls,1);return}
+ if(!SERVES[id])return;
+ const fx=document.getElementById('gFx'),ids=[id,PAIR_OF[id]].filter(i=>i&&GHOSTS['~'+i]);
+ flyEls=ids.map(i=>{const c=nodeEl[up?'~'+i:i].cloneNode(true);c.setAttribute('class','node fly h0');c.querySelector('title')?.remove();c.querySelector('.gtag')?.remove();fx.appendChild(c);const a=byId[i],b=GHOSTS['~'+i];return up?{c,a:b,b:a}:{c,a,b}});
+ flyEls.id=id+(up||'');
+ const tg=flyEls.map(f=>rectOf(f.b.id));tg.id=flyEls[0]?.b.id;const sp=tg.length?showSplit(tg,rectOf(flyEls[0].a.id)):null;
+ if(sp){const list=flyEls;list.split=true;list.forEach(f=>{f.c.style.display='none';f.c.setAttribute('transform',`translate(${f.b.x},${f.b.y})`)});
+  list.timer=setTimeout(()=>screenFly(list),330);return}animFly(flyEls,1)}
+const LONG=1300; // «дальняя» связь: показывается только при наведении/выделении (или если включено в легенде)
+function drawEdges(){drawPairs();const g=document.getElementById('gEdges');g.innerHTML='';edgeEl.clear();
+ edges.forEach(e=>{const a=rectOf(e.from),b=rectOf(e.to),lng=Math.abs(a.y-b.y)+Math.abs(a.x-b.x)>LONG;const gg=el('g',{class:'edge '+e.type+(lng?' long':'')},g);const d=pathD(e.pts);
+  el('path',{class:'halo',d},gg);el('path',{class:'line',d,'marker-end':'url(#arr)'},gg);
+  
+  edgeEl.set(e,gg)})}
+function straight(e){const a=rectOf(e.from),b=rectOf(e.to);return[[a.x+a.w/2,a.y+a.h/2],[b.x+b.w/2,b.y+b.h/2]]}
+
+/* ===================== ВИД: панорама, зум, перелёт ===================== */
+let vb={x:0,y:0,w:W,h:H};
+let vbTimer=0;
+const setVB=()=>{svg.setAttribute('viewBox',`${vb.x} ${vb.y} ${vb.w} ${vb.h}`);
+ svg.classList.toggle('far',svg.clientWidth/vb.w<.33); // издали: без мелких надписей, крупнее названия блоков
+ clearTimeout(vbTimer);vbTimer=setTimeout(()=>{try{localStorage.setItem('ku-view',JSON.stringify(vb))}catch(e){}},300)}; // запоминаем вид
+const toWorld=(cx,cy)=>{const pt=svg.createSVGPoint();pt.x=cx;pt.y=cy;return pt.matrixTransform(svg.getScreenCTM().inverse())};
+svg.addEventListener('wheel',ev=>{ev.preventDefault();
+ if(!ev.ctrlKey){const s=vb.w/svg.clientWidth,m=ev.deltaMode===1?16:1;if(ev.shiftKey)vb.x+=(ev.deltaY||ev.deltaX)*m*s;else{vb.x+=ev.deltaX*m*s;vb.y+=ev.deltaY*m*s}setVB();return}
+ const k=Math.exp(ev.deltaY*0.0015),p=toWorld(ev.clientX,ev.clientY);
+ const nw=Math.min(Math.max(vb.w*k,250),W*3);const kk=nw/vb.w;vb={x:p.x-(p.x-vb.x)*kk,y:p.y-(p.y-vb.y)*kk,w:vb.w*kk,h:vb.h*kk};setVB()},{passive:false});
+let pan=null,drag=null;
+svg.addEventListener('pointerdown',ev=>{ev.preventDefault();window.getSelection()?.removeAllRanges();if(drag)return;pan={x:ev.clientX,y:ev.clientY,vb:{...vb},s:1/svg.getScreenCTM().a,moved:false,unit:ev.target.classList?.contains('ulab')?ev.target.parentNode.dataset.u:null,node:ev.target.closest?.('.node')?.dataset.pid||null};svg.classList.add('panning');svg.setPointerCapture(ev.pointerId)});
+svg.addEventListener('pointermove',ev=>{
+ if(drag){if(!EDIT)return;const p=toWorld(ev.clientX,ev.clientY),dx=p.x-drag.sx,dy=p.y-drag.sy;if(Math.abs(dx)+Math.abs(dy)>3)drag.moved=true;if(!drag.moved)return;
+  drag.p.x=drag.ox+dx;drag.p.y=drag.oy+dy;nodeEl[drag.p.id].setAttribute('transform',`translate(${drag.p.x},${drag.p.y})`);
+  edges.forEach(e=>{if(e.from===drag.p.id||e.to===drag.p.id){const d=pathD(straight(e));edgeEl.get(e).querySelectorAll('path').forEach(x=>x.setAttribute('d',d))}});return}
+ if(pan){const dx=(ev.clientX-pan.x)*pan.s,dy=(ev.clientY-pan.y)*pan.s;if(Math.abs(dx)+Math.abs(dy)>2)pan.moved=true;vb.x=pan.vb.x-dx;vb.y=pan.vb.y-dy;setVB()}});
+svg.addEventListener('pointerup',ev=>{
+ if(drag){const p=drag.p;if(drag.moved){p.x=Math.round(p.x/G)*G;p.y=Math.round(p.y/G)*G;nodeEl[p.id].setAttribute('transform',`translate(${p.x},${p.y})`);undoStack.push({id:p.id,x:drag.ox,y:drag.oy});updUndo();savePos();routeAll();drawEdges();reapply()}else select(p.id);drag=null;return}
+ if(pan){svg.classList.remove('panning');if(!pan.moved)pan.node?select(pan.node):pan.unit?select(pan.unit):clearSel();pan=null}});
+function startDrag(ev,p){if(!EDIT){ev.target.closest('.node').dataset.pid=p.id;return}ev.stopPropagation();const w=toWorld(ev.clientX,ev.clientY);drag={p,sx:w.x,sy:w.y,ox:p.x,oy:p.y,moved:false};svg.setPointerCapture(ev.pointerId)}
+let anim=null;
+function flyTo(r){const asp=svg.clientWidth/svg.clientHeight;let w=Math.max(r.w*3.2,700),h=w/asp;if(h<r.h*3){h=r.h*3;w=h*asp}
+ const to={x:r.x+r.w/2-w/2,y:r.y+r.h/2-h/2,w,h},fr={...vb},t0=performance.now(),D=900;
+ const dist=Math.hypot(to.x+to.w/2-fr.x-fr.w/2,to.y+to.h/2-fr.y-fr.h/2),bump=Math.min(1,dist/1500)*0.6;
+ cancelAnimationFrame(anim);const step=now=>{let t=Math.min(1,(now-t0)/D);const e=t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+  const k=1+bump*Math.sin(Math.PI*t),cw=(fr.w+(to.w-fr.w)*e)*k,ch=(fr.h+(to.h-fr.h)*e)*k;
+  const cx=fr.x+fr.w/2+(to.x+to.w/2-fr.x-fr.w/2)*e,cy=fr.y+fr.h/2+(to.y+to.h/2-fr.y-fr.h/2)*e;
+  vb={x:cx-cw/2,y:cy-ch/2,w:cw,h:ch};setVB();if(t<1)anim=requestAnimationFrame(step)};anim=requestAnimationFrame(step)}
+function pulse(id){const r=rectOf(id),fx=document.getElementById('gFx');
+ const p=el('rect',{class:'pulse',x:r.x-4,y:r.y-4,width:r.w+8,height:r.h+8,rx:12,style:`transform-origin:${r.x+r.w/2}px ${r.y+r.h/2}px;transform-box:view-box`},fx);setTimeout(()=>p.remove(),2600)}
+
+/* ===================== ВЫДЕЛЕНИЕ, КАРТОЧКА, ПОИСК ===================== */
+let hl=null;const dimT=document.getElementById('dimToggle');
+function applyHL(nodes,edgeSet){hl={nodes,edgeSet};reapply()}
+function reapply(){const on=!!hl;svg.classList.toggle('dim',on&&dimT.checked);
+ persons.forEach(p=>nodeEl[p.id].classList.toggle('hi',on&&hl.nodes.has(p.id)));
+ edges.forEach(e=>edgeEl.get(e)?.classList.toggle('hi',on&&hl.edgeSet.has(e)));
+ Object.values(GHOSTS).forEach(g=>nodeEl[g.id]?.classList.toggle('hi',on&&(hl.nodes.has(g.of)||hl.nodes.has(g.id))));
+ persons.forEach(p=>{if(on&&hl.nodes.has('~'+p.id))nodeEl[p.id].classList.add('hi')});
+ document.querySelectorAll('.node.sel').forEach(n=>n.classList.remove('sel'));if(sel&&nodeEl[sel])nodeEl[sel].classList.add('sel')}
+dimT.onchange=reapply;
+let sel=null,selCat=null;
+function select(id){sel=id;selCat=null;markChips();
+ const ns=new Set([id]),es=new Set();edges.forEach(e=>{if(e.from===id||e.to===id||e.from==='~'+id||e.to==='~'+id){es.add(e);ns.add(e.from);ns.add(e.to)}});
+ if(id==='trinity')['father','son','spirit'].forEach(x=>ns.add(x));
+ const U=unitById[id];if(U){const inU=p=>{let c=unitById[p.unit];while(c){if(c===U)return true;c=c.parent}return false};
+  persons.filter(inU).forEach(p=>ns.add(p.id));edges.forEach(e=>{if(ns.has(String(e.from).replace('~',''))&&ns.has(String(e.to).replace('~','')))es.add(e)})}
+ applyHL(ns,es);flyTo(rectOf(id));pulse(id);showCard(id)}
+function selectCat(c){sel=null;selCat=selCat===c?null:c;markChips();hideCard();
+ if(!selCat){hl=null;reapply();return}
+ const ns=new Set(persons.filter(p=>c.startsWith('oc:')?p.oc===c.slice(3):c.startsWith('fn:')?p.fn.includes(c.slice(3)):p.cats.includes(c)).map(p=>p.id)),es=new Set(edges.filter(e=>ns.has(e.from)&&ns.has(e.to)));
+ applyHL(ns,es);const R=[...ns].map(rectOf),x0=Math.min(...R.map(r=>r.x)),y0=Math.min(...R.map(r=>r.y)),x1=Math.max(...R.map(r=>r.x+r.w)),y1=Math.max(...R.map(r=>r.y+r.h));
+ flyTo({x:x0,y:y0,w:(x1-x0)/3.2*1.25,h:(y1-y0)/3*1.25});ns.forEach(pulse)}
+function clearSel(){sel=null;selCat=null;hl=null;markChips();hideCard();reapply()}
+const link=id=>`<a data-id="${id}">${byId[id].name}</a>`;
+function unitChain(u){const r=[];let cur=unitById[u];while(cur){r.unshift(cur.name.split(' — ')[0]);cur=cur.parent}return r.join(' › ')}
+function showCard(id){const p=byId[id],c=document.getElementById('card');
+ const par=edges.filter(e=>e.to===id&&e.type==='origin').map(e=>link(e.from)),ch=edges.filter(e=>e.from===id&&e.type==='origin').map(e=>link(e.to)),
+  as=edges.filter(e=>e.type==='ascent'&&(e.from===id||e.to===id)).map(e=>(e.to===id?'← ':'→ ')+link(e.from===id?e.to:e.from)),
+  sv=edges.filter(e=>e.type==='service'&&(e.from===id||e.to===id)).map(e=>link(e.from===id?e.to:e.from));
+ const orig=p.origin?(p.origin==='T'?t('oT'):p.origin.split('').map(k=>`<span class="dot" style="background:${OC[k]}"></span> ${t(ONAME[k])}`).join('<br>')):'';
+ c.innerHTML=`<button class="x" title="${t('close')}">×</button><h2>${p.name}</h2><div class="en">${otherNames(p)}</div><div>${p.desc||''}</div><dl>
+ ${SERVES[p.id]?`<dt>${t('serves')}</dt><dd>${unitById[GHOSTS['~'+p.id].unit].name} — ${L(SERVES[p.id])}${PAIR_OF[p.id]?'; '+t('pairT')+': '+byId[PAIR_OF[p.id]].name:''}</dd>`:''}
+ ${p.oc?`<dt>${t('cClass')}</dt><dd><span class="chip" data-cat="oc:${p.oc}"><i style="background:${OCLS[p.oc].color};opacity:.55"></i>${L(OCLS[p.oc].name)}</span></dd>`:''}
+ ${p.cats?`<dt>${t('cats')}</dt><dd>${p.cats.map(k=>`<span class="chip" data-cat="${k}"><i style="background:${CATS[k].color}"></i>${CATS[k].name}</span>`).join('')}</dd>`:''}
+ ${p.fn?.length?`<dt>${t('funcs')}</dt><dd>${p.fn.map(k=>`<span class="chip" data-cat="fn:${k}"><i style="background:${FUNCS[k].color};border-radius:2px"></i>${FUNCS[k].name}</span>`).join('')}</dd>`:''}
+ ${orig?`<dt>${t('cOrigin')}</dt><dd>${orig}</dd>`:''}
+ ${p.unit?`<dt>${t('cPlace')}</dt><dd>${unitChain(p.unit)}</dd>`:''}
+ ${par.length?`<dt>${t('cParents')}</dt><dd>${par.join(', ')}</dd>`:''}
+ ${ch.length?`<dt>${t('cChildren')}</dt><dd>${ch.join(', ')}</dd>`:''}
+ ${sv.length?`<dt>${t('lService')}</dt><dd>${sv.join(', ')}</dd>`:''}
+ ${as.length?`<dt>${t('lAscent')}</dt><dd>${as.join(', ')}</dd>`:''}
+ ${p.ref?`<dt>${t('cSource')}</dt><dd>${t('book')}, ${p.ref}</dd>`:''}</dl>`;
+ c.style.display='block';c.querySelector('.x').onclick=clearSel;
+ c.querySelectorAll('a[data-id]').forEach(a=>a.onclick=()=>select(a.dataset.id));
+ c.querySelectorAll('.chip[data-cat]').forEach(a=>a.onclick=()=>selectCat(a.dataset.cat))}
+const hideCard=()=>document.getElementById('card').style.display='none';
+function markChips(){document.querySelectorAll('#cats .chip,#classes .chip,#funcs .chip').forEach(c=>c.classList.toggle('on',c.dataset.cat===selCat))}
+function drawCats(){document.getElementById('classes').innerHTML=Object.entries(OCLS).map(([k,c])=>`<span class="chip" data-cat="oc:${k}"><i style="background:${c.color};opacity:.55"></i>${L(c.name)} <small>${persons.filter(p=>p.oc===k).length}</small></span>`).join('');
+ document.querySelectorAll('#classes .chip').forEach(c=>c.onclick=()=>selectCat(c.dataset.cat));
+ document.getElementById('cats').innerHTML=Object.entries(CATS).map(([k,c])=>`<span class="chip" data-cat="${k}"><i style="background:${c.color}"></i>${c.name} <small>${persons.filter(p=>p.cats.includes(k)).length}</small></span>`).join('');
+document.querySelectorAll('#cats .chip').forEach(c=>c.onclick=()=>selectCat(c.dataset.cat));
+ document.getElementById('funcs').innerHTML=Object.entries(FUNCS).map(([k,c])=>`<span class="chip" data-cat="fn:${k}"><i style="background:${c.color};border-radius:2px"></i>${c.name} <small>${persons.filter(p=>p.fn.includes(k)).length}</small></span>`).join('');
+ document.querySelectorAll('#funcs .chip').forEach(c=>c.onclick=()=>selectCat(c.dataset.cat));markChips()}
+// поиск
+const q=document.getElementById('q'),res=document.getElementById('res');let items=[],cur=0;
+const norm=s=>s.toLowerCase().replace(/ё/g,'е');
+function doSearch(){const s=norm(q.value.trim());
+ const all=[...Object.entries(CATS).map(([k,c])=>({kind:'cat',id:k,name:c.name,hint:t('catWord'),color:c.color})),
+  ...Object.entries(FUNCS).map(([k,c])=>({kind:'cat',id:'fn:'+k,name:c.name,hint:t('funcs'),color:c.color})),
+  {kind:'node',id:'trinity',name:byId.trinity.name,all:allNames(byId.trinity),hint:byId.paradise.name},
+  ...persons.map(p=>({kind:'node',id:p.id,name:p.name,all:allNames(p),hint:unitById[p.unit].name.split(' — ')[0],color:CATS[p.cats[0]].color}))];
+ items=s?all.filter(i=>norm(i.name+' '+(i.all||'')).includes(s)):all;cur=0;
+ res.innerHTML=items.map((i,n)=>`<div data-n="${n}" class="${n===0?'on':''}"><span class="dot" style="background:${i.color||'#7b3fa0'};${i.kind==='cat'?'border-radius:3px':''}"></span>${i.name}<small>${i.hint}</small></div>`).join('')||`<div style="color:#999">${t('none')}</div>`;
+ res.style.display='block';res.querySelectorAll('[data-n]').forEach(d=>d.onmousedown=e=>{e.preventDefault();pick(items[+d.dataset.n])})}
+function pick(i){if(!i)return;res.style.display='none';q.blur();i.kind==='cat'?(selCat=null,selectCat(i.id)):select(i.id)}
+q.addEventListener('input',doSearch);q.addEventListener('focus',doSearch);q.addEventListener('blur',()=>setTimeout(()=>res.style.display='none',150));
+q.addEventListener('keydown',e=>{const ds=res.querySelectorAll('[data-n]');if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();cur=(cur+(e.key==='ArrowDown'?1:-1)+ds.length)%ds.length;ds.forEach((d,n)=>d.classList.toggle('on',n===cur));ds[cur]?.scrollIntoView({block:'nearest'})}
+ else if(e.key==='Enter')pick(items[cur]);else if(e.key==='Escape'){q.value='';res.style.display='none';clearSel()}});
+document.getElementById('tLong').onchange=e=>svg.classList.toggle('showLong',e.target.checked);
+document.getElementById('tOrigin').onchange=e=>svg.classList.toggle('hideOrigin',!e.target.checked);
+document.getElementById('tAscent').onchange=e=>svg.classList.toggle('hideAscent',!e.target.checked);
+document.getElementById('tService').onchange=e=>svg.classList.toggle('hideService',!e.target.checked);
+
+/* ===================== РАСКЛАДКА: сохранение / экспорт ===================== */
+// Ручные позиции привязаны к «отпечатку» дерева раскладки: изменилось дерево — старые позиции игнорируются.
+const LAYOUT_SIG=(()=>{const str=JSON.stringify(TREE,(k,v)=>k==='parent'||k==='_name'||k==='_desc'?undefined:v).replace(/"(x|y|w|h|lw)":\d+(\.\d+)?,?/g,'');let h=0;for(const ch of str)h=(h*31+ch.charCodeAt(0))|0;return (h>>>0).toString(36)})();
+try{Object.keys(localStorage).filter(k=>k.startsWith('ku-cosmo-proto-pos')).forEach(k=>localStorage.removeItem(k))}catch(e){}
+const KEY='ku-cosmo-pos-'+LAYOUT_SIG,DEF={};persons.forEach(p=>DEF[p.id]=[p.x,p.y]);
+const undoStack=[];
+function updUndo(){const b=document.getElementById('bUndo');b.disabled=!undoStack.length;document.getElementById('undoN').textContent=undoStack.length?'('+undoStack.length+')':''}
+function undo(){const u=undoStack.pop();if(!u)return;const p=persons.find(q=>q.id===u.id);p.x=u.x;p.y=u.y;nodeEl[p.id].setAttribute('transform',`translate(${p.x},${p.y})`);updUndo();savePos();routeAll();drawEdges();reapply();pulse&&pulse(p.id)}
+document.getElementById('bUndo').onclick=undo;
+document.addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.code==='KeyZ'&&EDIT&&e.target.tagName!=='INPUT'){e.preventDefault();undo()}});
+function savePos(){try{localStorage.setItem(KEY,JSON.stringify(Object.fromEntries(persons.map(p=>[p.id,[p.x,p.y]]))))}catch(e){}}
+if(EDIT)try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s)persons.forEach(p=>{if(s[p.id])[p.x,p.y]=s[p.id]})}catch(e){}
+document.getElementById('bExport').onclick=()=>{const b=new Blob([JSON.stringify(Object.fromEntries(persons.map(p=>[p.id,[p.x,p.y]])),null,1)],{type:'application/json'});
+ const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='layout.json';a.click()};
+document.getElementById('bReset').onclick=()=>{persons.forEach(p=>[p.x,p.y]=DEF[p.id]);undoStack.length=0;updUndo();try{localStorage.removeItem(KEY)}catch(e){};render()};
+document.getElementById('bFit').onclick=()=>flyTo({x:W/2-W/6.4,y:H/2-H/6,w:W/3.2,h:H/3});
+
+function render(){drawUnits();drawNodes();drawGhosts();routeCached();drawEdges();reapply()}
+/* ===================== ЯЗЫК И ТЕМА: переключение ===================== */
+function applyLang(){document.documentElement.lang=LANG;document.title=t('title');
+ document.querySelectorAll('[data-i18n]').forEach(e=>e.textContent=t(e.dataset.i18n));
+ document.querySelectorAll('[data-i18n-ph]').forEach(e=>e.placeholder=t(e.dataset.i18nPh));
+ drawCats();updThemeBtn();document.getElementById('ver').textContent=(LANG==='ru'?'Версия ':'Version ')+(D.meta.version||'')}
+const langSel=document.getElementById('langSel');
+langSel.innerHTML=Object.keys(UI).map(k=>`<option value="${k}">${UI[k]._name}</option>`).join('');langSel.value=LANG;
+langSel.onchange=()=>{LANG=langSel.value;store.set('ku-lang',LANG);applyLang();render();if(sel)showCard(sel)};
+const THEMES=['auto','light','dark'];let THEME=qs.get('theme')||store.get('ku-theme')||'auto';
+function applyTheme(){THEME==='auto'?document.documentElement.removeAttribute('data-theme'):document.documentElement.setAttribute('data-theme',THEME);updThemeBtn()}
+function updThemeBtn(){document.getElementById('bTheme').textContent=t('theme_'+THEME)}
+document.getElementById('bTheme').onclick=()=>{THEME=THEMES[(THEMES.indexOf(THEME)+1)%3];store.set('ku-theme',THEME);applyTheme()};
+applyTheme();applyLang();render();
+try{const v=JSON.parse(localStorage.getItem('ku-view')||'null');if(v&&[v.x,v.y,v.w,v.h].every(Number.isFinite)&&v.w>0)vb=v}catch(e){}
+setVB();
+
+/* Запоминаем состояние панели слева внизу: свёрнута ли и галочки (затенение, типы связей). */
+(()=>{const K='ku-legend',lg=document.getElementById('legend'),bt=document.getElementById('lgToggle'),ids=['tOrigin','tService','tAscent','tLong'];
+ const save=()=>store.set(K,JSON.stringify({min:lg.classList.contains('min'),...Object.fromEntries(ids.map(i=>[i,document.getElementById(i).checked]))}));
+ let st=null;try{st=JSON.parse(store.get(K))}catch(e){}
+ if(st){lg.classList.toggle('min',!!st.min);bt.textContent=st.min?'☰':'–';
+  ids.forEach(i=>{const c=document.getElementById(i);if(i in st&&c.checked!==st[i]){c.checked=st[i];c.dispatchEvent(new Event('change'))}})}
+ bt.addEventListener('click',save);ids.forEach(i=>document.getElementById(i).addEventListener('change',save))})();
+</script>
+</body>
+</html>

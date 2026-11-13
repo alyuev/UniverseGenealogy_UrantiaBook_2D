@@ -1,0 +1,481 @@
+# Космология Книги Урантии — структура (без текстов).
+# Тексты (имена, описания) — в data/lang/<язык>.yaml. Новый язык = скопировать en.yaml и перевести.
+# Проверка: python tools/validate.py   Сборка: python tools/build.py
+
+meta:
+  version: "1.0"
+  base_language: en   # если перевода нет, показывается en, затем ru
+
+# Класс по происхождению: ровно один у личности, задаёт тон заливки карточки.
+classes:
+  T: { color: "#8e44ad" }
+  A: { color: "#ffffff" }
+  F: { color: "#e53935" }
+  S: { color: "#1e63d6" }
+  FS: { color: "#5c4ee5" }
+  SD: { color: "#0f9d8a" }
+  D: { color: "#f08c00" }
+  L: { color: "#c2408f" }
+  DU: { color: "#8d6e63" }
+  E: { color: "#43a047" }
+  X: { color: "#b0bec5" }
+  U: { color: "#e0e0e0" }
+  C: { color: "#a5d6a7" }
+
+# Группы по роли: у личности может быть несколько; полоски сверху карточки.
+groups:
+  deity: { color: "#b71c1c" }
+  trin: { color: "#7b3fa0" }
+  supreme: { color: "#283593" }
+  par: { color: "#1565c0" }
+  desc: { color: "#00897b" }
+  local: { color: "#8d6e63" }
+  spirit: { color: "#ef6c00" }
+  angel: { color: "#ec407a" }
+  asc: { color: "#2e7d32" }
+  coord: { color: "#3949ab" }
+  supspirit: { color: "#00695c" }
+  stationary: { color: "#795548" }
+  unclass: { color: "#616161" }
+  powercenters: { color: "#e65100" }
+  transcg: { color: "#78909c" }
+  finality: { color: "#2e7d32" }
+
+# Функции (служебные обязанности): у личности может быть несколько (поле func); фильтр в легенде.
+functions:
+  gov: { color: "#c62828" }
+  justice: { color: "#6d4c41" }
+  teach: { color: "#1565c0" }
+  messeng: { color: "#00838f" }
+  minist: { color: "#ec407a" }
+  create: { color: "#f9a825" }
+  energy: { color: "#ef6c00" }
+  reflect: { color: "#7b1fa2" }
+
+# Дерево административных единиц. content сверху вниз:
+#   [a, b, c] — ряд личностей;  - id: … — вложенный блок (столица первой).
+#   ~a — «тень» личности a: место, где она служит (сама она стоит на уровне происхождения).
+units:
+  - id: paradise
+    color: "#d4a000"
+    content:
+      - id: trinity
+        color: "#7b3fa0"
+        width: 760
+        linkable: true
+        refs: ["10"]
+        content:
+          - [father, son, spirit]
+      - id: absolutes
+        color: "#9aa1ad"
+        width: 760
+        beside: true
+        refs: ["0:11"]
+        content:
+          - [deityabs, univabs, unqabs]
+      - [msp, supbeing]
+      - [michael, mother, avonal, daynal]
+      - [secrets, solitary]
+      - [execs, inspired, parcit]
+      - [persadj, gravmess, persaids, associnsp]
+      - [sentinels, omniaphim]
+      - [sppd, supcentsup, spiritnat, fathernat, adjcit]
+      - [majeston]
+      - id: transc
+        color: "#7a7a8c"
+        linkable: true
+        refs: ["30:1"]
+        content:
+          - [architects, transrec, mfo, amfo, consummator, vicegerents]
+          - [supervisors]
+      - id: creattrin
+        color: "#8e44ad"
+        width: 730
+        linkable: true
+        refs: ["22:9"]
+        content:
+          - [asctrin, parhav, destiny]
+      - id: trinsons
+        color: "#8e44ad"
+        width: 550
+        linkable: true
+        refs: ["22"]
+        content:
+          - id: trinatt
+            color: "#43a047"
+            width: 490
+            linkable: true
+            refs: ["22:1"]
+            content:
+              - [highauth, noname]
+      - id: finaliters
+        color: "#43a047"
+        linkable: true
+        refs: ["31"]
+        content:
+          - [mortfin, parfin, trinfin, conjfin, havfin, transfin]
+      - [adjfused, transmid]
+  - id: havona
+    color: "#c08a1e"
+    content:
+      - [eternals, supernaphim]
+      - [circspirits, havnat, adjhav, gradguides, servitals, havcenters]
+  - id: super
+    color: "#2f6fb3"
+    content:
+      - id: uversa
+        color: "#2f6fb3"
+        content:
+          - [ancients]
+          - [perfectors, counselors, censors]
+          - [mighty, seconaphim]
+          - [reflective, refimage, abandon, sonfused, circsup, census]
+          - [conciliators, tertiaphim, sucenters]
+          - [~execs, ~gravmess, ~omniaphim]
+          - id: mpc
+            color: "#f08c00"
+            linkable: true
+            refs: ["29:4"]
+            content:
+              - [assocpd, mechcon, enertrans, energytx, primassoc, secdissoc]
+              - [frandal]
+      - id: major
+        color: "#3f87c9"
+        content:
+          - id: umajor
+            color: "#3f87c9"
+            content:
+              - [perfections]
+          - id: minor
+            color: "#3f87c9"
+            content:
+              - id: uminor
+                color: "#3f87c9"
+                content:
+                  - [recents]
+              - id: local
+                color: "#7e57c2"
+                content:
+                  - id: salv
+                    color: "#7e57c2"
+                    content:
+                      - [~michael, ~mother]
+                      - [unions, ~daynal]
+                      - [gabriel, stars, melch, lifec, arch]
+                      - [fmelch, susatia, spironga, spiritfused, lucenters, unclcenters]
+                      - [mosthigh]
+                      - [~associnsp]
+                  - id: const
+                    color: "#9c6fd6"
+                    content:
+                      - id: edentia
+                        color: "#9c6fd6"
+                        content:
+                          - [faithfuls, vorondadek]
+                          - [univit, concenters]
+                      - id: system
+                        color: "#2e8b57"
+                        content:
+                          - id: jerusem
+                            color: "#2e8b57"
+                            content:
+                              - [lanon, adam, eve, cherub]
+                              - [morontia, mcomp]
+                              - [syscenters]
+                              - [midsonite]
+                              - [~sentinels]
+                              - id: mps
+                                color: "#c2408f"
+                                linkable: true
+                                refs: ["48:2"]
+                                content:
+                                  - [circreg, syscoord, plancust, combcon, liaisonstab, selassort]
+                                  - [assocreg]
+                          - id: urantia
+                            color: "#00838f"
+                            content:
+                              - [~adam, ~eve, ~avonal, ~melch]
+                              - [truth, adjutants, seraph, calstaff, midway]
+                              - id: mortal
+                                color: "#00838f"
+                                content:
+                                  - [tadj, human]
+
+# Личности. pair — партнёр (общий контур пары). class — класс происхождения; origin — точки пиктограммы.
+persons:
+  father: { class: F, origin: F, groups: [deity], refs: ["1"], func: [create] }
+  son: { class: S, origin: S, groups: [deity], refs: ["6"], func: [create] }
+  spirit: { class: D, origin: D, groups: [deity], refs: ["8"], func: [create, minist] }
+  msp: { class: D, origin: FSD, groups: [supspirit, spirit], refs: ["16"], func: [gov] }
+  secrets: { class: T, origin: T, groups: [supreme], refs: ["18:1"], func: [gov] }
+  eternals: { class: T, origin: T, groups: [supreme], refs: ["18:2"], func: [gov] }
+  ancients: { class: T, origin: T, groups: [supreme], refs: ["18:3"], func: [gov, justice] }
+  perfections: { class: T, origin: T, groups: [supreme], refs: ["18:4"], func: [gov] }
+  recents: { class: T, origin: T, groups: [supreme], refs: ["18:5"], func: [gov] }
+  unions: { class: T, origin: T, groups: [supreme], refs: ["18:6"], func: [gov] }
+  faithfuls: { class: T, origin: T, groups: [supreme], refs: ["18:7"], func: [gov] }
+  daynal: { class: T, origin: T, groups: [trin, par, desc], refs: ["20:7"], func: [teach] }
+  michael: { class: FS, origin: FS, groups: [par, desc], refs: ["21"], func: [create, gov], pair: mother }
+  avonal: { class: SD, origin: SD, groups: [par, desc], refs: ["20:2"], func: [justice] }
+  mother: { class: D, origin: D, groups: [supspirit, spirit], refs: ["34"], func: [create, minist], pair: michael }
+  gabriel: { class: L, origin: FSD, groups: [local], refs: ["33:4"], func: [gov, justice] }
+  melch: { class: L, origin: FSD, groups: [local, desc], refs: ["35"], func: [teach] }
+  lifec: { class: L, origin: FSD, groups: [local, desc], refs: ["36"], func: [create] }
+  arch: { class: L, origin: FSD, groups: [local], refs: ["37:3"], func: [minist] }
+  lanon: { class: L, origin: FSD, groups: [local, desc], refs: ["35:8"], func: [gov] }
+  adam: { class: L, origin: FSD, groups: [local, desc], refs: ["51:1"], func: [gov, create], pair: eve }
+  eve: { class: L, origin: FSD, groups: [local, desc], refs: ["51:1"], func: [gov, create], pair: adam }
+  cherub: { class: D, origin: D, groups: [angel, spirit], refs: ["38:7"], func: [minist] }
+  tadj: { class: F, origin: F, groups: [desc], refs: ["107"], func: [minist] }
+  human: { class: E, origin: E, groups: [asc], refs: ["49"] }
+  seraph: { class: D, origin: D, groups: [angel, spirit], refs: ["39"], func: [minist] }
+  perfectors: { class: T, origin: T, groups: [coord], refs: ["19:2"], func: [gov] }
+  counselors: { class: T, origin: T, groups: [coord], refs: ["19:3"], func: [gov] }
+  censors: { class: T, origin: T, groups: [coord], refs: ["19:4"], func: [justice] }
+  mighty: { class: E, origin: E, groups: [asc, trin], refs: ["22:2"], func: [messeng, justice] }
+  solitary: { class: D, origin: D, groups: [spirit], refs: ["23"], func: [messeng] }
+  supernaphim: { class: D, origin: D, groups: [angel, spirit], refs: ["27"], func: [minist] }
+  seconaphim: { class: D, origin: FSD, groups: [angel, spirit], refs: ["28"], func: [minist, reflect] }
+  stars: { class: L, origin: FSD, groups: [local], refs: ["37:2"], func: [gov, reflect] }
+  vorondadek: { class: L, origin: FSD, groups: [local, desc], refs: ["35:6"], func: [gov, justice] }
+  morontia: { class: E, origin: E, groups: [asc], refs: ["48"] }
+  mcomp: { class: D, origin: D, groups: [spirit], refs: ["48:3"], func: [minist] }
+  adjutants: { class: D, origin: D, groups: [supspirit, spirit], refs: ["36:5"], func: [minist] }
+  truth: { class: L, origin: FSD, groups: [spirit, desc], refs: ["194"], func: [minist] }
+  midway: { class: E, origin: E, groups: [asc], refs: ["77"], func: [minist] }
+  reflective: { class: T, origin: T, groups: [supspirit], refs: ["17:3"], func: [reflect] }
+  execs: { class: T, origin: T, groups: [supspirit], refs: ["17:1"], func: [gov] }
+  refimage: { class: D, origin: D, groups: [supspirit, spirit], refs: ["17:4"], func: [reflect] }
+  circspirits: { class: D, origin: D, groups: [supspirit, spirit], refs: ["17:5"], func: [minist] }
+  inspired: { class: T, origin: T, groups: [trin, spirit, coord], refs: ["19:5"] }
+  havnat: { class: T, origin: T, groups: [trin, coord], refs: ["19:6", "31:1"] }
+  parcit: { class: T, origin: T, groups: [trin, coord], refs: ["19:7"] }
+  fmelch: { class: L, origin: FSD, groups: [local], refs: ["35:1"], func: [gov] }
+  abandon: { class: DU, origin: "", groups: [stationary], refs: ["37:9"] }
+  susatia: { class: L, origin: FSD, groups: [local, stationary], refs: ["37:9"] }
+  univit: { class: L, origin: FSD, groups: [local, stationary], refs: ["37:9", "43:7"], func: [gov, teach] }
+  spironga: { class: DU, origin: "", groups: [local, stationary], refs: ["37:10"], func: [minist] }
+  adjfused: { class: E, origin: E, groups: [asc], refs: ["40:7"], fuse: [human, tadj] }
+  sonfused: { class: E, origin: E, groups: [asc], refs: ["40:8"] }
+  spiritfused: { class: E, origin: E, groups: [asc], refs: ["40:9"] }
+  transmid: { class: E, origin: E, groups: [asc], refs: ["40:3"] }
+  persadj: { class: F, origin: F, groups: [asc], refs: ["40:4"] }
+  gravmess: { class: F, origin: F, groups: [spirit], refs: ["31:2"], func: [messeng] }
+  adjhav: { class: D, origin: D, groups: [spirit], refs: ["17:5"], func: [minist] }
+  circsup: { class: D, origin: D, groups: [spirit], refs: ["24:1"], func: [energy] }
+  census: { class: D, origin: D, groups: [spirit], refs: ["24:2"], func: [reflect] }
+  persaids: { class: D, origin: D, groups: [spirit], refs: ["24:3"], func: [messeng] }
+  associnsp: { class: D, origin: D, groups: [spirit], refs: ["24:4"], func: [justice] }
+  sentinels: { class: D, origin: D, groups: [spirit], refs: ["24:5"], func: [justice, reflect] }
+  gradguides: { class: D, origin: D, groups: [spirit], refs: ["24:6"], func: [teach] }
+  servitals: { class: D, origin: D, groups: [spirit], refs: ["25:1"], func: [minist] }
+  conciliators: { class: D, origin: D, groups: [spirit], refs: ["25:2"], func: [justice] }
+  tertiaphim: { class: D, origin: D, groups: [angel, spirit], refs: ["28:1"], func: [minist] }
+  omniaphim: { class: D, origin: D, groups: [angel, spirit], refs: ["28:2"], func: [messeng, justice] }
+  highauth: { class: E, origin: E, groups: [trin, asc, par], refs: ["22:3"], func: [gov] }
+  noname: { class: E, origin: E, groups: [trin, asc, par], refs: ["22:4"], func: [gov, justice] }
+  asctrin: { class: T, origin: T, groups: [trin], refs: ["22:7"] }
+  parhav: { class: T, origin: T, groups: [trin], refs: ["22:7"] }
+  destiny: { class: T, origin: T, groups: [trin], refs: ["22:7"] }
+  sppd: { class: D, origin: D, groups: [spirit], refs: ["29:1"], func: [energy] }
+  supcentsup: { class: D, origin: D, groups: [powercenters, spirit], refs: ["29:2"], func: [energy] }
+  havcenters: { class: D, origin: D, groups: [powercenters, spirit], refs: ["29:2"], func: [energy] }
+  sucenters: { class: D, origin: D, groups: [powercenters, spirit], refs: ["29:2"], func: [energy] }
+  lucenters: { class: D, origin: D, groups: [powercenters, spirit], refs: ["29:2"], func: [energy] }
+  concenters: { class: D, origin: D, groups: [powercenters, spirit], refs: ["29:2"], func: [energy] }
+  syscenters: { class: D, origin: D, groups: [powercenters, spirit], refs: ["29:2"], func: [energy] }
+  assocpd: { class: D, origin: D, groups: [spirit], refs: ["29:4"], func: [energy] }
+  mechcon: { class: D, origin: D, groups: [spirit], refs: ["29:4"], func: [energy] }
+  enertrans: { class: D, origin: D, groups: [spirit], refs: ["29:4"], func: [energy] }
+  energytx: { class: D, origin: D, groups: [spirit], refs: ["29:4"], func: [energy] }
+  primassoc: { class: D, origin: D, groups: [spirit], refs: ["29:4"], func: [energy] }
+  secdissoc: { class: D, origin: D, groups: [spirit], refs: ["29:4"], func: [energy] }
+  frandal: { class: D, origin: D, groups: [spirit], refs: ["29:4"], func: [energy] }
+  circreg: { class: D, origin: D, groups: [local, spirit], refs: ["48:2"], func: [energy] }
+  syscoord: { class: D, origin: D, groups: [local, spirit], refs: ["48:2"], func: [energy] }
+  plancust: { class: D, origin: D, groups: [local, spirit], refs: ["48:2"], func: [energy] }
+  combcon: { class: D, origin: D, groups: [local, spirit], refs: ["48:2"], func: [energy] }
+  liaisonstab: { class: D, origin: D, groups: [local, spirit], refs: ["48:2"], func: [energy] }
+  selassort: { class: D, origin: D, groups: [local, spirit], refs: ["48:2"], func: [energy] }
+  assocreg: { class: D, origin: D, groups: [local, spirit], refs: ["48:2"], func: [energy] }
+  spiritnat: { class: U, origin: "", groups: [spirit], refs: ["30:2"] }
+  fathernat: { class: U, origin: "", groups: [unclass], refs: ["30:2"] }
+  adjcit: { class: E, origin: E, groups: [asc], refs: ["30:2"] }
+  mortfin: { class: E, origin: E, groups: [finality, asc], refs: ["31:0"] }
+  parfin: { class: C, origin: "", groups: [finality], refs: ["31:10"] }
+  trinfin: { class: C, origin: "", groups: [finality], refs: ["31:10"] }
+  conjfin: { class: C, origin: "", groups: [finality], refs: ["31:10"] }
+  havfin: { class: C, origin: "", groups: [finality], refs: ["31:10"] }
+  transfin: { class: C, origin: "", groups: [finality], refs: ["31:10"] }
+  mosthigh: { class: U, origin: "", groups: [spirit], refs: ["37:4"], func: [gov] }
+  architects: { class: X, origin: "", groups: [transcg], refs: ["31:9"], func: [create, gov] }
+  transrec: { class: X, origin: "", groups: [transcg], refs: ["23:3"], func: [reflect] }
+  mfo: { class: X, origin: "", groups: [transcg], refs: ["29:5"], func: [energy] }
+  amfo: { class: X, origin: "", groups: [transcg], refs: ["29:5"], func: [energy] }
+  consummator: { class: U, origin: "", groups: [unclass], refs: ["106:8"] }
+  vicegerents: { class: U, origin: "", groups: [unclass], refs: ["117:7"] }
+  supervisors: { class: U, origin: "", groups: [unclass], refs: ["55:12"], func: [gov] }
+  majeston: { class: DU, origin: "", groups: [supspirit, unclass], refs: ["17:2"], func: [reflect] }
+  midsonite: { class: L, origin: FSD, groups: [local, unclass], refs: ["36:4"] }
+  unclcenters: { class: D, origin: D, groups: [powercenters, spirit], refs: ["29:2"], func: [energy] }
+  supbeing: { class: T, origin: T, groups: [deity], refs: ["0:2", "115", "116", "117"], func: [create] }
+  deityabs: { class: A, origin: A, groups: [deity], refs: ["0:11"] }
+  unqabs: { class: A, origin: A, groups: [deity], refs: ["0:11"] }
+  univabs: { class: A, origin: A, groups: [deity], refs: ["0:11"] }
+  calstaff: { class: E, origin: E, groups: [asc], refs: ["66:2", "66:4", "77:1"] }
+
+# Связи: [откуда, куда, тип]. Тип по умолчанию origin; service — служение; ascent — восхождение. ~a — от тени.
+links:
+  - [trinity, secrets]
+  - [trinity, eternals]
+  - [trinity, ancients]
+  - [trinity, perfections]
+  - [trinity, recents]
+  - [trinity, unions]
+  - [trinity, faithfuls]
+  - [trinity, daynal]
+  - [spirit, msp]
+  - [father, michael]
+  - [son, michael]
+  - [son, avonal]
+  - [spirit, avonal]
+  - [spirit, mother]
+  - [~michael, gabriel]
+  - [~mother, gabriel]
+  - [~michael, melch]
+  - [~mother, melch]
+  - [fmelch, melch]
+  - [~michael, lifec]
+  - [~mother, lifec]
+  - [ancients, lifec]
+  - [~michael, arch]
+  - [~mother, arch]
+  - [~michael, lanon]
+  - [~mother, lanon]
+  - [~michael, adam]
+  - [~michael, eve]
+  - [~mother, cherub]
+  - [~mother, seraph]
+  - [father, tadj]
+  - [lifec, human]
+  - [~adam, human, service]
+  - [~eve, human, service]
+  - [tadj, human, service]
+  - [seraph, human, service]
+  - [trinity, perfectors]
+  - [trinity, counselors]
+  - [trinity, censors]
+  - [spirit, solitary]
+  - [spirit, supernaphim]
+  - [reflective, seconaphim]
+  - [~michael, stars]
+  - [~mother, stars]
+  - [~michael, vorondadek]
+  - [~mother, vorondadek]
+  - [~mother, mcomp]
+  - [~mother, adjutants]
+  - [~michael, truth]
+  - [adjutants, human, service]
+  - [truth, human, service]
+  - [midway, human, service]
+  - [mcomp, morontia, service]
+  - [human, morontia, ascent]
+  - [morontia, mighty, ascent]
+  - [morontia, finaliters, ascent]
+  - [trinity, reflective]
+  - [trinity, execs]
+  - [reflective, refimage]
+  - [msp, circspirits]
+  - [spirit, circspirits]
+  - [trinity, inspired]
+  - [trinity, havnat]
+  - [trinity, parcit]
+  - [trinity, trinatt]
+  - [adjfused, trinatt]
+  - [~michael, fmelch]
+  - [~mother, fmelch]
+  - [ancients, abandon]
+  - [reflective, abandon]
+  - [~michael, susatia]
+  - [~mother, susatia]
+  - [michael, univit]
+  - [mother, univit]
+  - [gabriel, spironga]
+  - [fmelch, spironga]
+  - [human, adjfused]
+  - [tadj, adjfused]
+  - [human, sonfused]
+  - [michael, sonfused]
+  - [human, spiritfused]
+  - [~mother, spiritfused]
+  - [midway, transmid]
+  - [tadj, persadj]
+  - [tadj, gravmess]
+  - [spirit, circsup]
+  - [spirit, census]
+  - [spirit, persaids]
+  - [spirit, associnsp]
+  - [msp, associnsp]
+  - [execs, associnsp, service]
+  - [spirit, sentinels]
+  - [execs, sentinels, service]
+  - [msp, servitals]
+  - [reflective, conciliators]
+  - [spirit, tertiaphim]
+  - [spirit, omniaphim]
+  - [finaliters, asctrin]
+  - [parcit, parhav]
+  - [havnat, parhav]
+  - [finaliters, destiny]
+  - [parcit, destiny]
+  - [msp, sppd]
+  - [~mother, mps]
+  - [adjfused, adjcit]
+  - [parcit, parfin]
+  - [havnat, havfin]
+  - [melch, midsonite]
+  - [eve, midsonite]
+  - [adjfused, mortfin, ascent]
+  - [transmid, mortfin, ascent]
+  - [msp, supcentsup]
+  - [sppd, supcentsup]
+  - [supcentsup, mpc]
+  - [msp, havcenters]
+  - [sppd, havcenters]
+  - [havcenters, mpc]
+  - [msp, sucenters]
+  - [sppd, sucenters]
+  - [sucenters, mpc]
+  - [msp, lucenters]
+  - [sppd, lucenters]
+  - [lucenters, mpc]
+  - [msp, concenters]
+  - [sppd, concenters]
+  - [concenters, mpc]
+  - [msp, syscenters]
+  - [sppd, syscenters]
+  - [syscenters, mpc]
+  - [msp, unclcenters]
+  - [sppd, unclcenters]
+  - [unclcenters, mpc]
+  - [supbeing, majeston]
+  - [deityabs, majeston]
+  - [avonal, truth]
+  - [sppd, servitals]
+  - [msp, conciliators]
+  - [sppd, conciliators]
+  - [circspirits, supernaphim]
+  - [trinity, mighty]
+  - [adjfused, mighty]
+  - [trinity, highauth]
+  - [adjfused, highauth]
+  - [trinity, noname]
+  - [adjfused, noname]
+  - [gravmess, mortfin, ascent]
+  - [havnat, mortfin, ascent]
+  - [asctrin, trinfin, ascent]
+  - [parhav, trinfin, ascent]
+  - [destiny, trinfin, ascent]
+  - [havnat, conjfin, ascent]
+  - [calstaff, midway]
+  - [morontia, calstaff, ascent]
