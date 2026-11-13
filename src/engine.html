@@ -508,7 +508,11 @@ function straight(e){const a=rectOf(e.from),b=rectOf(e.to);return[[a.x+a.w/2,a.y
 /* ===================== ВИД: панорама, зум, перелёт ===================== */
 let vb={x:0,y:0,w:W,h:H};
 let vbTimer=0;
-const setVB=()=>{svg.setAttribute('viewBox',`${vb.x} ${vb.y} ${vb.w} ${vb.h}`);
+const setVB=()=>{ // край схемы можно довести максимум до центра экрана
+ if(![vb.x,vb.y,vb.w,vb.h].every(Number.isFinite)||vb.w<=0)vb={x:0,y:0,w:W,h:H};
+ {const cw=svg.clientWidth,ch=svg.clientHeight;if(cw&&ch){const cx=vb.x+vb.w/2,cy=vb.y+vb.h/2,s=Math.max(vb.w/cw,vb.h/ch);vb.w=cw*s;vb.h=ch*s;vb.x=cx-vb.w/2;vb.y=cy-vb.h/2}} // вид = видимая область экрана
+ vb.x=Math.min(Math.max(vb.x,-vb.w/2),W-vb.w/2);vb.y=Math.min(Math.max(vb.y,-vb.h/2),H-vb.h/2);
+ svg.setAttribute('viewBox',`${vb.x} ${vb.y} ${vb.w} ${vb.h}`);
  svg.classList.toggle('far',svg.clientWidth/vb.w<.33); // издали: без мелких надписей, крупнее названия блоков
  syncZoom();clearTimeout(vbTimer);vbTimer=setTimeout(()=>{try{localStorage.setItem('ku-view',JSON.stringify(vb))}catch(e){}},300)}; // запоминаем вид
 const toWorld=(cx,cy)=>{const pt=svg.createSVGPoint();pt.x=cx;pt.y=cy;return pt.matrixTransform(svg.getScreenCTM().inverse())};
