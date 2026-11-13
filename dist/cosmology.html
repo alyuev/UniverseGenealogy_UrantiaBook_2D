@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Космология Книги Урантии</title>
+<title>Космология личностей по Книге Урантии</title>
 <style>
 :root{--bg:#f6f7f9;--ink:#1d2433;--muted:#6b7280;--panel:#fff;--line:#e3e6eb;--accent:#5b3fa0;--hov:#f0ecfa;--dot:#d9dce2;--node:#fff;--nodeS:#c3c8d1;--nodeL:#f3f4f7;--edge:#8b93a1;--edgeHi:#5b3fa0;--svc:#43a047;--asc:#1e88e5;--tintA:.13;--lpA:.22;--unitA:.05;color-scheme:light}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14161c;--ink:#e6e8ee;--muted:#9aa1ad;--panel:#1d2028;--line:#2e323d;--accent:#b49cf0;--hov:#2b2540;--dot:#2a2e38;--node:#232733;--nodeS:#3a3f4d;--nodeL:#2b303d;--edge:#6f7889;--edgeHi:#c3adff;--svc:#5cc165;--asc:#64b5f6;--tintA:.2;--lpA:.32;--unitA:.09;color-scheme:dark}}
@@ -11,7 +11,7 @@
 *{box-sizing:border-box}
 html,body{margin:0;height:100%;font:14px/1.4 system-ui,"Segoe UI",Roboto,sans-serif;color:var(--ink);background:var(--bg)}
 header{position:fixed;top:0;left:0;right:0;height:56px;display:flex;gap:12px;align-items:center;padding:0 16px;background:var(--panel);border-bottom:1px solid var(--line);z-index:5}
-header h1{font-size:16px;margin:0;white-space:nowrap}
+header h1{font-size:15px;line-height:1.15;margin:0;white-space:nowrap}
 #searchBox{position:relative;flex:1;max-width:460px}
 #q{width:100%;padding:8px 12px;border:1px solid var(--line);border-radius:8px;font:inherit;background:var(--bg);color:var(--ink)}
 #q:focus{outline:2px solid #c9b8f0;border-color:#a08ad8}
@@ -111,7 +111,7 @@ select{font:inherit;font-size:13px;padding:5px 6px;border:1px solid var(--line);
 </head>
 <body>
 <header>
-  <h1 data-i18n="title">Космология Книги Урантии</h1>
+  <h1 data-i18n-html="h1">Космология личностей<br>по Книге Урантии</h1>
   <div id="searchBox"><input id="q" data-i18n-ph="search" placeholder="Поиск: личность или категория…" autocomplete="off"><div id="res"></div></div>
   <div id="zoomBox"><button id="zOut" title="−">−</button><input type="range" id="zoom" min="0" max="1000" step="1"><button id="zIn" title="+">+</button><span id="zHint" data-i18n="zHint"></span><button id="bHelp" data-i18n-title="help" title="?">?</button></div>
   <input type="checkbox" id="dimToggle" checked hidden>
@@ -199,14 +199,14 @@ const unitById={};UNITS.forEach(u=>unitById[u.id]=u);
    1) словарь интерфейса UI.xx;  2) поля xx в данных (имена, описания, блоки, категории).
    Чего нет на языке — берётся en, затем ru. Язык: ?lang=xx в адресе, иначе выбор пользователя / язык браузера. */
 const UI={
- ru:{_name:'Русский',title:'Космология Книги Урантии',search:'Поиск: личность или категория…',dim:'затенять остальное',
+ ru:{_name:'Русский',title:'Космология личностей по Книге Урантии',h1:'Космология личностей<br>по Книге Урантии',search:'Поиск: личность или категория…',dim:'затенять остальное',
   origin:'Происхождение',oA:'Абсолют',oT:'Троица',oF:'Всеобщий Отец',oS:'Вечный Сын',oD:'Бесконечный Дух',oE:'эволюционное происхождение',oF2:'Отец',oS2:'Сын',oD2:'Дух',oE2:'эволюц.',
   icons:'Пиктограммы',iconsTxt:'○ Божество · ◎ три лазурных круга — происхождение от Троицы · ▽ нисходящий Сын · крылья — ангел · ◯ дух · ◇ сын локальной вселенной · △ восходящий. Щелчок по названию блока — выделить блок и открыть описание. Точки внутри — происхождение.',
   cats:'Категории',funcs:'Функции',zHint:'Ctrl + колесо — масштаб · колесо — прокрутка',help:'Как пользоваться',gZoom:'Ctrl + колесо мыши — масштаб схемы. Можно и бегунком вверху.',gScroll:'Колесо мыши — прокрутка вверх и вниз, Shift + колесо — вбок. Схему также можно тянуть мышью.',gSearch:'Поиск: начните вводить имя — схема сама перелетит к карточке, а при наведении видны связи и перелёты.',gWord:'Михаилы',gNext:'Дальше',gDone:'Понятно',gSkip:'Пропустить',catsHint:'(клик — выделить)',links:'Связи',lOrigin:'происхождение',classes:'Класс по происхождению (заливка)',cClass:'Класс по происхождению',lAscent:'восхождение',lService:'служение / пребывание',layout:'Раскладка',
   dragHint:'Карточки можно перетаскивать — линии перестраиваются в обход.',fit:'Вся схема',undo:'Отменить',lLong:'дальние связи всегда',links:'Связи вне экрана',target:'Перенос сюда',servesHere:'служит здесь',serves:'Функционирует',pairT:'вместе с',export:'Экспорт раскладки',reset:'Сброс',close:'Закрыть',
   cOrigin:'Происхождение (линия Божеств)',cPlace:'Место служения',cParents:'Порождён(ы)',cChildren:'Порождает',cSource:'Источник',book:'Книга Урантии',
   catWord:'категория',none:'Ничего не найдено',theme_auto:'◐ Авто',theme_light:'☀ Светлая',theme_dark:'☾ Тёмная',status:'Линий: {n} · трассировка {ms} мс · пересечений: {x}'},
- en:{_name:'English',title:'Urantia Book Cosmology',search:'Search: personality or category…',dim:'dim the rest',
+ en:{_name:'English',title:'Cosmology of Personalities in the Urantia Book',h1:'Cosmology of Personalities<br>in the Urantia Book',search:'Search: personality or category…',dim:'dim the rest',
   origin:'Origin',oA:'Absolute',oT:'Trinity',oF:'Universal Father',oS:'Eternal Son',oD:'Infinite Spirit',oE:'evolutionary origin',oF2:'Father',oS2:'Son',oD2:'Spirit',oE2:'evolut.',
   icons:'Icons',iconsTxt:'○ Deity · ◎ three azure circles — Trinity origin · ▽ descending Son · wings — angel · ◯ spirit · ◇ local universe son · △ ascender. Click a block title to highlight it and open its description. Dots inside show origin.',
   cats:'Categories',funcs:'Functions',zHint:'Ctrl + wheel — zoom · wheel — scroll',help:'How to use',gZoom:'Ctrl + mouse wheel zooms the map. The slider at the top works too.',gScroll:'Mouse wheel scrolls up and down, Shift + wheel sideways. You can also drag the map.',gSearch:'Search: start typing a name — the map flies to the card; hovering shows links and transfers.',gWord:'Michael',gNext:'Next',gDone:'Got it',gSkip:'Skip',catsHint:'(click to highlight)',links:'Links',lOrigin:'origin',classes:'Origin class (card tint)',cClass:'Origin class',lAscent:'ascent',lService:'ministry / indwelling',layout:'Layout',
@@ -623,6 +623,7 @@ function render(){drawUnits();drawNodes();drawGhosts();routeCached();drawEdges()
 /* ===================== ЯЗЫК И ТЕМА: переключение ===================== */
 function applyLang(){document.documentElement.lang=LANG;document.title=t('title');
  document.querySelectorAll('[data-i18n]').forEach(e=>e.textContent=t(e.dataset.i18n));
+ document.querySelectorAll('[data-i18n-html]').forEach(e=>e.innerHTML=t(e.dataset.i18nHtml));
  document.querySelectorAll('[data-i18n-ph]').forEach(e=>e.placeholder=t(e.dataset.i18nPh));
  document.querySelectorAll('[data-i18n-title]').forEach(e=>e.title=t(e.dataset.i18nTitle));
  drawCats();updThemeBtn();document.getElementById('ver').textContent=(LANG==='ru'?'Версия ':'Version ')+(D.meta.version||'')}

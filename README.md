@@ -1,4 +1,4 @@
-# Космология Книги Урантии
+# Космология личностей по Книге Урантии
 
 **Открыть схему:** https://alyuev.github.io/UniverseGenealogy_UrantiaBook_2D/
 
