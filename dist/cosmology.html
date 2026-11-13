@@ -81,6 +81,7 @@ aside{position:fixed;background:var(--panel);border:1px solid var(--line);border
 #lgToggle{float:right;border:0;padding:0 4px;font-size:16px;background:none}
 .chip{display:inline-flex;align-items:center;gap:6px;padding:3px 8px;border-radius:999px;border:1px solid var(--line);margin:2px;cursor:pointer;font-size:12px;background:var(--panel);color:var(--ink)}
 body:not(.edit) .edit-only{display:none!important}
+button.ico{padding:4px 7px;line-height:0;font-size:16px;min-width:34px;height:30px}button.ico svg{border-radius:2px;box-shadow:0 0 0 1px #0003}
 .chip i{width:10px;height:10px;border-radius:3px;display:inline-block;box-shadow:0 0 0 1px #0003}
 .chip.on{background:var(--hov);border-color:#a08ad8}
 .row{display:flex;align-items:center;gap:8px;margin:3px 0}
@@ -111,7 +112,7 @@ select{font:inherit;font-size:13px;padding:5px 6px;border:1px solid var(--line);
 #guide .key{fill:var(--panel);stroke:var(--ink);stroke-width:1.5}#guide .kt{font:600 13px system-ui;fill:var(--ink)}
 #guide .key.off,#guide .kt.off{opacity:.15}
 #guide .whl{animation:whl 1.1s ease-in-out infinite}@keyframes whl{0%,100%{transform:translateY(-3px)}50%{transform:translateY(4px)}}
-@media (max-width:700px){#zoom,#zHint,#bHelp{display:none}header{gap:6px;padding:0 8px}#searchBox{min-width:0}#langSel{max-width:64px}#bTheme{padding:4px 6px}
+@media (max-width:700px){#zoom,#zHint,#bHelp{display:none}header{gap:6px;padding:0 8px}#searchBox{min-width:0}
  #legend{left:8px;bottom:8px;width:auto;max-width:calc(100% - 16px);max-height:55%}#card{left:8px;right:8px;width:auto;top:auto;bottom:8px;max-height:50%}header h1{display:none}}
 </style>
 </head>
@@ -121,8 +122,8 @@ select{font:inherit;font-size:13px;padding:5px 6px;border:1px solid var(--line);
   <div id="searchBox"><input id="q" data-i18n-ph="search" placeholder="Поиск: личность или категория…" autocomplete="off"><div id="res"></div></div>
   <div id="zoomBox"><button id="zOut" title="−">−</button><input type="range" id="zoom" min="0" max="1000" step="1"><button id="zIn" title="+">+</button><span id="zHint" data-i18n="zHint"></span><button id="bHelp" data-i18n-title="help" title="?">?</button></div>
   <input type="checkbox" id="dimToggle" checked hidden>
-  <select id="langSel" title="Language"></select>
-  <button id="bTheme" title="Тема"></button>
+  <button id="bLang" class="ico" title="Язык / Language"></button>
+  <button id="bTheme" class="ico"></button>
 </header>
 <div id="guide"><svg id="gTouch" width="70" height="86" viewBox="0 0 70 86"><rect x="8" y="2" width="54" height="82" rx="9" fill="none" stroke="currentColor" stroke-width="2"/>
 <circle class="f1" cx="35" cy="43" r="7" fill="var(--accent)" fill-opacity=".75"/><circle class="f2" cx="35" cy="43" r="7" fill="var(--accent)" fill-opacity=".75"/></svg><svg id="gMouse" width="96" height="86" viewBox="0 0 96 86"><rect class="key" id="gKey" x="2" y="30" width="38" height="26" rx="5"/><text class="kt" id="gKt" x="21" y="48" text-anchor="middle">Ctrl</text>
@@ -209,17 +210,17 @@ const UI={
  ru:{_name:'Русский',title:'Космология личностей по Книге Урантии',h1:'Космология личностей<br>по Книге Урантии',search:'Поиск: личность или категория…',dim:'затенять остальное',
   origin:'Происхождение',oA:'Абсолют',oT:'Троица',oF:'Всеобщий Отец',oS:'Вечный Сын',oD:'Бесконечный Дух',oE:'эволюционное происхождение',oF2:'Отец',oS2:'Сын',oD2:'Дух',oE2:'эволюц.',
   icons:'Пиктограммы',iconsTxt:'○ Божество · ◎ три лазурных круга — происхождение от Троицы · ▽ нисходящий Сын · крылья — ангел · ◯ дух · ◇ сын локальной вселенной · △ восходящий. Щелчок по названию блока — выделить блок и открыть описание. Точки внутри — происхождение.',
-  cats:'Категории',funcs:'Функции',zHint:'Ctrl + колесо — масштаб · колесо — прокрутка',help:'Как пользоваться',gZoom:'Ctrl + колесо мыши — масштаб схемы. Можно и бегунком вверху.',gScroll:'Колесо мыши — прокрутка вверх и вниз, Shift + колесо — вбок. Схему также можно тянуть мышью.',gSearch:'Поиск: начните вводить имя — схема сама перелетит к карточке, а при наведении видны связи и перелёты.',gWord:'Михаилы',tZoom:'Разведите или сведите два пальца — масштаб схемы. Кнопки − и + вверху тоже работают.',tPan:'Ведите одним пальцем — схема сдвигается.',tSearch:'Поиск: начните вводить имя — схема перелетит к карточке.',tTap:'Коснитесь карточки — покажутся связи и перелёты. Коснитесь ещё раз — откроется описание.',gNext:'Дальше',gDone:'Понятно',gSkip:'Пропустить',catsHint:'(клик — выделить)',links:'Связи',lOrigin:'происхождение',classes:'Класс по происхождению (заливка)',cClass:'Класс по происхождению',lAscent:'восхождение',lService:'служение / пребывание',layout:'Раскладка',
+  cats:'Категории',funcs:'Функции',zHint:'Ctrl + колесо — масштаб · колесо — прокрутка',help:'Как пользоваться',gZoom:'Ctrl + колесо мыши — масштаб схемы. Можно и бегунком вверху.',gScroll:'Колесо мыши — прокрутка вверх и вниз, Shift + колесо — вбок. Схему также можно тянуть мышью.',gSearch:'Поиск: начните вводить имя — схема сама перелетит к карточке, а при наведении видны связи и перелёты.',gWord:'Михаилы',tZoom:'Разведите или сведите два пальца — масштаб схемы. Кнопки − и + вверху тоже работают.',tPan:'Ведите одним пальцем — схема сдвигается.',tSearch:'Поиск: начните вводить имя — схема перелетит к карточке.',tTap:'Коснитесь карточки — покажутся связи и перелёты. Долгое касание — откроется описание.',gNext:'Дальше',gDone:'Понятно',gSkip:'Пропустить',catsHint:'(клик — выделить)',links:'Связи',lOrigin:'происхождение',classes:'Класс по происхождению (заливка)',cClass:'Класс по происхождению',lAscent:'восхождение',lService:'служение / пребывание',layout:'Раскладка',
   dragHint:'Карточки можно перетаскивать — линии перестраиваются в обход.',fit:'Вся схема',undo:'Отменить',lLong:'дальние связи всегда',links:'Связи вне экрана',target:'Перенос сюда',servesHere:'служит здесь',serves:'Функционирует',pairT:'вместе с',export:'Экспорт раскладки',reset:'Сброс',close:'Закрыть',
   cOrigin:'Происхождение (линия Божеств)',cPlace:'Место служения',cParents:'Порождён(ы)',cChildren:'Порождает',cSource:'Источник',book:'Книга Урантии',
-  catWord:'категория',none:'Ничего не найдено',theme_auto:'◐ Авто',theme_light:'☀ Светлая',theme_dark:'☾ Тёмная',status:'Линий: {n} · трассировка {ms} мс · пересечений: {x}'},
+  catWord:'категория',none:'Ничего не найдено',theme_light:'Светлая тема',theme_dark:'Тёмная тема',status:'Линий: {n} · трассировка {ms} мс · пересечений: {x}'},
  en:{_name:'English',title:'Cosmology of Personalities in the Urantia Book',h1:'Cosmology of Personalities<br>in the Urantia Book',search:'Search: personality or category…',dim:'dim the rest',
   origin:'Origin',oA:'Absolute',oT:'Trinity',oF:'Universal Father',oS:'Eternal Son',oD:'Infinite Spirit',oE:'evolutionary origin',oF2:'Father',oS2:'Son',oD2:'Spirit',oE2:'evolut.',
   icons:'Icons',iconsTxt:'○ Deity · ◎ three azure circles — Trinity origin · ▽ descending Son · wings — angel · ◯ spirit · ◇ local universe son · △ ascender. Click a block title to highlight it and open its description. Dots inside show origin.',
-  cats:'Categories',funcs:'Functions',zHint:'Ctrl + wheel — zoom · wheel — scroll',help:'How to use',gZoom:'Ctrl + mouse wheel zooms the map. The slider at the top works too.',gScroll:'Mouse wheel scrolls up and down, Shift + wheel sideways. You can also drag the map.',gSearch:'Search: start typing a name — the map flies to the card; hovering shows links and transfers.',gWord:'Michael',tZoom:'Spread or pinch two fingers to zoom. The − and + buttons at the top work too.',tPan:'Drag with one finger to move the map.',tSearch:'Search: start typing a name — the map flies to the card.',tTap:'Tap a card to see its links and transfers. Tap again to open its description.',gNext:'Next',gDone:'Got it',gSkip:'Skip',catsHint:'(click to highlight)',links:'Links',lOrigin:'origin',classes:'Origin class (card tint)',cClass:'Origin class',lAscent:'ascent',lService:'ministry / indwelling',layout:'Layout',
+  cats:'Categories',funcs:'Functions',zHint:'Ctrl + wheel — zoom · wheel — scroll',help:'How to use',gZoom:'Ctrl + mouse wheel zooms the map. The slider at the top works too.',gScroll:'Mouse wheel scrolls up and down, Shift + wheel sideways. You can also drag the map.',gSearch:'Search: start typing a name — the map flies to the card; hovering shows links and transfers.',gWord:'Michael',tZoom:'Spread or pinch two fingers to zoom. The − and + buttons at the top work too.',tPan:'Drag with one finger to move the map.',tSearch:'Search: start typing a name — the map flies to the card.',tTap:'Tap a card to see its links and transfers. Long-press to open its description.',gNext:'Next',gDone:'Got it',gSkip:'Skip',catsHint:'(click to highlight)',links:'Links',lOrigin:'origin',classes:'Origin class (card tint)',cClass:'Origin class',lAscent:'ascent',lService:'ministry / indwelling',layout:'Layout',
   dragHint:'Cards can be dragged — lines reroute around them.',fit:'Whole map',undo:'Undo',lLong:'always show long links',links:'Off-screen links',target:'Moving here',servesHere:'serves here',serves:'Functions in',pairT:'together with',export:'Export layout',reset:'Reset',close:'Close',
   cOrigin:'Origin (Deity lineage)',cPlace:'Place of service',cParents:'Created by',cChildren:'Creates',cSource:'Source',book:'The Urantia Book',
-  catWord:'category',none:'Nothing found',theme_auto:'◐ Auto',theme_light:'☀ Light',theme_dark:'☾ Dark',status:'Lines: {n} · routing {ms} ms · crossings: {x}'}};
+  catWord:'category',none:'Nothing found',theme_light:'Light theme',theme_dark:'Dark theme',status:'Lines: {n} · routing {ms} ms · crossings: {x}'}};
 const qs=new URLSearchParams(location.search);
 // Режим правки раскладки (перетаскивание карточек): только с ?edit в адресе. В релизе выключен.
 const EDIT=qs.has('edit');document.body.classList.toggle('edit',EDIT);
@@ -403,7 +404,8 @@ function drawGhosts(){const g=document.getElementById('gNodes');
   if(GHOST_NAME[h.of]){c.querySelectorAll('text[x="52"]').forEach(x=>x.remove());const nm=L(GHOST_NAME[h.of]);el('text',{x:52,y:NH/2+4},c).textContent=nm}
   el('text',{class:'gtag',x:NW/2,y:NH+13,'text-anchor':'middle'},c).textContent=t('servesHere');
   c.addEventListener('pointerenter',e=>{if(e.pointerType==='mouse'&&!drag&&!pan)hover(h.of,'up')});c.addEventListener('pointerleave',e=>{if(e.pointerType==='mouse')hover(null)});
-  c.addEventListener('pointerdown',ev=>{ev.stopPropagation();if(ev.pointerType!=='mouse'&&curHover!==h.of){hideCard();hover(h.of,'up')}else select(h.of)});g.appendChild(c);nodeEl[h.id]=c})}
+  c.addEventListener('pointerdown',ev=>{ev.stopPropagation();if(ev.pointerType==='mouse')return select(h.of);c._lt=setTimeout(()=>{c._lt=0;select(h.of)},550)});
+  c.addEventListener('pointerup',ev=>{if(ev.pointerType!=='mouse'&&c._lt){clearTimeout(c._lt);c._lt=0;hideCard();hover(h.of,'up')}});g.appendChild(c);nodeEl[h.id]=c})}
 function drawPairs(){const g=document.getElementById('gPairs');g.innerHTML='';
  PAIRS.forEach(pr=>['',''+'~'].forEach(pre=>{const R=pr.map(i=>byId[pre+i]).filter(Boolean).map(p=>rectOf(p.id));if(R.length<2)return;
   const x0=Math.min(...R.map(r=>r.x))-12,y0=Math.min(...R.map(r=>r.y))-12,x1=Math.max(...R.map(r=>r.x+r.w))+12,y1=Math.max(...R.map(r=>r.y+r.h))+(pre?24:12);
@@ -516,10 +518,11 @@ svg.addEventListener('wheel',ev=>{ev.preventDefault();
  const nw=Math.min(Math.max(vb.w*k,250),W*3);const kk=nw/vb.w;vb={x:p.x-(p.x-vb.x)*kk,y:p.y-(p.y-vb.y)*kk,w:vb.w*kk,h:vb.h*kk};setVB()},{passive:false});
 let pan=null,drag=null;
 /* Сенсорный экран: два пальца — масштаб; касание карточки — связи, повторное касание — описание. */
-const tp=new Map();let pinch=null;
+const tp=new Map();let pinch=null;svg.addEventListener('contextmenu',e=>e.preventDefault());svg.style.webkitTouchCallout='none';
 svg.addEventListener('pointerdown',ev=>{tp.set(ev.pointerId,{x:ev.clientX,y:ev.clientY});if(tp.size===2){const[a,b]=[...tp.values()],B=svg.getBoundingClientRect(),mx=(a.x+b.x)/2,my=(a.y+b.y)/2;
  pinch={d0:Math.hypot(a.x-b.x,a.y-b.y),vb0:{...vb},wx:vb.x+(mx-B.left)/B.width*vb.w,wy:vb.y+(my-B.top)/B.height*vb.h};pan=null;svg.setPointerCapture(ev.pointerId);return}},true);
-svg.addEventListener('pointerdown',ev=>{if(pinch)return;ev.preventDefault();window.getSelection()?.removeAllRanges();if(drag)return;pan={x:ev.clientX,y:ev.clientY,vb:{...vb},s:1/svg.getScreenCTM().a,moved:false,unit:ev.target.classList?.contains('ulab')?ev.target.parentNode.dataset.u:null,node:ev.target.closest?.('.node')?.dataset.pid||null};svg.classList.add('panning');svg.setPointerCapture(ev.pointerId)});
+svg.addEventListener('pointerdown',ev=>{if(pinch)return;ev.preventDefault();window.getSelection()?.removeAllRanges();if(drag)return;pan={x:ev.clientX,y:ev.clientY,vb:{...vb},s:1/svg.getScreenCTM().a,moved:false,unit:ev.target.classList?.contains('ulab')?ev.target.parentNode.dataset.u:null,node:ev.target.closest?.('.node')?.dataset.pid||null};svg.classList.add('panning');svg.setPointerCapture(ev.pointerId);
+ if(ev.pointerType!=='mouse'&&pan.node){const pn=pan;pn.lt=setTimeout(()=>{if(pan===pn&&!pn.moved){pn.long=true;select(pn.node)}},550)}}); // долгое касание — описание
 svg.addEventListener('pointermove',ev=>{
  if(tp.has(ev.pointerId))tp.set(ev.pointerId,{x:ev.clientX,y:ev.clientY});
  if(pinch&&tp.size>=2){const[a,b]=[...tp.values()],B=svg.getBoundingClientRect(),mx=(a.x+b.x)/2,my=(a.y+b.y)/2,v=pinch.vb0;
@@ -527,12 +530,12 @@ svg.addEventListener('pointermove',ev=>{
  if(drag){if(!EDIT)return;const p=toWorld(ev.clientX,ev.clientY),dx=p.x-drag.sx,dy=p.y-drag.sy;if(Math.abs(dx)+Math.abs(dy)>3)drag.moved=true;if(!drag.moved)return;
   drag.p.x=drag.ox+dx;drag.p.y=drag.oy+dy;nodeEl[drag.p.id].setAttribute('transform',`translate(${drag.p.x},${drag.p.y})`);
   edges.forEach(e=>{if(e.from===drag.p.id||e.to===drag.p.id){const d=pathD(straight(e));edgeEl.get(e).querySelectorAll('path').forEach(x=>x.setAttribute('d',d))}});return}
- if(pan){const dx=(ev.clientX-pan.x)*pan.s,dy=(ev.clientY-pan.y)*pan.s;if(Math.abs(dx)+Math.abs(dy)>2)pan.moved=true;vb.x=pan.vb.x-dx;vb.y=pan.vb.y-dy;setVB()}});
+ if(pan){const dx=(ev.clientX-pan.x)*pan.s,dy=(ev.clientY-pan.y)*pan.s;if(Math.abs(dx)+Math.abs(dy)>2){pan.moved=true;clearTimeout(pan.lt)}vb.x=pan.vb.x-dx;vb.y=pan.vb.y-dy;setVB()}});
 const tpEnd=ev=>{tp.delete(ev.pointerId);if(pinch&&tp.size<2){pinch=null;pan=null;svg.classList.remove('panning')}};
 svg.addEventListener('pointercancel',tpEnd);
 svg.addEventListener('pointerup',ev=>{const wasPinch=!!pinch||tp.size>1;tpEnd(ev);if(wasPinch)return;
  if(drag){const p=drag.p;if(drag.moved){p.x=Math.round(p.x/G)*G;p.y=Math.round(p.y/G)*G;nodeEl[p.id].setAttribute('transform',`translate(${p.x},${p.y})`);undoStack.push({id:p.id,x:drag.ox,y:drag.oy});updUndo();savePos();routeAll();drawEdges();reapply()}else select(p.id);drag=null;return}
- if(pan){svg.classList.remove('panning');if(!pan.moved){const touch=ev.pointerType!=='mouse';if(pan.node&&touch&&curHover!==pan.node){hideCard();hover(pan.node)}else if(pan.node)select(pan.node);else if(pan.unit)select(pan.unit);else{if(touch)hover(null);clearSel()}}pan=null}});
+ if(pan){svg.classList.remove('panning');clearTimeout(pan.lt);if(pan.long){pan=null;return}if(!pan.moved){const touch=ev.pointerType!=='mouse';if(pan.node&&touch){hideCard();hover(pan.node)}else if(pan.node)select(pan.node);else if(pan.unit)select(pan.unit);else{if(touch)hover(null);clearSel()}}pan=null}});
 function startDrag(ev,p){if(!EDIT){ev.target.closest('.node').dataset.pid=p.id;return}ev.stopPropagation();const w=toWorld(ev.clientX,ev.clientY);drag={p,sx:w.x,sy:w.y,ox:p.x,oy:p.y,moved:false};svg.setPointerCapture(ev.pointerId)}
 let anim=null;
 function flyTo(r){const asp=svg.clientWidth/svg.clientHeight;let w=Math.max(r.w*3.2,700),h=w/asp;if(h<r.h*3){h=r.h*3;w=h*asp}
@@ -642,14 +645,17 @@ function applyLang(){document.documentElement.lang=LANG;document.title=t('title'
  document.querySelectorAll('[data-i18n-html]').forEach(e=>e.innerHTML=t(e.dataset.i18nHtml));
  document.querySelectorAll('[data-i18n-ph]').forEach(e=>e.placeholder=t(e.dataset.i18nPh));
  document.querySelectorAll('[data-i18n-title]').forEach(e=>e.title=t(e.dataset.i18nTitle));
- drawCats();updThemeBtn();document.getElementById('ver').textContent=(LANG==='ru'?'Версия ':'Version ')+(D.meta.version||'')}
-const langSel=document.getElementById('langSel');
-langSel.innerHTML=Object.keys(UI).map(k=>`<option value="${k}">${UI[k]._name}</option>`).join('');langSel.value=LANG;
-langSel.onchange=()=>{LANG=langSel.value;store.set('ku-lang',LANG);applyLang();render();if(sel)showCard(sel)};
-const THEMES=['auto','light','dark'];let THEME=qs.get('theme')||store.get('ku-theme')||'auto';
-function applyTheme(){THEME==='auto'?document.documentElement.removeAttribute('data-theme'):document.documentElement.setAttribute('data-theme',THEME);updThemeBtn()}
-function updThemeBtn(){document.getElementById('bTheme').textContent=t('theme_'+THEME)}
-document.getElementById('bTheme').onclick=()=>{THEME=THEMES[(THEMES.indexOf(THEME)+1)%3];store.set('ku-theme',THEME);applyTheme()};
+ drawCats();updThemeBtn();updLangBtn?.();document.getElementById('ver').textContent=(LANG==='ru'?'Версия ':'Version ')+(D.meta.version||'')}
+/* Язык — флажок (щелчок переключает), тема — пиктограмма: светлая / тёмная. */
+const FLAGS={ru:'<svg width="22" height="15" viewBox="0 0 9 6"><rect width="9" height="2" fill="#fff"/><rect y="2" width="9" height="2" fill="#0039a6"/><rect y="4" width="9" height="2" fill="#d52b1e"/></svg>',
+ en:'<svg width="22" height="15" viewBox="0 0 60 30"><clipPath id="fc"><rect width="60" height="30"/></clipPath><g clip-path="url(#fc)"><rect width="60" height="30" fill="#012169"/><path d="M0,0 60,30M60,0 0,30" stroke="#fff" stroke-width="6"/><path d="M0,0 60,30M60,0 0,30" stroke="#c8102e" stroke-width="2"/><path d="M30,0V30M0,15H60" stroke="#fff" stroke-width="10"/><path d="M30,0V30M0,15H60" stroke="#c8102e" stroke-width="6"/></g></svg>'};
+const bLang=document.getElementById('bLang'),LANGS=Object.keys(UI);
+function updLangBtn(){bLang.innerHTML=FLAGS[LANG]||LANG.toUpperCase();bLang.title=UI[LANG]._name+' → '+UI[LANGS[(LANGS.indexOf(LANG)+1)%LANGS.length]]._name}
+bLang.onclick=()=>{LANG=LANGS[(LANGS.indexOf(LANG)+1)%LANGS.length];store.set('ku-lang',LANG);applyLang();render();if(sel)showCard(sel)};
+let THEME=qs.get('theme')||store.get('ku-theme');if(THEME!=='light'&&THEME!=='dark')THEME=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+function applyTheme(){document.documentElement.setAttribute('data-theme',THEME);updThemeBtn()}
+function updThemeBtn(){const b=document.getElementById('bTheme');b.textContent=THEME==='dark'?'☀':'☾';b.title=t(THEME==='dark'?'theme_light':'theme_dark')}
+document.getElementById('bTheme').onclick=()=>{THEME=THEME==='dark'?'light':'dark';store.set('ku-theme',THEME);applyTheme()};
 applyTheme();applyLang();render();
 try{const v=JSON.parse(localStorage.getItem('ku-view')||'null');if(v&&[v.x,v.y,v.w,v.h].every(Number.isFinite)&&v.w>0)vb=v}catch(e){}
 setVB();
