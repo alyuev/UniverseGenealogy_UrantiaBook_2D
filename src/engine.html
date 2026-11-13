@@ -518,10 +518,10 @@ svg.addEventListener('wheel',ev=>{ev.preventDefault();
  const nw=Math.min(Math.max(vb.w*k,250),W*3);const kk=nw/vb.w;vb={x:p.x-(p.x-vb.x)*kk,y:p.y-(p.y-vb.y)*kk,w:vb.w*kk,h:vb.h*kk};setVB()},{passive:false});
 let pan=null,drag=null;
 /* Сенсорный экран: два пальца — масштаб; касание карточки — связи, повторное касание — описание. */
-const tp=new Map();let pinch=null;svg.addEventListener('contextmenu',e=>e.preventDefault());svg.style.webkitTouchCallout='none';
+const tp=new Map();let pinch=null;svg.addEventListener('contextmenu',e=>{e.preventDefault();if(pan&&pan.node&&!pan.moved&&!pan.long){clearTimeout(pan.lt);pan.long=true;select(pan.node)}}); // долгое нажатие на телефоне часто приходит как contextmenusvg.style.webkitTouchCallout='none';
 svg.addEventListener('pointerdown',ev=>{tp.set(ev.pointerId,{x:ev.clientX,y:ev.clientY});if(tp.size===2){const[a,b]=[...tp.values()],B=svg.getBoundingClientRect(),mx=(a.x+b.x)/2,my=(a.y+b.y)/2;
  pinch={d0:Math.hypot(a.x-b.x,a.y-b.y),vb0:{...vb},wx:vb.x+(mx-B.left)/B.width*vb.w,wy:vb.y+(my-B.top)/B.height*vb.h};pan=null;svg.setPointerCapture(ev.pointerId);return}},true);
-svg.addEventListener('pointerdown',ev=>{if(pinch)return;ev.preventDefault();window.getSelection()?.removeAllRanges();if(drag)return;pan={x:ev.clientX,y:ev.clientY,vb:{...vb},s:1/svg.getScreenCTM().a,moved:false,unit:ev.target.classList?.contains('ulab')?ev.target.parentNode.dataset.u:null,node:ev.target.closest?.('.node')?.dataset.pid||null};svg.classList.add('panning');svg.setPointerCapture(ev.pointerId);
+svg.addEventListener('pointerdown',ev=>{if(document.activeElement===q)q.blur();res.style.display='none';if(pinch)return;ev.preventDefault();window.getSelection()?.removeAllRanges();if(drag)return;pan={x:ev.clientX,y:ev.clientY,vb:{...vb},s:1/svg.getScreenCTM().a,moved:false,unit:ev.target.classList?.contains('ulab')?ev.target.parentNode.dataset.u:null,node:ev.target.closest?.('.node')?.dataset.pid||null};svg.classList.add('panning');svg.setPointerCapture(ev.pointerId);
  if(ev.pointerType!=='mouse'&&pan.node){const pn=pan;pn.lt=setTimeout(()=>{if(pan===pn&&!pn.moved){pn.long=true;select(pn.node)}},550)}}); // долгое касание — описание
 svg.addEventListener('pointermove',ev=>{
  if(tp.has(ev.pointerId))tp.set(ev.pointerId,{x:ev.clientX,y:ev.clientY});
@@ -530,7 +530,7 @@ svg.addEventListener('pointermove',ev=>{
  if(drag){if(!EDIT)return;const p=toWorld(ev.clientX,ev.clientY),dx=p.x-drag.sx,dy=p.y-drag.sy;if(Math.abs(dx)+Math.abs(dy)>3)drag.moved=true;if(!drag.moved)return;
   drag.p.x=drag.ox+dx;drag.p.y=drag.oy+dy;nodeEl[drag.p.id].setAttribute('transform',`translate(${drag.p.x},${drag.p.y})`);
   edges.forEach(e=>{if(e.from===drag.p.id||e.to===drag.p.id){const d=pathD(straight(e));edgeEl.get(e).querySelectorAll('path').forEach(x=>x.setAttribute('d',d))}});return}
- if(pan){const dx=(ev.clientX-pan.x)*pan.s,dy=(ev.clientY-pan.y)*pan.s;if(Math.abs(dx)+Math.abs(dy)>2){pan.moved=true;clearTimeout(pan.lt)}vb.x=pan.vb.x-dx;vb.y=pan.vb.y-dy;setVB()}});
+ if(pan){const dx=(ev.clientX-pan.x)*pan.s,dy=(ev.clientY-pan.y)*pan.s;if(Math.hypot(ev.clientX-pan.x,ev.clientY-pan.y)>(ev.pointerType==='mouse'?3:10)){pan.moved=true;clearTimeout(pan.lt)}vb.x=pan.vb.x-dx;vb.y=pan.vb.y-dy;setVB()}});
 const tpEnd=ev=>{tp.delete(ev.pointerId);if(pinch&&tp.size<2){pinch=null;pan=null;svg.classList.remove('panning')}};
 svg.addEventListener('pointercancel',tpEnd);
 svg.addEventListener('pointerup',ev=>{const wasPinch=!!pinch||tp.size>1;tpEnd(ev);if(wasPinch)return;
