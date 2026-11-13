@@ -102,6 +102,11 @@ select{font:inherit;font-size:13px;padding:5px 6px;border:1px solid var(--line);
 @media (max-width:1150px){#zHint{display:none}}
 #guide{position:fixed;left:50%;bottom:40px;transform:translateX(-50%);z-index:20;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:14px;
  box-shadow:0 12px 40px #0004;padding:16px 20px;display:none;align-items:center;gap:18px;max-width:min(560px,calc(100% - 32px))}
+#guide #gTouch{display:none}#guide.touch #gTouch{display:block}#guide.touch #gMouse{display:none}
+#guide.pinch .f1{animation:pa 1.4s ease-in-out infinite}#guide.pinch .f2{animation:pb 1.4s ease-in-out infinite}
+@keyframes pa{0%,100%{transform:translate(-4px,4px)}50%{transform:translate(-16px,16px)}}@keyframes pb{0%,100%{transform:translate(4px,-4px)}50%{transform:translate(16px,-16px)}}
+#guide.pan .f2,#guide.tap .f2{display:none}#guide.pan .f1{animation:pn 1.6s ease-in-out infinite}@keyframes pn{0%,100%{transform:translateY(16px)}50%{transform:translateY(-16px)}}
+#guide.tap .f1{animation:tp 1.2s ease-in-out infinite;transform-origin:35px 43px}@keyframes tp{0%,60%,100%{transform:scale(1);opacity:1}30%{transform:scale(.6);opacity:.5}}
 #guide.on{display:flex}#guide p{margin:0 0 10px;font-size:15px;line-height:1.4}#guide .gb{display:flex;gap:8px;justify-content:flex-end}
 #guide .key{fill:var(--panel);stroke:var(--ink);stroke-width:1.5}#guide .kt{font:600 13px system-ui;fill:var(--ink)}
 #guide .key.off,#guide .kt.off{opacity:.15}
@@ -119,7 +124,8 @@ select{font:inherit;font-size:13px;padding:5px 6px;border:1px solid var(--line);
   <select id="langSel" title="Language"></select>
   <button id="bTheme" title="Тема"></button>
 </header>
-<div id="guide"><svg width="96" height="86" viewBox="0 0 96 86"><rect class="key" id="gKey" x="2" y="30" width="38" height="26" rx="5"/><text class="kt" id="gKt" x="21" y="48" text-anchor="middle">Ctrl</text>
+<div id="guide"><svg id="gTouch" width="70" height="86" viewBox="0 0 70 86"><rect x="8" y="2" width="54" height="82" rx="9" fill="none" stroke="currentColor" stroke-width="2"/>
+<circle class="f1" cx="35" cy="43" r="7" fill="var(--accent)" fill-opacity=".75"/><circle class="f2" cx="35" cy="43" r="7" fill="var(--accent)" fill-opacity=".75"/></svg><svg id="gMouse" width="96" height="86" viewBox="0 0 96 86"><rect class="key" id="gKey" x="2" y="30" width="38" height="26" rx="5"/><text class="kt" id="gKt" x="21" y="48" text-anchor="middle">Ctrl</text>
 <text x="46" y="48" class="kt" id="gPl" text-anchor="middle">+</text><rect x="54" y="8" width="38" height="68" rx="19" fill="none" stroke="currentColor" stroke-width="2"/><line x1="54" y1="36" x2="92" y2="36" stroke="currentColor" stroke-width="1.5"/>
 <line x1="73" y1="8" x2="73" y2="36" stroke="currentColor" stroke-width="1.5"/><rect class="whl" x="70" y="16" width="6" height="12" rx="3" fill="var(--accent)"/></svg>
 <div><p id="gTxt"></p><div class="gb"><button id="gSkip"></button><button id="gNext"></button></div></div></div>
@@ -203,14 +209,14 @@ const UI={
  ru:{_name:'Русский',title:'Космология личностей по Книге Урантии',h1:'Космология личностей<br>по Книге Урантии',search:'Поиск: личность или категория…',dim:'затенять остальное',
   origin:'Происхождение',oA:'Абсолют',oT:'Троица',oF:'Всеобщий Отец',oS:'Вечный Сын',oD:'Бесконечный Дух',oE:'эволюционное происхождение',oF2:'Отец',oS2:'Сын',oD2:'Дух',oE2:'эволюц.',
   icons:'Пиктограммы',iconsTxt:'○ Божество · ◎ три лазурных круга — происхождение от Троицы · ▽ нисходящий Сын · крылья — ангел · ◯ дух · ◇ сын локальной вселенной · △ восходящий. Щелчок по названию блока — выделить блок и открыть описание. Точки внутри — происхождение.',
-  cats:'Категории',funcs:'Функции',zHint:'Ctrl + колесо — масштаб · колесо — прокрутка',help:'Как пользоваться',gZoom:'Ctrl + колесо мыши — масштаб схемы. Можно и бегунком вверху.',gScroll:'Колесо мыши — прокрутка вверх и вниз, Shift + колесо — вбок. Схему также можно тянуть мышью.',gSearch:'Поиск: начните вводить имя — схема сама перелетит к карточке, а при наведении видны связи и перелёты.',gWord:'Михаилы',gNext:'Дальше',gDone:'Понятно',gSkip:'Пропустить',catsHint:'(клик — выделить)',links:'Связи',lOrigin:'происхождение',classes:'Класс по происхождению (заливка)',cClass:'Класс по происхождению',lAscent:'восхождение',lService:'служение / пребывание',layout:'Раскладка',
+  cats:'Категории',funcs:'Функции',zHint:'Ctrl + колесо — масштаб · колесо — прокрутка',help:'Как пользоваться',gZoom:'Ctrl + колесо мыши — масштаб схемы. Можно и бегунком вверху.',gScroll:'Колесо мыши — прокрутка вверх и вниз, Shift + колесо — вбок. Схему также можно тянуть мышью.',gSearch:'Поиск: начните вводить имя — схема сама перелетит к карточке, а при наведении видны связи и перелёты.',gWord:'Михаилы',tZoom:'Разведите или сведите два пальца — масштаб схемы. Кнопки − и + вверху тоже работают.',tPan:'Ведите одним пальцем — схема сдвигается.',tSearch:'Поиск: начните вводить имя — схема перелетит к карточке.',tTap:'Коснитесь карточки — покажутся связи и перелёты. Коснитесь ещё раз — откроется описание.',gNext:'Дальше',gDone:'Понятно',gSkip:'Пропустить',catsHint:'(клик — выделить)',links:'Связи',lOrigin:'происхождение',classes:'Класс по происхождению (заливка)',cClass:'Класс по происхождению',lAscent:'восхождение',lService:'служение / пребывание',layout:'Раскладка',
   dragHint:'Карточки можно перетаскивать — линии перестраиваются в обход.',fit:'Вся схема',undo:'Отменить',lLong:'дальние связи всегда',links:'Связи вне экрана',target:'Перенос сюда',servesHere:'служит здесь',serves:'Функционирует',pairT:'вместе с',export:'Экспорт раскладки',reset:'Сброс',close:'Закрыть',
   cOrigin:'Происхождение (линия Божеств)',cPlace:'Место служения',cParents:'Порождён(ы)',cChildren:'Порождает',cSource:'Источник',book:'Книга Урантии',
   catWord:'категория',none:'Ничего не найдено',theme_auto:'◐ Авто',theme_light:'☀ Светлая',theme_dark:'☾ Тёмная',status:'Линий: {n} · трассировка {ms} мс · пересечений: {x}'},
  en:{_name:'English',title:'Cosmology of Personalities in the Urantia Book',h1:'Cosmology of Personalities<br>in the Urantia Book',search:'Search: personality or category…',dim:'dim the rest',
   origin:'Origin',oA:'Absolute',oT:'Trinity',oF:'Universal Father',oS:'Eternal Son',oD:'Infinite Spirit',oE:'evolutionary origin',oF2:'Father',oS2:'Son',oD2:'Spirit',oE2:'evolut.',
   icons:'Icons',iconsTxt:'○ Deity · ◎ three azure circles — Trinity origin · ▽ descending Son · wings — angel · ◯ spirit · ◇ local universe son · △ ascender. Click a block title to highlight it and open its description. Dots inside show origin.',
-  cats:'Categories',funcs:'Functions',zHint:'Ctrl + wheel — zoom · wheel — scroll',help:'How to use',gZoom:'Ctrl + mouse wheel zooms the map. The slider at the top works too.',gScroll:'Mouse wheel scrolls up and down, Shift + wheel sideways. You can also drag the map.',gSearch:'Search: start typing a name — the map flies to the card; hovering shows links and transfers.',gWord:'Michael',gNext:'Next',gDone:'Got it',gSkip:'Skip',catsHint:'(click to highlight)',links:'Links',lOrigin:'origin',classes:'Origin class (card tint)',cClass:'Origin class',lAscent:'ascent',lService:'ministry / indwelling',layout:'Layout',
+  cats:'Categories',funcs:'Functions',zHint:'Ctrl + wheel — zoom · wheel — scroll',help:'How to use',gZoom:'Ctrl + mouse wheel zooms the map. The slider at the top works too.',gScroll:'Mouse wheel scrolls up and down, Shift + wheel sideways. You can also drag the map.',gSearch:'Search: start typing a name — the map flies to the card; hovering shows links and transfers.',gWord:'Michael',tZoom:'Spread or pinch two fingers to zoom. The − and + buttons at the top work too.',tPan:'Drag with one finger to move the map.',tSearch:'Search: start typing a name — the map flies to the card.',tTap:'Tap a card to see its links and transfers. Tap again to open its description.',gNext:'Next',gDone:'Got it',gSkip:'Skip',catsHint:'(click to highlight)',links:'Links',lOrigin:'origin',classes:'Origin class (card tint)',cClass:'Origin class',lAscent:'ascent',lService:'ministry / indwelling',layout:'Layout',
   dragHint:'Cards can be dragged — lines reroute around them.',fit:'Whole map',undo:'Undo',lLong:'always show long links',links:'Off-screen links',target:'Moving here',servesHere:'serves here',serves:'Functions in',pairT:'together with',export:'Export layout',reset:'Reset',close:'Close',
   cOrigin:'Origin (Deity lineage)',cPlace:'Place of service',cParents:'Created by',cChildren:'Creates',cSource:'Source',book:'The Urantia Book',
   catWord:'category',none:'Nothing found',theme_auto:'◐ Auto',theme_light:'☀ Light',theme_dark:'☾ Dark',status:'Lines: {n} · routing {ms} ms · crossings: {x}'}};
@@ -663,23 +669,27 @@ function animVB(to,D,tok){const fr={...vb},t0=performance.now();return new Promi
  const t=Math.min(1,(now-t0)/D),e=t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;vb={x:fr.x+(to.x-fr.x)*e,y:fr.y+(to.y-fr.y)*e,w:fr.w+(to.w-fr.w)*e,h:fr.h+(to.h-fr.h)*e};setVB();
  t<1?requestAnimationFrame(st):res()};requestAnimationFrame(st)})}
 const around=(id,w)=>{const r=rectOf(id),h=w*svg.clientHeight/svg.clientWidth;return{x:r.x+r.w/2-w/2,y:r.y+r.h/2-h/2,w,h}};
-async function demoZoom(tok){const far={...vb},near=around('michael',1100);
+async function demoZoom(tok){const far={...vb},near=around('michael',TOUCH?520:1100);
  for(let k=0;k<2&&tok===gTok;k++){await animVB(near,1400,tok);await sleep(500);if(k<1){await animVB(far,1200,tok);await sleep(300)}}}
 async function demoScroll(tok){const v0={...vb},d=vb.h*.6;
  for(let k=0;k<2&&tok===gTok;k++){await animVB({...v0,y:v0.y+d},1100,tok);await sleep(250);await animVB(v0,1100,tok);await sleep(250)}}
-async function demoSearch(tok){q.value='';const word=t('gWord');q.focus();
+async function demoSearch(tok){q.value='';const word=t('gWord');if(!TOUCH)q.focus();
  for(const ch of word){if(tok!==gTok)return;q.value+=ch;doSearch();await sleep(160)}
  await sleep(700);if(tok!==gTok)return;const it=items.find(i=>i.id==='michael')||items[0];pick(it);
  await sleep(1500);if(tok!==gTok)return;hideCard();hover('michael');await sleep(2600);if(tok===gTok)hover(null)}
-const GSTEPS=[['gZoom',demoZoom,true],['gScroll',demoScroll,false],['gSearch',demoSearch,false]];
-function guideShow(i){gTok++;const tok=gTok;gStep=i;if(i>=GSTEPS.length){guide.classList.remove('on');store.set('ku-guide','1');return}
- const[txt,fn,ctrl]=GSTEPS[i],last=i===GSTEPS.length-1;['gKey','gKt','gPl'].forEach(id=>document.getElementById(id).classList.toggle('off',!ctrl));
+async function demoTap(tok){await animVB(around('michael',TOUCH?480:900),1200,tok);if(tok!==gTok)return;await sleep(400);hover('michael');await sleep(2800);if(tok!==gTok)return;select('michael')}
+Object.defineProperty(window,'TOUCH',{get:()=>matchMedia('(hover:none)').matches}); // телефон/планшет без мыши
+const mkSteps=()=>TOUCH?[['tZoom',demoZoom,'pinch'],['tPan',demoScroll,'pan'],['tTap',demoTap,'tap'],['tSearch',demoSearch,'tap']]
+ :[['gZoom',demoZoom,true],['gScroll',demoScroll,false],['gSearch',demoSearch,false]];
+let GSTEPS=mkSteps();
+function guideShow(i){if(i===0)GSTEPS=mkSteps();gTok++;const tok=gTok;gStep=i;if(i>=GSTEPS.length){guide.classList.remove('on');store.set('ku-guide','1');return}
+ const[txt,fn,ctrl]=GSTEPS[i],last=i===GSTEPS.length-1;guide.classList.toggle('touch',TOUCH);['pinch','pan','tap'].forEach(c=>guide.classList.toggle(c,ctrl===c));['gKey','gKt','gPl'].forEach(id=>document.getElementById(id).classList.toggle('off',!ctrl));
  document.getElementById('gTxt').textContent=t(txt);document.getElementById('gNext').textContent=t(last?'gDone':'gNext');document.getElementById('gSkip').textContent=t('gSkip');
  document.getElementById('gSkip').style.display=last?'none':'';guide.classList.add('on');fn(tok)}
 document.getElementById('gNext').onclick=()=>guideShow(gStep+1);document.getElementById('gSkip').onclick=()=>guideShow(GSTEPS.length);
 document.getElementById('bHelp').onclick=()=>guideShow(0);document.getElementById('bDemo').onclick=()=>guideShow(0);
 ['wheel','pointerdown'].forEach(ev=>svg.addEventListener(ev,e=>{if(e.isTrusted&&guide.classList.contains('on'))guideShow(GSTEPS.length)}));
-if(!store.get('ku-guide')&&matchMedia('(pointer:fine)').matches)setTimeout(()=>guideShow(0),900);
+if(!store.get('ku-guide'))setTimeout(()=>guideShow(0),900);
 /* Запоминаем состояние панели слева внизу: свёрнута ли и галочки (затенение, типы связей). */
 (()=>{const K='ku-legend',lg=document.getElementById('legend'),bt=document.getElementById('lgToggle'),ids=['tOrigin','tService','tAscent','tLong'];
  const save=()=>store.set(K,JSON.stringify({min:lg.classList.contains('min'),...Object.fromEntries(ids.map(i=>[i,document.getElementById(i).checked]))}));
