@@ -14,7 +14,9 @@ header{position:fixed;top:0;left:0;right:0;height:56px;display:flex;gap:12px;ali
 header h1{font-size:15px;line-height:1.15;margin:0;white-space:nowrap}
 #searchBox{position:relative;flex:1;max-width:460px}
 #q{width:100%;padding:8px 12px;border:1px solid var(--line);border-radius:8px;font:inherit;background:var(--bg);color:var(--ink)}
-#q:focus{outline:2px solid #c9b8f0;border-color:#a08ad8}
+#q:focus{outline:2px solid #c9b8f0;border-color:#a08ad8}#q{padding-right:36px}
+#qx{position:absolute;right:2px;top:50%;transform:translateY(-50%);border:0;background:none;width:32px;height:32px;padding:0;font-size:19px;line-height:1;color:var(--muted)}
+#q:placeholder-shown~#qx{display:none} /* крестик виден, только когда в поиске есть текст */
 #res{position:absolute;top:40px;left:0;right:0;background:var(--panel);border:1px solid var(--line);border-radius:8px;box-shadow:0 8px 24px #0002;max-height:60vh;overflow:auto;display:none}
 #res div{padding:6px 10px;cursor:pointer;display:flex;gap:8px;align-items:center}
 #res div.on,#res div:hover{background:var(--hov)}
@@ -147,7 +149,7 @@ select{font:inherit;font-size:13px;padding:5px 6px;border:1px solid var(--line);
 <body>
 <header>
   <h1 data-i18n-html="h1">Космология личностей<br>по Книге Урантии</h1>
-  <div id="searchBox"><input id="q" data-i18n-ph="search" placeholder="Поиск: личность или категория…" autocomplete="off"><div id="res"></div></div>
+  <div id="searchBox"><input id="q" data-i18n-ph="search" placeholder="Поиск: личность или категория…" autocomplete="off"><button id="qx" type="button" data-i18n-title="clear">×</button><div id="res"></div></div>
   <div id="zoomBox"><button id="zOut" title="−">−</button><button id="zIn" title="+">+</button><button id="bFit" data-i18n-title="fit"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M1 5V1h4M9 1h4v4M13 9v4H9M5 13H1V9"/></svg></button><button id="bHelp" data-i18n-title="help" title="?">?</button></div>
   <input type="checkbox" id="dimToggle" checked hidden>
   <button id="bLang" title="Язык / Language"></button>
@@ -247,7 +249,7 @@ const UI={
   origin:'Происхождение',oA:'Абсолют',oT:'Троица',oF:'Всеобщий Отец',oS:'Вечный Сын',oD:'Бесконечный Дух',oE:'эволюционное происхождение',oF2:'Отец',oS2:'Сын',oD2:'Дух',oE2:'эволюц.',
   icons:'Пиктограммы',kDeity:'Божество',kTrin:'происхождение от Троицы',kDesc:'нисходящий Сын',kAngel:'ангел',kSpirit:'дух',kLocal:'сын локальной вселенной',kAsc:'восходящий',
   keyTxt:'Точки внутри пиктограммы — происхождение. Полоски над карточкой — категории, заливка — класс по происхождению. Щелчок по названию блока — выделить блок и открыть описание.',
-  tabF:'Фильтры',tabK:'Обозначения',back:'Назад',
+  tabF:'Фильтры',tabK:'Обозначения',back:'Назад',clear:'Очистить',
   cats:'Категории',funcs:'Функции',zHint:'Ctrl + колесо — масштаб · колесо — прокрутка',help:'Как пользоваться',gZoom:'Ctrl + колесо мыши — масштаб схемы. Можно и кнопками − и + вверху.',gScroll:'Колесо мыши — прокрутка вверх и вниз, Shift + колесо — вбок. Схему также можно тянуть мышью.',gSearch:'Поиск: начните вводить имя — схема сама перелетит к карточке, а при наведении видны связи и перелёты.',gWord:'Михаилы',tZoom:'Разведите или сведите два пальца — масштаб схемы.',tPan:'Ведите одним пальцем — схема сдвигается.',tSearch:'Поиск: начните вводить имя — схема перелетит к карточке.',tTap:'Коснитесь карточки — покажутся связи и краткое описание. Коснитесь описания — оно раскроется полностью.',gNext:'Дальше',gDone:'Понятно',gSkip:'Пропустить',catsHint:'(клик — выделить)',links:'Связи',lOrigin:'происхождение',classes:'Класс по происхождению (заливка)',cClass:'Класс по происхождению',lAscent:'восхождение',lService:'служение / пребывание',layout:'Раскладка',
   dragHint:'Карточки можно перетаскивать — линии перестраиваются в обход.',fit:'Вся схема',undo:'Отменить',lLong:'дальние связи всегда',linksOff:'Связи вне экрана',target:'Перенос сюда',servesHere:'служит здесь',serves:'Функционирует',pairT:'вместе с',export:'Экспорт раскладки',reset:'Сброс',close:'Закрыть',
   cOrigin:'Происхождение (линия Божеств)',cPlace:'Место служения',cParents:'Порождён(ы)',cChildren:'Порождает',cSource:'Источник',book:'Книга Урантии',
@@ -256,7 +258,7 @@ const UI={
   origin:'Origin',oA:'Absolute',oT:'Trinity',oF:'Universal Father',oS:'Eternal Son',oD:'Infinite Spirit',oE:'evolutionary origin',oF2:'Father',oS2:'Son',oD2:'Spirit',oE2:'evolut.',
   icons:'Icons',kDeity:'Deity',kTrin:'Trinity origin',kDesc:'descending Son',kAngel:'angel',kSpirit:'spirit',kLocal:'local universe son',kAsc:'ascender',
   keyTxt:'Dots inside an icon show origin. Stripes above a card are its categories; the tint is its origin class. Click a block title to highlight it and open its description.',
-  tabF:'Filters',tabK:'Key',back:'Back',
+  tabF:'Filters',tabK:'Key',back:'Back',clear:'Clear',
   cats:'Categories',funcs:'Functions',zHint:'Ctrl + wheel — zoom · wheel — scroll',help:'How to use',gZoom:'Ctrl + mouse wheel zooms the map. The − and + buttons at the top work too.',gScroll:'Mouse wheel scrolls up and down, Shift + wheel sideways. You can also drag the map.',gSearch:'Search: start typing a name — the map flies to the card; hovering shows links and transfers.',gWord:'Michael',tZoom:'Spread or pinch two fingers to zoom.',tPan:'Drag with one finger to move the map.',tSearch:'Search: start typing a name — the map flies to the card.',tTap:'Tap a card to see its links and a short description. Tap the description to open it in full.',gNext:'Next',gDone:'Got it',gSkip:'Skip',catsHint:'(click to highlight)',links:'Links',lOrigin:'origin',classes:'Origin class (card tint)',cClass:'Origin class',lAscent:'ascent',lService:'ministry / indwelling',layout:'Layout',
   dragHint:'Cards can be dragged — lines reroute around them.',fit:'Whole map',undo:'Undo',lLong:'always show long links',linksOff:'Off-screen links',target:'Moving here',servesHere:'serves here',serves:'Functions in',pairT:'together with',export:'Export layout',reset:'Reset',close:'Close',
   cOrigin:'Origin (Deity lineage)',cPlace:'Place of service',cParents:'Created by',cChildren:'Creates',cSource:'Source',book:'The Urantia Book',
@@ -397,7 +399,7 @@ function drawUnits(){const g=document.getElementById('gUnits');g.innerHTML='';
   gg.dataset.u=u.id;tx.classList.add('ulab');tx.style.cursor='pointer';
   tx.addEventListener('pointerenter',e=>{if(e.pointerType==='mouse'&&!drag&&!pan)hoverSoon(u.id)});tx.addEventListener('pointerleave',e=>{if(e.pointerType==='mouse')hoverSoon(null)})})}
 function drawNodes(){const g=document.getElementById('gNodes');g.innerHTML='';
- persons.forEach(p=>{const gg=el('g',{class:'node',transform:`translate(${p.x},${p.y})`},g);nodeEl[p.id]=gg;
+ persons.forEach(p=>{const gg=el('g',{class:'node',transform:`translate(${p.x},${p.y})`},g);nodeEl[p.id]=gg;gg.dataset.pid=p.id;
   el('rect',{class:'body',width:NW,height:NH,rx:10},gg);
   el('rect',{class:'tint',width:NW,height:NH,rx:10,fill:OCLS[p.oc].color},gg);
   el('path',{class:'lp',fill:OCLS[p.oc].color,d:`M10,1 H44 V${NH-1} H10 A9,9 0 0 1 1,${NH-10} V10 A9,9 0 0 1 10,1z`},gg);
@@ -426,7 +428,11 @@ function runEdges(list){clearTimeout(runT);document.querySelectorAll('.runner').
    cs.forEach((c,k)=>{c.setAttribute('cx',q[0]);c.setAttribute('cy',q[1]);c.style.opacity=q[2]===k+1?(t>.85?(1-t)/.15:1):0});
    if(t<1)requestAnimationFrame(st);else cs.forEach(c=>c.remove())};requestAnimationFrame(st)})}
 /* Мышь: подсветка включается с небольшой задержкой — схема не мигает, когда курсор просто проходит над карточками. */
-let hovT=0;function hoverSoon(id,noFx){clearTimeout(hovT);if(id)hovT=setTimeout(()=>hover(id,noFx),90);else if(curHover)hover(null)}
+/* Пока открыта вторая часть экрана, мышь должна успеть до неё дойти: закрытие — через 0,7 с после ухода с карточки,
+   а чужая карточка по дороге перехватывает подсветку, только если на ней задержаться. */
+let hovT=0;function hoverSoon(id,noFx){clearTimeout(hovT);
+ if(id)hovT=setTimeout(()=>hover(id,noFx),splitEl&&id!==curHover?350:90);
+ else if(curHover){if(splitEl)hovT=setTimeout(()=>hover(null),700);else hover(null)}}
 function hover(id,noFx,force){if(splitPin&&!force)return;if(!id)splitPin=null;curHover=id;svg.classList.toggle('hovering',!!id);
  document.querySelectorAll('.h0,.h1,.h2,.he1,.he2').forEach(e=>e.classList.remove('h0','h1','h2','he1','he2'));if(!id){clearTimeout(runT);linkSplit(null);transfer(null);document.querySelectorAll('.runner').forEach(x=>x.remove());return}
  if(unitById[id]){const U=unitById[id],inU=q=>{let c=unitById[q.unit];while(c){if(c===U)return true;c=c.parent}return false},mem=new Set(persons.filter(inU).map(q=>q.id));
@@ -493,6 +499,11 @@ function showSplit(tg,src,label,top){clearTimeout(splitT);document.querySelector
  // копия мира (а не <use>): тогда работают стили подсветки при наведении
  const wc=document.getElementById('world').cloneNode(true);wc.removeAttribute('id');wc.querySelectorAll('[id]').forEach(x=>x.removeAttribute('id'));
  wc.querySelectorAll('.runner').forEach(x=>x.remove());d.querySelector('svg').appendChild(wc);
+ // Панель рабочая: навели мышь — не закрывается; щелчок (касание) по объекту в ней — закрыть панель и перелететь к нему.
+ d.addEventListener('pointerenter',()=>clearTimeout(hovT));
+ d.addEventListener('pointerleave',e=>{if(e.pointerType==='mouse'){clearTimeout(hovT);hovT=setTimeout(()=>hover(null),300)}});
+ d.addEventListener('click',e=>{const id=e.target.closest('.node')?.dataset.pid||e.target.closest('.ulab')?.parentNode.dataset.u;clearTimeout(hovT);
+  if(id)select(id);else if(e.pointerType?e.pointerType!=='mouse':TOUCH)hover(null,0,1)}); // касание пустого места панели — закрыть её
  document.body.appendChild(d);splitEl=d;requestAnimationFrame(()=>d.classList.add('on'));
  return {top:vy,bottom:vy+h,above:!top}}
 function hideSplit(delay){const d=splitEl;splitEl=null;if(!d)return;splitT=setTimeout(()=>{d.classList.remove('on');setTimeout(()=>d.remove(),300)},delay)}
@@ -706,6 +717,7 @@ function pick(i){if(!i)return;res.style.display='none';q.blur();selCat=null;i.ki
 q.addEventListener('input',doSearch);q.addEventListener('focus',doSearch);q.addEventListener('blur',()=>setTimeout(()=>res.style.display='none',150));
 q.addEventListener('keydown',e=>{const ds=res.querySelectorAll('[data-n]');if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();cur=(cur+(e.key==='ArrowDown'?1:-1)+ds.length)%ds.length;ds.forEach((d,n)=>d.classList.toggle('on',n===cur));ds[cur]?.scrollIntoView({block:'nearest'})}
  else if(e.key==='Enter')pick(items[cur]);else if(e.key==='Escape'){q.value='';res.style.display='none';clearSel()}});
+document.getElementById('qx').onclick=()=>{q.value='';q.focus()}; // очистить поиск мышью; список открывается заново
 document.getElementById('tLong').onchange=e=>svg.classList.toggle('showLong',e.target.checked);
 document.getElementById('tOrigin').onchange=e=>svg.classList.toggle('hideOrigin',!e.target.checked);
 document.getElementById('tAscent').onchange=e=>svg.classList.toggle('hideAscent',!e.target.checked);
