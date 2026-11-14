@@ -499,11 +499,12 @@ function showSplit(tg,src,label,top){clearTimeout(splitT);document.querySelector
  // копия мира (а не <use>): тогда работают стили подсветки при наведении
  const wc=document.getElementById('world').cloneNode(true);wc.removeAttribute('id');wc.querySelectorAll('[id]').forEach(x=>x.removeAttribute('id'));
  wc.querySelectorAll('.runner').forEach(x=>x.remove());d.querySelector('svg').appendChild(wc);
- // Панель рабочая: навели мышь — не закрывается; щелчок (касание) по объекту в ней — закрыть панель и перелететь к нему.
+ // Панель рабочая: навели мышь — не закрывается; щелчок (касание) по объекту в ней — закрыть панель и перенести основную схему
+ // на это место (для «тени» — туда, где она стоит, а не к оригиналу). Описание не открывается.
  d.addEventListener('pointerenter',()=>clearTimeout(hovT));
  d.addEventListener('pointerleave',e=>{if(e.pointerType==='mouse'){clearTimeout(hovT);hovT=setTimeout(()=>hover(null),300)}});
- d.addEventListener('click',e=>{const id=e.target.closest('.node')?.dataset.pid||e.target.closest('.ulab')?.parentNode.dataset.u;clearTimeout(hovT);
-  if(id)select(id);else if(e.pointerType?e.pointerType!=='mouse':TOUCH)hover(null,0,1)}); // касание пустого места панели — закрыть её
+ d.addEventListener('click',e=>{const n=e.target.closest('.node'),id=n?(n.classList.contains('ghost')?'~':'')+n.dataset.pid:e.target.closest('.ulab')?.parentNode.dataset.u;clearTimeout(hovT);
+  if(id&&byId[id]){hover(null,0,1);if(!cardOpen())hideCard();flyTo(rectOf(id),unitById[id]?1:0);pulse(id)}else if(e.pointerType?e.pointerType!=='mouse':TOUCH)hover(null,0,1)}); // касание пустого места панели — закрыть её
  document.body.appendChild(d);splitEl=d;requestAnimationFrame(()=>d.classList.add('on'));
  return {top:vy,bottom:vy+h,above:!top}}
 function hideSplit(delay){const d=splitEl;splitEl=null;if(!d)return;splitT=setTimeout(()=>{d.classList.remove('on');setTimeout(()=>d.remove(),300)},delay)}
@@ -717,7 +718,7 @@ function pick(i){if(!i)return;res.style.display='none';q.blur();selCat=null;i.ki
 q.addEventListener('input',doSearch);q.addEventListener('focus',doSearch);q.addEventListener('blur',()=>setTimeout(()=>res.style.display='none',150));
 q.addEventListener('keydown',e=>{const ds=res.querySelectorAll('[data-n]');if(e.key==='ArrowDown'||e.key==='ArrowUp'){e.preventDefault();cur=(cur+(e.key==='ArrowDown'?1:-1)+ds.length)%ds.length;ds.forEach((d,n)=>d.classList.toggle('on',n===cur));ds[cur]?.scrollIntoView({block:'nearest'})}
  else if(e.key==='Enter')pick(items[cur]);else if(e.key==='Escape'){q.value='';res.style.display='none';clearSel()}});
-document.getElementById('qx').onclick=()=>{q.value='';q.focus()}; // очистить поиск мышью; список открывается заново
+document.getElementById('qx').onclick=()=>{q.value='';res.style.display='none';clearSel()}; // очистить поиск мышью и снять выбранное через него; список не открывается
 document.getElementById('tLong').onchange=e=>svg.classList.toggle('showLong',e.target.checked);
 document.getElementById('tOrigin').onchange=e=>svg.classList.toggle('hideOrigin',!e.target.checked);
 document.getElementById('tAscent').onchange=e=>svg.classList.toggle('hideAscent',!e.target.checked);
