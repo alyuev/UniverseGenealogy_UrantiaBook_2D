@@ -404,6 +404,10 @@ function drawUnits(){const g=document.getElementById('gUnits'),gl=document.getEl
 /* Названия блоков при приближении отходят от края блока и держатся у левого края экрана, не выходя за свой блок. */
 function stickLabels(){let m;try{m=14*vb.w/(svg.clientWidth||1)}catch(e){return} // vb ещё не объявлен при первой отрисовке
  UNITS.forEach(u=>{if(!u.tx)return;const lw=u.tx.getBBox().width,x=Math.max(u.x+14,Math.min(vb.x+m,u.x+u.w-lw-14));u.tx.setAttribute('x',x)})}
+/* То же во второй части экрана: названия держатся у левого края окна (с учётом рамки 8px). */
+function stickSplit(ps){if(!ps)return;const v=ps.getAttribute('viewBox').split(' ').map(Number),cw=ps.clientWidth,ch=ps.clientHeight;if(!cw||!ch)return;
+ const k=Math.max(v[2]/cw,v[3]/ch),left=v[0]+v[2]/2-cw*k/2,m=22*k;
+ ps.querySelectorAll('g.unit[data-u] text').forEach(t=>{const u=unitById[t.parentNode.dataset.u];if(!u)return;const lw=t.getBBox().width;t.setAttribute('x',Math.max(u.x+14,Math.min(left+m,u.x+u.w-lw-14)))})}
 function drawNodes(){const g=document.getElementById('gNodes');g.innerHTML='';
  persons.forEach(p=>{const gg=el('g',{class:'node',transform:`translate(${p.x},${p.y})`},g);nodeEl[p.id]=gg;gg.dataset.pid=p.id;
   el('rect',{class:'body',width:NW,height:NH,rx:10},gg);
@@ -511,7 +515,7 @@ function showSplit(tg,src,top){clearTimeout(splitT);document.querySelectorAll('.
  d.addEventListener('pointerleave',e=>{if(e.pointerType==='mouse'){clearTimeout(hovT);hovT=setTimeout(()=>hover(null),300)}});
  d.addEventListener('click',e=>{const n=e.target.closest('.node'),id=n?(n.classList.contains('ghost')?'~':'')+n.dataset.pid:e.target.closest('.ulab')?.parentNode.dataset.u;clearTimeout(hovT);
   if(id&&byId[id]){hover(null,0,1);if(!cardOpen())hideCard();flyTo(rectOf(id),unitById[id]?1:0);pulse(id)}else if(e.pointerType?e.pointerType!=='mouse':TOUCH)hover(null,0,1)}); // касание пустого места панели — закрыть её
- document.body.appendChild(d);splitEl=d;requestAnimationFrame(()=>d.classList.add('on'));
+ document.body.appendChild(d);splitEl=d;stickSplit(d.querySelector('svg'));requestAnimationFrame(()=>d.classList.add('on'));
  return {top:vy,bottom:vy+h,above:!top}}
 function hideSplit(delay){const d=splitEl;splitEl=null;if(!d)return;splitT=setTimeout(()=>{d.classList.remove('on');setTimeout(()=>d.remove(),300)},delay)}
 /* Перелёт между половинами экрана: в экранных координатах, поверх обеих половин. */
@@ -546,7 +550,7 @@ function bridge(list){if(!splitEl)return;const ps=splitEl.querySelector('svg');
  for(const e of list){if(!e.pts)continue;const x1=crossX(e.pts,(Yb-M1.f)/M1.d),x2=crossX(e.pts,(Yb-M2.f)/M2.d);if(x1==null||x2==null)continue;
   const dx=(M1.a*x1+M1.e-(M2.a*x2+M2.e))/M2.a;if(Math.abs(dx)<.5)return;   // сдвиг в мировых единицах панели
   const v=ps.getAttribute('viewBox').split(' ').map(Number),x0=v[0],t0=performance.now();
-  const st=now=>{const t=Math.min(1,(now-t0)/220),k=1-Math.pow(1-t,3);v[0]=x0-dx*k;ps.setAttribute('viewBox',v.join(' '));if(t<1&&splitEl?.querySelector('svg')===ps)requestAnimationFrame(st)};
+  const st=now=>{const t=Math.min(1,(now-t0)/220),k=1-Math.pow(1-t,3);v[0]=x0-dx*k;ps.setAttribute('viewBox',v.join(' '));stickSplit(ps);if(t<1&&splitEl?.querySelector('svg')===ps)requestAnimationFrame(st)};
   requestAnimationFrame(st);return}}
 function transfer(id,up){if(id&&flyEls.id===id+(up||''))return;if(!id)hideSplit(flyEls.split?0:450);if(flyEls.length){if(flyEls.split){flyEls.tgt=-1;clearTimeout(flyEls.timer);flyEls.ov?.remove();flyEls.forEach(f=>f.c.remove())}else animFly(flyEls,0)}flyEls=[];if(!id)return;if(cardOpen())return; // открыто описание — без перелёта
  const P=byId[id];if(!up&&P.fuse?.length){const fx=document.getElementById('gFx');
