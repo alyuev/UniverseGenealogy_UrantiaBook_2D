@@ -141,7 +141,8 @@ select{font:inherit;font-size:13px;padding:5px 6px;border:1px solid var(--line);
  #legend{left:0;right:0;bottom:0;width:auto;max-height:60%;border-radius:16px 16px 0 0;border-bottom:0;box-shadow:0 -6px 24px #0003}
  #legend.min{left:8px;right:auto;bottom:8px;border-radius:999px;border-bottom:1px solid var(--line);box-shadow:0 6px 24px #0002}
  #card{left:0;right:0;width:auto;top:auto;bottom:0;max-height:72%;border-radius:16px 16px 0 0;border-bottom:0;box-shadow:0 -6px 24px #0003}
- .chead{touch-action:none;padding-top:20px}.grip{display:block}}
+ .chead{touch-action:none;padding-top:20px}.grip{display:block}
+ #searchBox #res{position:fixed;left:6px;right:6px;top:54px;max-height:45vh}} /* список поиска — во всю ширину экрана, а не поля */
 /* Палец: цели не меньше 40px. */
 @media (pointer:coarse),(max-width:700px){.chip{padding:8px 12px;font-size:13px;margin:3px}button{min-height:40px;min-width:40px}#zoomBox button{width:40px;height:40px}
  #q{padding:10px 12px;font-size:16px}#res{top:46px}#res div{padding:11px 12px}#legend .row{margin:10px 0}#key .row{margin:1px 0}#found li{padding:10px}.tab{padding:8px 12px}}
@@ -493,6 +494,7 @@ function showSplit(tg,src,label,top){clearTimeout(splitT);document.querySelector
  const ph=b.height/3,asp=b.width/ph;let w,h,vx,vy;
  if(x1-x0+40<=V.w&&(y1-y0)<=V.h/3*.85){w=V.w;h=V.h/3;vx=Math.min(Math.max(V.x,x1+20-w),x0-20);vy=(y0+y1)/2-h/2}
  else{w=Math.max(V.w,(x1-x0)*1.5);h=w/asp;if(h<(y1-y0)*1.6){h=(y1-y0)*1.6;w=h*asp}vx=(x0+x1)/2-w/2;vy=(y0+y1)/2-h/2}
+ {const sc=b.width/w;if(sc<.4&&sc<V.k*.99)return null} // цели разбросаны: в панели вышло бы мельче основной схемы и нечитаемо — не показываем
  const d=document.createElement('div');d.className='split '+(top?'top':'bottom');d.yb=top?b.top+ph:b.top+b.height-ph;
  Object.assign(d.style,{left:b.left+'px',width:b.width+'px',height:ph+'px',top:(top?b.top:b.top+b.height-ph)+'px'});
  const u=tg.id?unitById[byId[tg.id].unit]:null;
