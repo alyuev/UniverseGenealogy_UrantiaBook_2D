@@ -488,7 +488,7 @@ function glide(to){const fr={...vb},t0=performance.now();const st=now=>{const t=
 // после сдвига карточка уходит из-под курсора: панель держится, пока мышь не сдвинется
 window.addEventListener('pointermove',e=>{lastP={x:e.clientX,y:e.clientY};
  if(splitPin&&Math.hypot(e.clientX-splitPin.x,e.clientY-splitPin.y)>14){splitPin=null;hover(null,undefined,true)}});
-const inView=r=>r.x>=vb.x&&r.y>=vb.y&&r.x+r.w<=vb.x+vb.w&&r.y+r.h<=vb.y+vb.h;
+const inView=r=>{const h=Math.min(r.y+r.h,vb.y+vb.h)-Math.max(r.y,vb.y);return h>=r.h*.5}; // цель на той же высоте, что и экран (пусть даже сбоку за краем), — второе окно не нужно: оно показало бы тот же ряд
 /* Видимая область основного вида в мировых координатах (без места под нижним листом). */
 function visArea(){const B=svg.getBoundingClientRect(),M=svg.getScreenCTM(),k=M.a,b={left:B.left,top:B.top,width:B.width,height:B.height-insets().b};return{b,k,x:(b.left-M.e)/k,y:(b.top-M.f)/k,w:b.width/k,h:b.height/k}}
 /* Панель занимает 1/3 экрана со стороны, где находится цель (выше — сверху, ниже — снизу).
