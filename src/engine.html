@@ -27,7 +27,7 @@ header label{white-space:nowrap;color:var(--muted);font-size:13px}
 #map.panning{cursor:grabbing}
 #map,#map *,header h1,#legend{-webkit-user-select:none;user-select:none}
 .unit rect.box{stroke-width:1.5}
-.unit text{font-size:13px;font-weight:600;letter-spacing:.03em;text-transform:uppercase}
+.unit text{font-size:13px;font-weight:600;letter-spacing:.03em;text-transform:uppercase;paint-order:stroke;stroke:var(--bg);stroke-width:5px;stroke-linejoin:round} /* обводка цветом фона — линии связей не просвечивают сквозь буквы */
 .node{cursor:pointer}
 .split{position:fixed;z-index:4;background:var(--bg);opacity:0;transition:opacity .3s;pointer-events:auto;}.split.on{opacity:1}
 .split{clip-path:inset(8px round 12px)}.split::after{content:"";position:absolute;inset:8px;border:1px solid var(--muted);border-radius:12px;box-shadow:inset 0 0 18px #0004;pointer-events:none} /* вторая часть экрана — окно-карточка; геометрия прежняя, поэтому линии связей совпадают */
@@ -169,7 +169,7 @@ select{font:inherit;font-size:13px;padding:5px 6px;border:1px solid var(--line);
       <path d="M0,1 L10,5 L0,9 z" fill="context-stroke"/>
     </marker>
   </defs>
-  <g id="world"><g id="gUnits"></g><g id="gPairs"></g><g id="gEdges"></g><g id="gNodes"></g><g id="gFx"></g></g>
+  <g id="world"><g id="gUnits"></g><g id="gPairs"></g><g id="gEdges"></g><g id="gULab"></g><g id="gNodes"></g><g id="gFx"></g></g>
 </svg>
 <aside id="legend">
   <div class="lhead"><button class="tab" data-tab="f" data-i18n="tabF"></button><button class="tab" data-tab="k" data-i18n="tabK"></button><button id="lgToggle"><b></b><span data-i18n="tabF"></span></button></div>
@@ -395,12 +395,15 @@ function originGlyph(g,p,cx,cy){const o=p.origin,pri=ICON_PRI.find(c=>p.cats.inc
 function wrap(s,m=18){const w=s.split(' '),L=[];let c='';for(const x of w){if((c+' '+x).trim().length>m&&c){L.push(c);c=x}else c=(c+' '+x).trim()}L.push(c);
  if(L.length>3){L.length=3;L[2]+='…'}return L}
 const nodeEl={},edgeEl=new Map();
-function drawUnits(){const g=document.getElementById('gUnits');g.innerHTML='';
+function drawUnits(){const g=document.getElementById('gUnits'),gl=document.getElementById('gULab');g.innerHTML='';gl.innerHTML=''; // названия — отдельным слоем поверх связей
  UNITS.forEach(u=>{const gg=el('g',{class:'unit'},g);
   el('rect',{class:'box',x:u.x,y:u.y,width:u.w,height:u.h,rx:14,fill:u.color,stroke:u.color,'stroke-opacity':.6},gg);
-  const tx=el('text',{x:u.x+14,y:u.y+20,fill:u.color},gg);tx.textContent=u.name;u.lw=tx.getBBox().width;
+  const lg=el('g',{class:'unit'},gl);lg.dataset.u=u.id;const tx=el('text',{x:u.x+14,y:u.y+20,fill:u.color},lg);tx.textContent=u.name;u.lw=tx.getBBox().width;u.tx=tx;
   gg.dataset.u=u.id;tx.classList.add('ulab');tx.style.cursor='pointer';
-  tx.addEventListener('pointerenter',e=>{if(e.pointerType==='mouse'&&!drag&&!pan)hoverSoon(u.id)});tx.addEventListener('pointerleave',e=>{if(e.pointerType==='mouse')hoverSoon(null)})})}
+  tx.addEventListener('pointerenter',e=>{if(e.pointerType==='mouse'&&!drag&&!pan)hoverSoon(u.id)});tx.addEventListener('pointerleave',e=>{if(e.pointerType==='mouse')hoverSoon(null)})});stickLabels()}
+/* Названия блоков при приближении отходят от края блока и держатся у левого края экрана, не выходя за свой блок. */
+function stickLabels(){let m;try{m=14*vb.w/(svg.clientWidth||1)}catch(e){return} // vb ещё не объявлен при первой отрисовке
+ UNITS.forEach(u=>{if(!u.tx)return;const lw=u.tx.getBBox().width,x=Math.max(u.x+14,Math.min(vb.x+m,u.x+u.w-lw-14));u.tx.setAttribute('x',x)})}
 function drawNodes(){const g=document.getElementById('gNodes');g.innerHTML='';
  persons.forEach(p=>{const gg=el('g',{class:'node',transform:`translate(${p.x},${p.y})`},g);nodeEl[p.id]=gg;gg.dataset.pid=p.id;
   el('rect',{class:'body',width:NW,height:NH,rx:10},gg);
@@ -579,7 +582,7 @@ const normVB=v=>{v=[v.x,v.y,v.w,v.h].every(Number.isFinite)&&v.w>0?{...v}:{x:0,y
  v.x=Math.min(Math.max(v.x,-v.w/2),W-v.w/2);v.y=Math.min(Math.max(v.y,-v.h/2),H-v.h/2);return v};
 const setVB=()=>{vb=normVB(vb);
  svg.setAttribute('viewBox',`${vb.x} ${vb.y} ${vb.w} ${vb.h}`);
- svg.classList.toggle('far',svg.clientWidth/vb.w<.33); // издали: без мелких надписей, крупнее названия блоков
+ svg.classList.toggle('far',svg.clientWidth/vb.w<.33);stickLabels(); // издали: без мелких надписей, крупнее названия блоков
  syncZoom();clearTimeout(vbTimer);vbTimer=setTimeout(()=>{try{localStorage.setItem('ku-view',JSON.stringify(vb))}catch(e){}},300)}; // запоминаем вид
 /* Плавность: колесо, кнопки и бегунок задают целевой вид (tv), текущий догоняет его по экспоненте; после броска мышью или пальцем
    схема докатывается по инерции. tau — за сколько мс остаток пути сокращается в e раз. Шаг привязан ко времени, а не к кадрам. */
