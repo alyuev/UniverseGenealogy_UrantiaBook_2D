@@ -32,7 +32,7 @@ header label{white-space:nowrap;color:var(--muted);font-size:13px}
 .split{position:fixed;z-index:4;background:var(--bg);opacity:0;transition:opacity .3s;pointer-events:auto;box-shadow:0 0 0 2px var(--accent),0 0 30px #0004}.split.on{opacity:1}
 .flyov{position:fixed;left:0;top:0;width:100vw;height:100vh;z-index:6;pointer-events:none;overflow:visible}.flyov .node{filter:drop-shadow(0 8px 14px #0005)}
 .runner{fill:var(--accent);filter:drop-shadow(0 0 5px var(--accent));pointer-events:none}
-.split svg{width:100%;height:100%;display:block}.splab{position:absolute;left:12px;top:8px;font-size:12px;padding:3px 9px;border-radius:6px;background:var(--panel);color:var(--ink);border:1px solid var(--line)}
+.split svg{width:100%;height:100%;display:block}
 .node.ghost{opacity:.55}.node.ghost rect.body{stroke-dasharray:5 4}.gtag{font-size:10px!important;fill:var(--muted)!important;font-style:italic}
 .pair{fill:none;stroke:#9a6fc4;stroke-opacity:.7;stroke-width:1.6}.pair.ghost{stroke-dasharray:6 5;stroke-opacity:.5}
 .node.fly{pointer-events:none;filter:drop-shadow(0 8px 14px #0005)}
@@ -253,7 +253,7 @@ const UI={
   keyTxt:'Точки внутри пиктограммы — происхождение. Полоски над карточкой — категории, заливка — класс по происхождению. Щелчок по названию блока — выделить блок и открыть описание.',
   tabF:'Фильтры',tabK:'Обозначения',back:'Назад',clear:'Очистить',
   cats:'Категории',funcs:'Функции',zHint:'Ctrl + колесо — масштаб · колесо — прокрутка',help:'Как пользоваться',gZoom:'Ctrl + колесо мыши — масштаб схемы. Можно и бегунком вверху.',gScroll:'Колесо мыши — прокрутка вверх и вниз, Shift + колесо — вбок. Схему также можно тянуть мышью.',gSearch:'Поиск: начните вводить имя — схема сама перелетит к карточке, а при наведении видны связи и перелёты.',gWord:'Михаилы',tZoom:'Разведите или сведите два пальца — масштаб схемы. Кнопки − и + вверху тоже работают.',tPan:'Ведите одним пальцем — схема сдвигается.',tSearch:'Поиск: начните вводить имя — схема перелетит к карточке.',tTap:'Коснитесь карточки — покажутся связи и краткое описание. Коснитесь описания — оно раскроется полностью.',gNext:'Дальше',gDone:'Понятно',gSkip:'Пропустить',catsHint:'(клик — выделить)',links:'Связи',lOrigin:'происхождение',classes:'Класс по происхождению (заливка)',cClass:'Класс по происхождению',lAscent:'восхождение',lService:'служение / пребывание',layout:'Раскладка',
-  dragHint:'Карточки можно перетаскивать — линии перестраиваются в обход.',fit:'Вся схема',undo:'Отменить',lLong:'дальние связи всегда',linksOff:'Связи вне экрана',target:'Перенос сюда',servesHere:'служит здесь',serves:'Функционирует',pairT:'вместе с',export:'Экспорт раскладки',reset:'Сброс',close:'Закрыть',
+  dragHint:'Карточки можно перетаскивать — линии перестраиваются в обход.',fit:'Вся схема',undo:'Отменить',lLong:'дальние связи всегда',servesHere:'служит здесь',serves:'Функционирует',pairT:'вместе с',export:'Экспорт раскладки',reset:'Сброс',close:'Закрыть',
   cOrigin:'Происхождение (линия Божеств)',cPlace:'Место служения',cParents:'Порождён(ы)',cChildren:'Порождает',cSource:'Источник',book:'Книга Урантии',
   catWord:'категория',none:'Ничего не найдено',theme_light:'Светлая тема',theme_dark:'Тёмная тема',status:'Линий: {n} · трассировка {ms} мс · пересечений: {x}'},
  en:{_name:'English',title:'Cosmology of Personalities in the Urantia Book',h1:'Cosmology of Personalities<br>in the Urantia Book',search:'Search: personality or category…',dim:'dim the rest',
@@ -262,7 +262,7 @@ const UI={
   keyTxt:'Dots inside an icon show origin. Stripes above a card are its categories; the tint is its origin class. Click a block title to highlight it and open its description.',
   tabF:'Filters',tabK:'Key',back:'Back',clear:'Clear',
   cats:'Categories',funcs:'Functions',zHint:'Ctrl + wheel — zoom · wheel — scroll',help:'How to use',gZoom:'Ctrl + mouse wheel zooms the map. The slider at the top works too.',gScroll:'Mouse wheel scrolls up and down, Shift + wheel sideways. You can also drag the map.',gSearch:'Search: start typing a name — the map flies to the card; hovering shows links and transfers.',gWord:'Michael',tZoom:'Spread or pinch two fingers to zoom. The − and + buttons at the top work too.',tPan:'Drag with one finger to move the map.',tSearch:'Search: start typing a name — the map flies to the card.',tTap:'Tap a card to see its links and a short description. Tap the description to open it in full.',gNext:'Next',gDone:'Got it',gSkip:'Skip',catsHint:'(click to highlight)',links:'Links',lOrigin:'origin',classes:'Origin class (card tint)',cClass:'Origin class',lAscent:'ascent',lService:'ministry / indwelling',layout:'Layout',
-  dragHint:'Cards can be dragged — lines reroute around them.',fit:'Whole map',undo:'Undo',lLong:'always show long links',linksOff:'Off-screen links',target:'Moving here',servesHere:'serves here',serves:'Functions in',pairT:'together with',export:'Export layout',reset:'Reset',close:'Close',
+  dragHint:'Cards can be dragged — lines reroute around them.',fit:'Whole map',undo:'Undo',lLong:'always show long links',servesHere:'serves here',serves:'Functions in',pairT:'together with',export:'Export layout',reset:'Reset',close:'Close',
   cOrigin:'Origin (Deity lineage)',cPlace:'Place of service',cParents:'Created by',cChildren:'Creates',cSource:'Source',book:'The Urantia Book',
   catWord:'category',none:'Nothing found',theme_light:'Light theme',theme_dark:'Dark theme',status:'Lines: {n} · routing {ms} ms · crossings: {x}'}};
 const qs=new URLSearchParams(location.search);
@@ -485,7 +485,7 @@ const inView=r=>r.x>=vb.x&&r.y>=vb.y&&r.x+r.w<=vb.x+vb.w&&r.y+r.h<=vb.y+vb.h;
 function visArea(){const B=svg.getBoundingClientRect(),M=svg.getScreenCTM(),k=M.a,b={left:B.left,top:B.top,width:B.width,height:B.height-insets().b};return{b,k,x:(b.left-M.e)/k,y:(b.top-M.f)/k,w:b.width/k,h:b.height/k}}
 /* Панель занимает 1/3 экрана со стороны, где находится цель (выше — сверху, ниже — снизу).
    Если источник сам в этой трети — разделения нет. Основной вид не двигается. */
-function showSplit(tg,src,label,top){clearTimeout(splitT);document.querySelectorAll('.split').forEach(x=>x.remove());splitEl=null;
+function showSplit(tg,src,top){clearTimeout(splitT);document.querySelectorAll('.split').forEach(x=>x.remove());splitEl=null;
  if(cardOpen())return null; // открыта карточка описания — без разделения
  if(tg.every(inView))return null;
  const x0=Math.min(...tg.map(r=>r.x)),y0=Math.min(...tg.map(r=>r.y)),x1=Math.max(...tg.map(r=>r.x+r.w)),y1=Math.max(...tg.map(r=>r.y+r.h));
@@ -497,8 +497,7 @@ function showSplit(tg,src,label,top){clearTimeout(splitT);document.querySelector
  {const sc=b.width/w;if(sc<.4&&sc<V.k*.99)return null} // цели разбросаны: в панели вышло бы мельче основной схемы и нечитаемо — не показываем
  const d=document.createElement('div');d.className='split '+(top?'top':'bottom');d.yb=top?b.top+ph:b.top+b.height-ph;
  Object.assign(d.style,{left:b.left+'px',width:b.width+'px',height:ph+'px',top:(top?b.top:b.top+b.height-ph)+'px'});
- const u=tg.id?unitById[byId[tg.id].unit]:null;
- d.innerHTML=`<svg viewBox="${vx} ${vy} ${w} ${h}" class="${svg.getAttribute('class')||''}"></svg><span class="splab">${label||t('target')+': '+(u?u.name:'')}</span>`;
+ d.innerHTML=`<svg viewBox="${vx} ${vy} ${w} ${h}" class="${svg.getAttribute('class')||''}"></svg>`;
  // копия мира (а не <use>): тогда работают стили подсветки при наведении
  const wc=document.getElementById('world').cloneNode(true);wc.removeAttribute('id');wc.querySelectorAll('[id]').forEach(x=>x.removeAttribute('id'));
  wc.querySelectorAll('.runner').forEach(x=>x.remove());d.querySelector('svg').appendChild(wc);
@@ -532,8 +531,7 @@ function linkSplit(id){clearTimeout(linkT);linkPending=false;if(!id)return;linkP
   for(const [ks,order] of [[edges.filter(e=>m(e.to)).map(e=>e.from),[true,false]],[edges.filter(e=>m(e.from)).map(e=>e.to),[false,true]]]){
    const o=off(ks);for(const tp of order){const set=o.filter(r=>tp?r.y<src.y:r.y>=src.y);if(set.length&&!(tp?fr<1/3:fr>2/3)){R=set;top=tp;break}}if(R)break}
   if(!R){runEdges(hoverEdges);return}
-  const names=[...new Set(R.map(r=>byId[r.k].name.split(' — ')[0]))];
-  const sp=showSplit(R,src,t('linksOff')+': '+names.slice(0,4).join(', ')+(names.length>4?' …':''),top);
+  const sp=showSplit(R,src,top);
   if(sp){const ks=new Set(R.map(q=>q.k));setTimeout(()=>bridge(edges.filter(e=>(m(e.to)&&ks.has(e.from))||(m(e.from)&&ks.has(e.to)))),300);runT=setTimeout(()=>runEdges(hoverEdges),600)}
   else runEdges(hoverEdges)},250)}
 /* Линия связи может изгибаться в пропущенной середине схемы. Сдвигаем панель по горизонтали на величину изгиба,
@@ -549,7 +547,7 @@ function bridge(list){if(!splitEl)return;const ps=splitEl.querySelector('svg');
 function transfer(id,up){if(id&&flyEls.id===id+(up||''))return;if(!id)hideSplit(flyEls.split?0:450);if(flyEls.length){if(flyEls.split){flyEls.tgt=-1;clearTimeout(flyEls.timer);flyEls.ov?.remove();flyEls.forEach(f=>f.c.remove())}else animFly(flyEls,0)}flyEls=[];if(!id)return;if(cardOpen())return; // открыто описание — без перелёта
  const P=byId[id];if(!up&&P.fuse?.length){const fx=document.getElementById('gFx');
   flyEls=P.fuse.map(i=>{const c=nodeEl[i].cloneNode(true);c.setAttribute('class','node fly h0');c.querySelector('title')?.remove();fx.appendChild(c);return{c,a:byId[i],b:P}});
-  flyEls.id=id;const sp=showSplit(flyEls.map(f=>rectOf(f.a.id)),rectOf(id),t('linksOff')+': '+flyEls.map(f=>f.a.name.split(' — ')[0]).join(', '));
+  flyEls.id=id;const sp=showSplit(flyEls.map(f=>rectOf(f.a.id)),rectOf(id));
   if(sp){const list=flyEls;list.split=list.rev=true;list.forEach(f=>{f.c.style.display='none';f.c.setAttribute('transform',`translate(${f.b.x},${f.b.y})`)});list.timer=setTimeout(()=>screenFly(list),330);return}
   animFly(flyEls,1);return}
  if(!SERVES[id])return;
@@ -557,10 +555,10 @@ function transfer(id,up){if(id&&flyEls.id===id+(up||''))return;if(!id)hideSplit(
  const down=up&&!P.cats.some(c=>c==='asc'||c==='finality'); // нисходящие: и при наведении на тень летят из Рая к месту служения
  flyEls=ids.map(i=>{const c=nodeEl[up&&!down?'~'+i:i].cloneNode(true);c.setAttribute('class','node fly h0');c.querySelector('title')?.remove();c.querySelector('.gtag')?.remove();fx.appendChild(c);const a=byId[i],b=GHOSTS['~'+i];return up&&!down?{c,a:b,b:a}:{c,a,b}});
  flyEls.id=id+(up||'');
- if(down&&flyEls.length){const sp=showSplit(flyEls.map(f=>rectOf(f.a.id)),rectOf(flyEls[0].b.id),t('linksOff')+': '+flyEls.map(f=>f.a.name.split(' — ')[0]).join(', '));
+ if(down&&flyEls.length){const sp=showSplit(flyEls.map(f=>rectOf(f.a.id)),rectOf(flyEls[0].b.id));
   if(sp){const list=flyEls;list.split=list.rev=true;list.forEach(f=>{f.c.style.display='none';f.c.setAttribute('transform',`translate(${f.b.x},${f.b.y})`)});list.timer=setTimeout(()=>screenFly(list),330);return}
   animFly(flyEls,1);return}
- const tg=flyEls.map(f=>rectOf(f.b.id));tg.id=flyEls[0]?.b.id;const sp=tg.length?showSplit(tg,rectOf(flyEls[0].a.id)):null;
+ const tg=flyEls.map(f=>rectOf(f.b.id));const sp=tg.length?showSplit(tg,rectOf(flyEls[0].a.id)):null;
  if(sp){const list=flyEls;list.split=true;list.forEach(f=>{f.c.style.display='none';f.c.setAttribute('transform',`translate(${f.b.x},${f.b.y})`)});
   list.timer=setTimeout(()=>screenFly(list),330);return}animFly(flyEls,1)}
 const LONG=1300; // «дальняя» связь: показывается только при наведении/выделении (или если включено в легенде)
