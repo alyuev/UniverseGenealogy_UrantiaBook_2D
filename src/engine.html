@@ -145,7 +145,7 @@ select{font:inherit;font-size:13px;padding:5px 6px;border:1px solid var(--line);
   <div class="row"><svg width="22" height="18"><circle cx="11" cy="9" r="8" fill="none" stroke="#1e6fd9" stroke-width="1.4"/><circle cx="11" cy="9" r="5" fill="none" stroke="#1e6fd9" stroke-width="1.4"/><circle cx="11" cy="9" r="2.2" fill="none" stroke="#1e6fd9" stroke-width="1.4"/></svg> <span data-i18n="oT">Троица</span></div>
   <div class="row"><span class="dot" style="background:#e53935"></span> <span data-i18n="oF2">Отец</span> <span class="dot" style="background:#1e63d6"></span> <span data-i18n="oS2">Сын</span> <span class="dot" style="background:#f2b705"></span> <span data-i18n="oD2">Дух</span> <span class="dot" style="background:#43a047"></span> <span data-i18n="oE2">эволюц.</span></div>
   <h3 data-i18n="icons">Пиктограммы</h3>
-  <div style="font-size:12px;color:var(--muted)" data-i18n="iconsTxt">○ Божество · ◎ три лазурных круга — происхождение от Троицы · ▽ нисходящий Сын · крылья — ангел · ◯ дух · ◇ сын локальной вселенной · △ восходящий. Щелчок по названию блока — выделить блок и открыть описание. Точки внутри — происхождение.</div>
+  <div style="font-size:12px;color:var(--muted)" data-i18n="iconsTxt">○ Божество · ◎ три лазурных круга — происхождение от Троицы · ▽ нисходящий Сын · фигура с крыльями — ангел · ◯ дух · ◇ сын локальной вселенной · △ восходящий. Щелчок по названию блока — выделить блок и открыть описание. Точки внутри — происхождение.</div>
   <h3><span data-i18n="cats">Категории</span> <small style="text-transform:none;color:#999" data-i18n="catsHint">(клик — выделить)</small></h3>
   <div id="cats"></div>
   <h3 data-i18n="funcs">Функции</h3>
@@ -210,14 +210,14 @@ const unitById={};UNITS.forEach(u=>unitById[u.id]=u);
 const UI={
  ru:{_name:'Русский',title:'Космология личностей по Книге Урантии',h1:'Космология личностей<br>по Книге Урантии',search:'Поиск: личность или категория…',dim:'затенять остальное',
   origin:'Происхождение',oA:'Абсолют',oT:'Троица',oF:'Всеобщий Отец',oS:'Вечный Сын',oD:'Бесконечный Дух',oE:'эволюционное происхождение',oF2:'Отец',oS2:'Сын',oD2:'Дух',oE2:'эволюц.',
-  icons:'Пиктограммы',iconsTxt:'○ Божество · ◎ три лазурных круга — происхождение от Троицы · ▽ нисходящий Сын · крылья — ангел · ◯ дух · ◇ сын локальной вселенной · △ восходящий. Щелчок по названию блока — выделить блок и открыть описание. Точки внутри — происхождение.',
+  icons:'Пиктограммы',iconsTxt:'○ Божество · ◎ три лазурных круга — происхождение от Троицы · ▽ нисходящий Сын · фигура с крыльями — ангел · ◯ дух · ◇ сын локальной вселенной · △ восходящий. Щелчок по названию блока — выделить блок и открыть описание. Точки внутри — происхождение.',
   cats:'Категории',funcs:'Функции',zHint:'Ctrl + колесо — масштаб · колесо — прокрутка',help:'Как пользоваться',gZoom:'Ctrl + колесо мыши — масштаб схемы. Можно и бегунком вверху.',gScroll:'Колесо мыши — прокрутка вверх и вниз, Shift + колесо — вбок. Схему также можно тянуть мышью.',gSearch:'Поиск: начните вводить имя — схема сама перелетит к карточке, а при наведении видны связи и перелёты.',gWord:'Михаилы',tZoom:'Разведите или сведите два пальца — масштаб схемы. Кнопки − и + вверху тоже работают.',tPan:'Ведите одним пальцем — схема сдвигается.',tSearch:'Поиск: начните вводить имя — схема перелетит к карточке.',tTap:'Коснитесь карточки — покажутся связи и перелёты. Долгое касание — откроется описание.',gNext:'Дальше',gDone:'Понятно',gSkip:'Пропустить',catsHint:'(клик — выделить)',links:'Связи',lOrigin:'происхождение',classes:'Класс по происхождению (заливка)',cClass:'Класс по происхождению',lAscent:'восхождение',lService:'служение / пребывание',layout:'Раскладка',
   dragHint:'Карточки можно перетаскивать — линии перестраиваются в обход.',fit:'Вся схема',undo:'Отменить',lLong:'дальние связи всегда',links:'Связи вне экрана',target:'Перенос сюда',servesHere:'служит здесь',serves:'Функционирует',pairT:'вместе с',export:'Экспорт раскладки',reset:'Сброс',close:'Закрыть',
   cOrigin:'Происхождение (линия Божеств)',cPlace:'Место служения',cParents:'Порождён(ы)',cChildren:'Порождает',cSource:'Источник',book:'Книга Урантии',
   catWord:'категория',none:'Ничего не найдено',theme_light:'Светлая тема',theme_dark:'Тёмная тема',status:'Линий: {n} · трассировка {ms} мс · пересечений: {x}'},
  en:{_name:'English',title:'Cosmology of Personalities in the Urantia Book',h1:'Cosmology of Personalities<br>in the Urantia Book',search:'Search: personality or category…',dim:'dim the rest',
   origin:'Origin',oA:'Absolute',oT:'Trinity',oF:'Universal Father',oS:'Eternal Son',oD:'Infinite Spirit',oE:'evolutionary origin',oF2:'Father',oS2:'Son',oD2:'Spirit',oE2:'evolut.',
-  icons:'Icons',iconsTxt:'○ Deity · ◎ three azure circles — Trinity origin · ▽ descending Son · wings — angel · ◯ spirit · ◇ local universe son · △ ascender. Click a block title to highlight it and open its description. Dots inside show origin.',
+  icons:'Icons',iconsTxt:'○ Deity · ◎ three azure circles — Trinity origin · ▽ descending Son · angel figure — angel · ◯ spirit · ◇ local universe son · △ ascender. Click a block title to highlight it and open its description. Dots inside show origin.',
   cats:'Categories',funcs:'Functions',zHint:'Ctrl + wheel — zoom · wheel — scroll',help:'How to use',gZoom:'Ctrl + mouse wheel zooms the map. The slider at the top works too.',gScroll:'Mouse wheel scrolls up and down, Shift + wheel sideways. You can also drag the map.',gSearch:'Search: start typing a name — the map flies to the card; hovering shows links and transfers.',gWord:'Michael',tZoom:'Spread or pinch two fingers to zoom. The − and + buttons at the top work too.',tPan:'Drag with one finger to move the map.',tSearch:'Search: start typing a name — the map flies to the card.',tTap:'Tap a card to see its links and transfers. Long-press to open its description.',gNext:'Next',gDone:'Got it',gSkip:'Skip',catsHint:'(click to highlight)',links:'Links',lOrigin:'origin',classes:'Origin class (card tint)',cClass:'Origin class',lAscent:'ascent',lService:'ministry / indwelling',layout:'Layout',
   dragHint:'Cards can be dragged — lines reroute around them.',fit:'Whole map',undo:'Undo',lLong:'always show long links',links:'Off-screen links',target:'Moving here',servesHere:'serves here',serves:'Functions in',pairT:'together with',export:'Export layout',reset:'Reset',close:'Close',
   cOrigin:'Origin (Deity lineage)',cPlace:'Place of service',cParents:'Created by',cChildren:'Creates',cSource:'Source',book:'The Urantia Book',
@@ -337,9 +337,11 @@ function originGlyph(g,p,cx,cy){const o=p.origin,pri=ICON_PRI.find(c=>p.cats.inc
  switch(pri){
   case'deity':el('circle',{cx,cy,r:12,fill:OC[o]||'#1e6fd9',stroke:'#fff','stroke-width':2},g);el('circle',{cx,cy,r:14,fill:'none',stroke:OC[o]||'#1e6fd9','stroke-opacity':.35,'stroke-width':2},g);return;
   case'desc':P(`M${cx-14},${cy-11} L${cx+14},${cy-11} L${cx},${cy+14} z`,'#e6f4f2');dots(g,o,cx,cy-3);return;
-  case'angel':P(`M${cx},${cy+2} C${cx-4},${cy-12} ${cx-17},${cy-12} ${cx-16},${cy-1} C${cx-15},${cy+7} ${cx-6},${cy+8} ${cx},${cy+2}Z`,'#fde4ee');
-   P(`M${cx},${cy+2} C${cx+4},${cy-12} ${cx+17},${cy-12} ${cx+16},${cy-1} C${cx+15},${cy+7} ${cx+6},${cy+8} ${cx},${cy+2}Z`,'#fde4ee');
-   el('ellipse',{cx,cy:cy-12,rx:5,ry:1.8,fill:'none',...sw},g);dots(g,o,cx,cy+3,.9);return;
+  case'angel':{const A=pts=>'M'+pts.map(([x,y])=>`${cx+x},${cy+y}`).join(' L')+'Z'; // фигура: нимб, голова, крылья, одеяние
+   el('ellipse',{cx,cy:cy-15,rx:4.6,ry:1.6,fill:'none',...sw},g);el('circle',{cx,cy:cy-9,r:3,fill:'#fde4ee',...sw},g);
+   const W='M-3,-5 C-8,-10 -15,-8 -16,-2 C-16,3 -14,7 -11,10 Q-10,6 -8,9 Q-7,5 -4,6 Z'; // плавное крыло, нижний край — мягкие волны
+   for(const k of[-1,1])P(W.replace(/(-?[\d.]+),(-?[\d.]+)/g,(_,x,y)=>`${cx+x*k},${cy+ +y}`),'#fde4ee');
+   P(A([[-3,-5],[3,-5],[7,14],[-7,14]]),'#fde4ee');dots(g,o,cx,cy+6,.7);return}
   case'coord':case'trin':case'spirit':case'supspirit':case'powercenters':case'unclass':case'stationary':case'transcg':case'finality':el('circle',{cx,cy,r:13,fill:'#fff3e0',...sw},g);dots(g,o,cx,cy);return;
   case'local':P(`M${cx},${cy-14} L${cx+13},${cy} L${cx},${cy+14} L${cx-13},${cy}z`,'#f3ece9');dots(g,o,cx,cy);return;
   case'asc':P(`M${cx},${cy-14} L${cx+12},${cy-1} L${cx+5},${cy-1} L${cx+5},${cy+13} L${cx-5},${cy+13} L${cx-5},${cy-1} L${cx-12},${cy-1}z`,'#e8f5e9');dots(g,o,cx,cy+5,.9);return}}
@@ -493,8 +495,12 @@ function transfer(id,up){if(id&&flyEls.id===id+(up||''))return;if(!id)hideSplit(
   animFly(flyEls,1);return}
  if(!SERVES[id])return;
  const fx=document.getElementById('gFx'),ids=[id,PAIR_OF[id]].filter(i=>i&&GHOSTS['~'+i]);
- flyEls=ids.map(i=>{const c=nodeEl[up?'~'+i:i].cloneNode(true);c.setAttribute('class','node fly h0');c.querySelector('title')?.remove();c.querySelector('.gtag')?.remove();fx.appendChild(c);const a=byId[i],b=GHOSTS['~'+i];return up?{c,a:b,b:a}:{c,a,b}});
+ const down=up&&!P.cats.some(c=>c==='asc'||c==='finality'); // нисходящие: и при наведении на тень летят из Рая к месту служения
+ flyEls=ids.map(i=>{const c=nodeEl[up&&!down?'~'+i:i].cloneNode(true);c.setAttribute('class','node fly h0');c.querySelector('title')?.remove();c.querySelector('.gtag')?.remove();fx.appendChild(c);const a=byId[i],b=GHOSTS['~'+i];return up&&!down?{c,a:b,b:a}:{c,a,b}});
  flyEls.id=id+(up||'');
+ if(down&&flyEls.length){const sp=showSplit(flyEls.map(f=>rectOf(f.a.id)),rectOf(flyEls[0].b.id),t('links')+': '+flyEls.map(f=>f.a.name.split(' — ')[0]).join(', '));
+  if(sp){const list=flyEls;list.split=list.rev=true;list.forEach(f=>{f.c.style.display='none';f.c.setAttribute('transform',`translate(${f.b.x},${f.b.y})`)});list.timer=setTimeout(()=>screenFly(list),330);return}
+  animFly(flyEls,1);return}
  const tg=flyEls.map(f=>rectOf(f.b.id));tg.id=flyEls[0]?.b.id;const sp=tg.length?showSplit(tg,rectOf(flyEls[0].a.id)):null;
  if(sp){const list=flyEls;list.split=true;list.forEach(f=>{f.c.style.display='none';f.c.setAttribute('transform',`translate(${f.b.x},${f.b.y})`)});
   list.timer=setTimeout(()=>screenFly(list),330);return}animFly(flyEls,1)}
@@ -543,7 +549,7 @@ svg.addEventListener('pointerup',ev=>{const wasPinch=!!pinch||tp.size>1;tpEnd(ev
  if(pan){svg.classList.remove('panning');clearTimeout(pan.lt);if(pan.long){pan=null;return}if(!pan.moved){const touch=ev.pointerType!=='mouse';if(pan.node&&touch){hideCard();hover(pan.node)}else if(pan.node)select(pan.node);else if(pan.unit)select(pan.unit);else{if(touch)hover(null);clearSel()}}pan=null}});
 function startDrag(ev,p){if(!EDIT){ev.target.closest('.node').dataset.pid=p.id;return}ev.stopPropagation();const w=toWorld(ev.clientX,ev.clientY);drag={p,sx:w.x,sy:w.y,ox:p.x,oy:p.y,moved:false};svg.setPointerCapture(ev.pointerId)}
 let anim=null;
-function flyTo(r){const asp=svg.clientWidth/svg.clientHeight;let w=Math.max(r.w*3.2,700),h=w/asp;if(h<r.h*3){h=r.h*3;w=h*asp}
+function flyTo(r,fit){const kw=fit?1.15:6,kh=fit?1.15:6,asp=svg.clientWidth/svg.clientHeight;let w=Math.max(r.w*kw,fit?700:1600),h=w/asp;if(h<r.h*kh){h=r.h*kh;w=h*asp} // fit — показать область целиком, иначе — объект с окружением
  const to={x:r.x+r.w/2-w/2,y:r.y+r.h/2-h/2,w,h},fr={...vb},t0=performance.now(),D=900;
  const dist=Math.hypot(to.x+to.w/2-fr.x-fr.w/2,to.y+to.h/2-fr.y-fr.h/2),bump=Math.min(1,dist/1500)*0.6;
  cancelAnimationFrame(anim);const step=now=>{let t=Math.min(1,(now-t0)/D);const e=t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
@@ -574,7 +580,7 @@ function selectCat(c){sel=null;selCat=selCat===c?null:c;markChips();hideCard();
  if(!selCat){hl=null;reapply();return}
  const ns=new Set(persons.filter(p=>c.startsWith('oc:')?p.oc===c.slice(3):c.startsWith('fn:')?p.fn.includes(c.slice(3)):p.cats.includes(c)).map(p=>p.id)),es=new Set(edges.filter(e=>ns.has(e.from)&&ns.has(e.to)));
  applyHL(ns,es);const R=[...ns].map(rectOf),x0=Math.min(...R.map(r=>r.x)),y0=Math.min(...R.map(r=>r.y)),x1=Math.max(...R.map(r=>r.x+r.w)),y1=Math.max(...R.map(r=>r.y+r.h));
- flyTo({x:x0,y:y0,w:(x1-x0)/3.2*1.25,h:(y1-y0)/3*1.25});ns.forEach(pulse)}
+ flyTo({x:x0,y:y0,w:x1-x0,h:y1-y0},1);ns.forEach(pulse)}
 function clearSel(){sel=null;selCat=null;hl=null;markChips();hideCard();reapply()}
 const link=id=>`<a data-id="${id}">${byId[id].name}</a>`;
 function unitChain(u){const r=[];let cur=unitById[u];while(cur){r.unshift(cur.name.split(' — ')[0]);cur=cur.parent}return r.join(' › ')}
@@ -641,7 +647,7 @@ if(EDIT)try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s)persons.f
 document.getElementById('bExport').onclick=()=>{const b=new Blob([JSON.stringify(Object.fromEntries(persons.map(p=>[p.id,[p.x,p.y]])),null,1)],{type:'application/json'});
  const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='layout.json';a.click()};
 document.getElementById('bReset').onclick=()=>{persons.forEach(p=>[p.x,p.y]=DEF[p.id]);undoStack.length=0;updUndo();try{localStorage.removeItem(KEY)}catch(e){};render()};
-document.getElementById('bFit').onclick=()=>flyTo({x:W/2-W/6.4,y:H/2-H/6,w:W/3.2,h:H/3});
+document.getElementById('bFit').onclick=()=>flyTo({x:0,y:0,w:W,h:H},1);
 
 function render(){drawUnits();drawNodes();drawGhosts();routeCached();drawEdges();reapply()}
 /* ===================== ЯЗЫК И ТЕМА: переключение ===================== */
