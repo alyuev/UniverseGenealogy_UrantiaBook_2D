@@ -34,7 +34,7 @@ header label{white-space:nowrap;color:var(--muted);font-size:13px}
 .node.ghost{opacity:.55}.node.ghost rect.body{stroke-dasharray:5 4}.gtag{font-size:10px!important;fill:var(--muted)!important;font-style:italic}
 .pair{fill:none;stroke:#9a6fc4;stroke-opacity:.7;stroke-width:1.6}.pair.ghost{stroke-dasharray:6 5;stroke-opacity:.5}
 .node.fly{pointer-events:none;filter:drop-shadow(0 8px 14px #0005)}
-.node rect.body{fill:var(--node);stroke:var(--nodeS);stroke-width:1.2;filter:drop-shadow(0 1px 2px #0001)}
+.node rect.body{fill:var(--node);stroke:var(--nodeS);stroke-width:1.2} /* без тени: фильтр на каждой карточке тормозит панораму и зум */
 .node:hover rect.body{stroke:var(--accent)}
 .node .tint{fill-opacity:var(--tintA);pointer-events:none}.node .lp{fill-opacity:var(--lpA)}.node .sep{stroke:var(--nodeS)}
 .unit rect.box{fill-opacity:var(--unitA)}
@@ -343,8 +343,11 @@ function routeAll(){const t0=performance.now();buildGrid();
  for(let pass=0;pass<2;pass++)order.forEach(e=>{mark(e,false);routeEdge(e);mark(e,true)}); // rip-up & reroute
  const ms=Math.round(performance.now()-t0);
  document.getElementById('status').textContent=t('status').replace('{n}',edges.length).replace('{ms}',ms).replace('{x}',countCross());}
-/* Кэш маршрутов: при том же расположении линии не прокладываются заново. */
-function routeCached(){const str=JSON.stringify([persons.map(p=>[p.id,p.x,p.y]),Object.values(GHOSTS).map(g=>[g.id,g.x,g.y]),UNITS.map(u=>[u.id,u.x,u.y,u.w,u.h,Math.round(u.lw||0)]),edges.map(e=>e.from+'>'+e.to)]);
+/* Маршруты линий считает сборка (tools/routes.js) и кладёт в данные: D.routes[язык]. Браузер прокладывает сам только
+   в режиме правки раскладки или если сборка шла без Node.js; тогда — кэш: при том же расположении заново не прокладывает. */
+function routeCached(){const baked=!EDIT&&D.routes?.[LANG];
+ if(baked&&baked.length===edges.length){edges.forEach((e,i)=>e.pts=baked[i]);return}
+ const str=JSON.stringify([persons.map(p=>[p.id,p.x,p.y]),Object.values(GHOSTS).map(g=>[g.id,g.x,g.y]),UNITS.map(u=>[u.id,u.x,u.y,u.w,u.h,Math.round(u.lw||0)]),edges.map(e=>e.from+'>'+e.to)]);
  let h=0;for(const ch of str)h=(h*31+ch.charCodeAt(0))|0;const k='ku-routes-'+(h>>>0).toString(36);
  try{const c=JSON.parse(localStorage.getItem(k));if(c&&c.length===edges.length){edges.forEach((e,i)=>e.pts=c[i]);
   document.getElementById('status').textContent=t('status').replace('{n}',edges.length).replace('{ms}','0').replace('{x}',countCross());return}}catch(e){}
@@ -392,7 +395,7 @@ function drawUnits(){const g=document.getElementById('gUnits');g.innerHTML='';
   el('rect',{class:'box',x:u.x,y:u.y,width:u.w,height:u.h,rx:14,fill:u.color,stroke:u.color,'stroke-opacity':.6},gg);
   const tx=el('text',{x:u.x+14,y:u.y+20,fill:u.color},gg);tx.textContent=u.name;u.lw=tx.getBBox().width;
   gg.dataset.u=u.id;tx.classList.add('ulab');tx.style.cursor='pointer';
-  tx.addEventListener('pointerenter',e=>{if(e.pointerType==='mouse'&&!drag&&!pan)hover(u.id)});tx.addEventListener('pointerleave',e=>{if(e.pointerType==='mouse')hover(null)})})}
+  tx.addEventListener('pointerenter',e=>{if(e.pointerType==='mouse'&&!drag&&!pan)hoverSoon(u.id)});tx.addEventListener('pointerleave',e=>{if(e.pointerType==='mouse')hoverSoon(null)})})}
 function drawNodes(){const g=document.getElementById('gNodes');g.innerHTML='';
  persons.forEach(p=>{const gg=el('g',{class:'node',transform:`translate(${p.x},${p.y})`},g);nodeEl[p.id]=gg;
   el('rect',{class:'body',width:NW,height:NH,rx:10},gg);
@@ -405,7 +408,7 @@ function drawNodes(){const g=document.getElementById('gNodes');g.innerHTML='';
   L.forEach((l,i)=>el('text',{x:52,y:y0+i*14},gg).textContent=l);
   
   gg.addEventListener('pointerdown',ev=>startDrag(ev,p));
-  gg.addEventListener('pointerenter',e=>{if(e.pointerType==='mouse'&&!drag&&!pan)hover(p.id)});gg.addEventListener('pointerleave',e=>{if(e.pointerType==='mouse')hover(null)})})}
+  gg.addEventListener('pointerenter',e=>{if(e.pointerType==='mouse'&&!drag&&!pan)hoverSoon(p.id)});gg.addEventListener('pointerleave',e=>{if(e.pointerType==='mouse')hoverSoon(null)})})}
 /* Наведение: сам объект (h0) → прямые связи и соседи (h1) → та же категория (h2) и связи внутри неё. */
 /* Однократная «бегущая точка» по связям — от начала стрелки к концу. */
 let runT=0,hoverEdges=[];
@@ -422,6 +425,8 @@ function runEdges(list){clearTimeout(runT);document.querySelectorAll('.runner').
   const st=now=>{if(!cs[0].isConnected)return;const t=Math.min(1,(now-t0)/D),e2=t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2,q=S[Math.round(e2*(S.length-1))];
    cs.forEach((c,k)=>{c.setAttribute('cx',q[0]);c.setAttribute('cy',q[1]);c.style.opacity=q[2]===k+1?(t>.85?(1-t)/.15:1):0});
    if(t<1)requestAnimationFrame(st);else cs.forEach(c=>c.remove())};requestAnimationFrame(st)})}
+/* Мышь: подсветка включается с небольшой задержкой — схема не мигает, когда курсор просто проходит над карточками. */
+let hovT=0;function hoverSoon(id,noFx){clearTimeout(hovT);if(id)hovT=setTimeout(()=>hover(id,noFx),90);else if(curHover)hover(null)}
 function hover(id,noFx,force){if(splitPin&&!force)return;if(!id)splitPin=null;curHover=id;svg.classList.toggle('hovering',!!id);
  document.querySelectorAll('.h0,.h1,.h2,.he1,.he2').forEach(e=>e.classList.remove('h0','h1','h2','he1','he2'));if(!id){clearTimeout(runT);linkSplit(null);transfer(null);document.querySelectorAll('.runner').forEach(x=>x.remove());return}
  if(unitById[id]){const U=unitById[id],inU=q=>{let c=unitById[q.unit];while(c){if(c===U)return true;c=c.parent}return false},mem=new Set(persons.filter(inU).map(q=>q.id));
@@ -445,7 +450,7 @@ function drawGhosts(){const g=document.getElementById('gNodes');
  Object.values(GHOSTS).forEach(h=>{const c=nodeEl[h.of].cloneNode(true);c.setAttribute('class','node ghost');c.setAttribute('transform',`translate(${h.x},${h.y})`);
   if(GHOST_NAME[h.of]){c.querySelectorAll('text[x="52"]').forEach(x=>x.remove());const nm=L(GHOST_NAME[h.of]);el('text',{x:52,y:NH/2+4},c).textContent=nm}
   el('text',{class:'gtag',x:NW/2,y:NH+13,'text-anchor':'middle'},c).textContent=t('servesHere');
-  c.addEventListener('pointerenter',e=>{if(e.pointerType==='mouse'&&!drag&&!pan)hover(h.of,'up')});c.addEventListener('pointerleave',e=>{if(e.pointerType==='mouse')hover(null)});
+  c.addEventListener('pointerenter',e=>{if(e.pointerType==='mouse'&&!drag&&!pan)hoverSoon(h.of,'up')});c.addEventListener('pointerleave',e=>{if(e.pointerType==='mouse')hoverSoon(null)});
   c.addEventListener('pointerdown',ev=>{ev.stopPropagation();if(ev.pointerType==='mouse')return select(h.of);c._lt=setTimeout(()=>{c._lt=0;select(h.of)},550)});
   c.addEventListener('pointerup',ev=>{if(ev.pointerType!=='mouse'&&c._lt){clearTimeout(c._lt);c._lt=0;hideCard();hover(h.of,'up')}});g.appendChild(c);nodeEl[h.id]=c})}
 function drawPairs(){const g=document.getElementById('gPairs');g.innerHTML='';

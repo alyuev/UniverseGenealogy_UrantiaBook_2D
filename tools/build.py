@@ -16,6 +16,19 @@ if r.returncode:
 
 d = load()
 d.pop('orphans', None)
+
+# Линии прокладываются здесь, а не в браузере: первая загрузка не ждёт трассировки (на телефоне это секунды).
+import shutil
+node = shutil.which('node')
+if node:
+    r = subprocess.run([node, os.path.join(os.path.dirname(__file__), 'routes.js')],
+                       input=json.dumps(d, ensure_ascii=False), capture_output=True, text=True, encoding='utf-8')
+    if r.returncode == 0:
+        d['routes'] = json.loads(r.stdout)
+    else:
+        print('Внимание: линии не проложены при сборке, браузер проложит их сам.\n' + r.stderr)
+else:
+    print('Внимание: Node.js не найден — линии будет прокладывать браузер при первом открытии.')
 data = json.dumps(d, ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/')
 html = open('src/engine.html', encoding='utf-8').read().replace('/*@COSMO@*/', 'window.COSMO=' + data + ';')
 os.makedirs('dist', exist_ok=True)
