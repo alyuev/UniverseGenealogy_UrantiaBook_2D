@@ -123,6 +123,7 @@ select{font:inherit;font-size:13px;padding:5px 6px;border:1px solid var(--line);
 .dot{display:inline-block;width:10px;height:10px;border-radius:50%;vertical-align:-1px}
 #zoomBox{display:flex;align-items:center;gap:6px;white-space:nowrap}
 #zoomBox button{width:30px;height:30px;padding:0;line-height:1;font-size:15px;display:flex;align-items:center;justify-content:center}
+#zoom{width:110px;accent-color:var(--accent)}
 #bLang{font-weight:600;font-size:12px;line-height:1;letter-spacing:.04em}
 #guide{position:fixed;left:50%;bottom:40px;transform:translateX(-50%);z-index:20;background:var(--panel);color:var(--ink);border:1px solid var(--line);border-radius:14px;
  box-shadow:0 12px 40px #0004;padding:16px 20px;display:none;align-items:center;gap:18px;max-width:min(560px,calc(100% - 32px))}
@@ -136,7 +137,7 @@ select{font:inherit;font-size:13px;padding:5px 6px;border:1px solid var(--line);
 #guide .key.off,#guide .kt.off{opacity:.15}
 #guide .whl{animation:whl 1.1s ease-in-out infinite}@keyframes whl{0%,100%{transform:translateY(-3px)}50%{transform:translateY(4px)}}
 /* Телефон: описание и фильтры — нижние листы. */
-@media (max-width:700px){#zoomBox #zIn,#zoomBox #zOut,#zoomBox #bHelp{display:none}header{gap:6px;padding:0 8px}#searchBox{min-width:0}header h1{display:none}#active{top:62px}
+@media (max-width:700px){#zoomBox #zoom,#zoomBox #bHelp{display:none}#zoomBox{gap:4px}header{gap:4px;padding:0 6px}#searchBox{min-width:0}header h1{display:none}#active{top:62px}
  #legend{left:0;right:0;bottom:0;width:auto;max-height:60%;border-radius:16px 16px 0 0;border-bottom:0;box-shadow:0 -6px 24px #0003}
  #legend.min{left:8px;right:auto;bottom:8px;border-radius:999px;border-bottom:1px solid var(--line);box-shadow:0 6px 24px #0002}
  #card{left:0;right:0;width:auto;top:auto;bottom:0;max-height:72%;border-radius:16px 16px 0 0;border-bottom:0;box-shadow:0 -6px 24px #0003}
@@ -150,7 +151,7 @@ select{font:inherit;font-size:13px;padding:5px 6px;border:1px solid var(--line);
 <header>
   <h1 data-i18n-html="h1">Космология личностей<br>по Книге Урантии</h1>
   <div id="searchBox"><input id="q" data-i18n-ph="search" placeholder="Поиск: личность или категория…" autocomplete="off"><button id="qx" type="button" data-i18n-title="clear">×</button><div id="res"></div></div>
-  <div id="zoomBox"><button id="zOut" title="−">−</button><button id="zIn" title="+">+</button><button id="bFit" data-i18n-title="fit"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M1 5V1h4M9 1h4v4M13 9v4H9M5 13H1V9"/></svg></button><button id="bHelp" data-i18n-title="help" title="?">?</button></div>
+  <div id="zoomBox"><button id="zOut" title="−">−</button><input type="range" id="zoom" min="0" max="1000" step="1"><button id="zIn" title="+">+</button><button id="bFit" data-i18n-title="fit"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M1 5V1h4M9 1h4v4M13 9v4H9M5 13H1V9"/></svg></button><button id="bHelp" data-i18n-title="help" title="?">?</button></div>
   <input type="checkbox" id="dimToggle" checked hidden>
   <button id="bLang" title="Язык / Language"></button>
   <button id="bTheme" class="ico"></button>
@@ -250,7 +251,7 @@ const UI={
   icons:'Пиктограммы',kDeity:'Божество',kTrin:'происхождение от Троицы',kDesc:'нисходящий Сын',kAngel:'ангел',kSpirit:'дух',kLocal:'сын локальной вселенной',kAsc:'восходящий',
   keyTxt:'Точки внутри пиктограммы — происхождение. Полоски над карточкой — категории, заливка — класс по происхождению. Щелчок по названию блока — выделить блок и открыть описание.',
   tabF:'Фильтры',tabK:'Обозначения',back:'Назад',clear:'Очистить',
-  cats:'Категории',funcs:'Функции',zHint:'Ctrl + колесо — масштаб · колесо — прокрутка',help:'Как пользоваться',gZoom:'Ctrl + колесо мыши — масштаб схемы. Можно и кнопками − и + вверху.',gScroll:'Колесо мыши — прокрутка вверх и вниз, Shift + колесо — вбок. Схему также можно тянуть мышью.',gSearch:'Поиск: начните вводить имя — схема сама перелетит к карточке, а при наведении видны связи и перелёты.',gWord:'Михаилы',tZoom:'Разведите или сведите два пальца — масштаб схемы.',tPan:'Ведите одним пальцем — схема сдвигается.',tSearch:'Поиск: начните вводить имя — схема перелетит к карточке.',tTap:'Коснитесь карточки — покажутся связи и краткое описание. Коснитесь описания — оно раскроется полностью.',gNext:'Дальше',gDone:'Понятно',gSkip:'Пропустить',catsHint:'(клик — выделить)',links:'Связи',lOrigin:'происхождение',classes:'Класс по происхождению (заливка)',cClass:'Класс по происхождению',lAscent:'восхождение',lService:'служение / пребывание',layout:'Раскладка',
+  cats:'Категории',funcs:'Функции',zHint:'Ctrl + колесо — масштаб · колесо — прокрутка',help:'Как пользоваться',gZoom:'Ctrl + колесо мыши — масштаб схемы. Можно и бегунком вверху.',gScroll:'Колесо мыши — прокрутка вверх и вниз, Shift + колесо — вбок. Схему также можно тянуть мышью.',gSearch:'Поиск: начните вводить имя — схема сама перелетит к карточке, а при наведении видны связи и перелёты.',gWord:'Михаилы',tZoom:'Разведите или сведите два пальца — масштаб схемы. Кнопки − и + вверху тоже работают.',tPan:'Ведите одним пальцем — схема сдвигается.',tSearch:'Поиск: начните вводить имя — схема перелетит к карточке.',tTap:'Коснитесь карточки — покажутся связи и краткое описание. Коснитесь описания — оно раскроется полностью.',gNext:'Дальше',gDone:'Понятно',gSkip:'Пропустить',catsHint:'(клик — выделить)',links:'Связи',lOrigin:'происхождение',classes:'Класс по происхождению (заливка)',cClass:'Класс по происхождению',lAscent:'восхождение',lService:'служение / пребывание',layout:'Раскладка',
   dragHint:'Карточки можно перетаскивать — линии перестраиваются в обход.',fit:'Вся схема',undo:'Отменить',lLong:'дальние связи всегда',linksOff:'Связи вне экрана',target:'Перенос сюда',servesHere:'служит здесь',serves:'Функционирует',pairT:'вместе с',export:'Экспорт раскладки',reset:'Сброс',close:'Закрыть',
   cOrigin:'Происхождение (линия Божеств)',cPlace:'Место служения',cParents:'Порождён(ы)',cChildren:'Порождает',cSource:'Источник',book:'Книга Урантии',
   catWord:'категория',none:'Ничего не найдено',theme_light:'Светлая тема',theme_dark:'Тёмная тема',status:'Линий: {n} · трассировка {ms} мс · пересечений: {x}'},
@@ -259,7 +260,7 @@ const UI={
   icons:'Icons',kDeity:'Deity',kTrin:'Trinity origin',kDesc:'descending Son',kAngel:'angel',kSpirit:'spirit',kLocal:'local universe son',kAsc:'ascender',
   keyTxt:'Dots inside an icon show origin. Stripes above a card are its categories; the tint is its origin class. Click a block title to highlight it and open its description.',
   tabF:'Filters',tabK:'Key',back:'Back',clear:'Clear',
-  cats:'Categories',funcs:'Functions',zHint:'Ctrl + wheel — zoom · wheel — scroll',help:'How to use',gZoom:'Ctrl + mouse wheel zooms the map. The − and + buttons at the top work too.',gScroll:'Mouse wheel scrolls up and down, Shift + wheel sideways. You can also drag the map.',gSearch:'Search: start typing a name — the map flies to the card; hovering shows links and transfers.',gWord:'Michael',tZoom:'Spread or pinch two fingers to zoom.',tPan:'Drag with one finger to move the map.',tSearch:'Search: start typing a name — the map flies to the card.',tTap:'Tap a card to see its links and a short description. Tap the description to open it in full.',gNext:'Next',gDone:'Got it',gSkip:'Skip',catsHint:'(click to highlight)',links:'Links',lOrigin:'origin',classes:'Origin class (card tint)',cClass:'Origin class',lAscent:'ascent',lService:'ministry / indwelling',layout:'Layout',
+  cats:'Categories',funcs:'Functions',zHint:'Ctrl + wheel — zoom · wheel — scroll',help:'How to use',gZoom:'Ctrl + mouse wheel zooms the map. The slider at the top works too.',gScroll:'Mouse wheel scrolls up and down, Shift + wheel sideways. You can also drag the map.',gSearch:'Search: start typing a name — the map flies to the card; hovering shows links and transfers.',gWord:'Michael',tZoom:'Spread or pinch two fingers to zoom. The − and + buttons at the top work too.',tPan:'Drag with one finger to move the map.',tSearch:'Search: start typing a name — the map flies to the card.',tTap:'Tap a card to see its links and a short description. Tap the description to open it in full.',gNext:'Next',gDone:'Got it',gSkip:'Skip',catsHint:'(click to highlight)',links:'Links',lOrigin:'origin',classes:'Origin class (card tint)',cClass:'Origin class',lAscent:'ascent',lService:'ministry / indwelling',layout:'Layout',
   dragHint:'Cards can be dragged — lines reroute around them.',fit:'Whole map',undo:'Undo',lLong:'always show long links',linksOff:'Off-screen links',target:'Moving here',servesHere:'serves here',serves:'Functions in',pairT:'together with',export:'Export layout',reset:'Reset',close:'Close',
   cOrigin:'Origin (Deity lineage)',cPlace:'Place of service',cParents:'Created by',cChildren:'Creates',cSource:'Source',book:'The Urantia Book',
   catWord:'category',none:'Nothing found',theme_light:'Light theme',theme_dark:'Dark theme',status:'Lines: {n} · routing {ms} ms · crossings: {x}'}};
@@ -571,24 +572,35 @@ function straight(e){const a=rectOf(e.from),b=rectOf(e.to);return[[a.x+a.w/2,a.y
 /* ===================== ВИД: панорама, зум, перелёт ===================== */
 let vb={x:0,y:0,w:W,h:H};
 let vbTimer=0;
-const setVB=()=>{ // край схемы можно довести максимум до центра экрана
- if(![vb.x,vb.y,vb.w,vb.h].every(Number.isFinite)||vb.w<=0)vb={x:0,y:0,w:W,h:H};
- {const cw=svg.clientWidth,ch=svg.clientHeight;if(cw&&ch){const cx=vb.x+vb.w/2,cy=vb.y+vb.h/2,s=Math.max(vb.w/cw,vb.h/ch);vb.w=cw*s;vb.h=ch*s;vb.x=cx-vb.w/2;vb.y=cy-vb.h/2}} // вид = видимая область экрана
- vb.x=Math.min(Math.max(vb.x,-vb.w/2),W-vb.w/2);vb.y=Math.min(Math.max(vb.y,-vb.h/2),H-vb.h/2);
+/* Вид всегда равен видимой области экрана; край схемы можно довести максимум до центра экрана. */
+const normVB=v=>{v=[v.x,v.y,v.w,v.h].every(Number.isFinite)&&v.w>0?{...v}:{x:0,y:0,w:W,h:H};
+ const cw=svg.clientWidth,ch=svg.clientHeight;if(cw&&ch){const cx=v.x+v.w/2,cy=v.y+v.h/2,k=Math.max(v.w/cw,v.h/ch);v.w=cw*k;v.h=ch*k;v.x=cx-v.w/2;v.y=cy-v.h/2}
+ v.x=Math.min(Math.max(v.x,-v.w/2),W-v.w/2);v.y=Math.min(Math.max(v.y,-v.h/2),H-v.h/2);return v};
+const setVB=()=>{vb=normVB(vb);
  svg.setAttribute('viewBox',`${vb.x} ${vb.y} ${vb.w} ${vb.h}`);
  svg.classList.toggle('far',svg.clientWidth/vb.w<.33); // издали: без мелких надписей, крупнее названия блоков
- clearTimeout(vbTimer);vbTimer=setTimeout(()=>{try{localStorage.setItem('ku-view',JSON.stringify(vb))}catch(e){}},300)}; // запоминаем вид
+ syncZoom();clearTimeout(vbTimer);vbTimer=setTimeout(()=>{try{localStorage.setItem('ku-view',JSON.stringify(vb))}catch(e){}},300)}; // запоминаем вид
+/* Плавность: колесо, кнопки и бегунок задают целевой вид (tv), текущий догоняет его по экспоненте; после броска мышью или пальцем
+   схема докатывается по инерции. tau — за сколько мс остаток пути сокращается в e раз. Шаг привязан ко времени, а не к кадрам. */
+let tv=null,tvRaf=0,tvLast=0,tvTau=80;
+const stopEase=()=>{tv=null;cancelAnimationFrame(tvRaf);tvRaf=0};
+function easeTo(to,tau=80){cancelAnimationFrame(anim);tv=normVB(to);tvTau=tau;if(tvRaf)return;tvLast=performance.now();
+ const step=now=>{if(!tv){tvRaf=0;return}const k=1-Math.exp(-Math.min(50,now-tvLast)/tvTau);tvLast=now;
+  vb={x:vb.x+(tv.x-vb.x)*k,y:vb.y+(tv.y-vb.y)*k,w:vb.w+(tv.w-vb.w)*k,h:vb.h+(tv.h-vb.h)*k};
+  const px=vb.w/svg.clientWidth*.5; // осталось меньше полпикселя — приехали
+  if(!(Math.abs(tv.x-vb.x)>px||Math.abs(tv.y-vb.y)>px||Math.abs(tv.w-vb.w)>px)){vb=tv;tv=null;tvRaf=0;setVB();return}
+  setVB();tvRaf=requestAnimationFrame(step)};tvRaf=requestAnimationFrame(step)}
 const toWorld=(cx,cy)=>{const pt=svg.createSVGPoint();pt.x=cx;pt.y=cy;return pt.matrixTransform(svg.getScreenCTM().inverse())};
-svg.addEventListener('wheel',ev=>{ev.preventDefault();
- if(!ev.ctrlKey){const s=vb.w/svg.clientWidth,m=ev.deltaMode===1?16:1;if(ev.shiftKey)vb.x+=(ev.deltaY||ev.deltaX)*m*s;else{vb.x+=ev.deltaX*m*s;vb.y+=ev.deltaY*m*s}setVB();return}
- const k=Math.exp(ev.deltaY*0.0015),p=toWorld(ev.clientX,ev.clientY);
- const nw=Math.min(Math.max(vb.w*k,250),W*3);const kk=nw/vb.w;vb={x:p.x-(p.x-vb.x)*kk,y:p.y-(p.y-vb.y)*kk,w:vb.w*kk,h:vb.h*kk};setVB()},{passive:false});
+svg.addEventListener('wheel',ev=>{ev.preventDefault();const b=tv||vb; // отсчёт от цели: быстрые щелчки колеса складываются
+ if(!ev.ctrlKey){const k=b.w/svg.clientWidth*(ev.deltaMode===1?16:1);easeTo(ev.shiftKey?{...b,x:b.x+(ev.deltaY||ev.deltaX)*k}:{...b,x:b.x+ev.deltaX*k,y:b.y+ev.deltaY*k});return}
+ const B=svg.getBoundingClientRect(),fx=(ev.clientX-B.left)/B.width,fy=(ev.clientY-B.top)/B.height,p=toWorld(ev.clientX,ev.clientY);
+ const w=Math.min(Math.max(b.w*Math.exp(ev.deltaY*0.0015),250),W*3),h=b.h*w/b.w;easeTo({x:p.x-fx*w,y:p.y-fy*h,w,h})},{passive:false}); // точка под курсором остаётся на месте
 let pan=null,drag=null;
 /* Сенсорный экран: два пальца — масштаб; касание карточки — связи, повторное касание — описание. */
 const tp=new Map();let pinch=null;svg.addEventListener('contextmenu',e=>{e.preventDefault();if(pan&&pan.node&&!pan.moved&&!pan.long){clearTimeout(pan.lt);pan.long=true;select(pan.node)}}); // долгое нажатие на телефоне часто приходит как contextmenusvg.style.webkitTouchCallout='none';
-svg.addEventListener('pointerdown',ev=>{tp.set(ev.pointerId,{x:ev.clientX,y:ev.clientY});if(tp.size===2){const[a,b]=[...tp.values()],B=svg.getBoundingClientRect(),mx=(a.x+b.x)/2,my=(a.y+b.y)/2;
+svg.addEventListener('pointerdown',ev=>{stopEase();tp.set(ev.pointerId,{x:ev.clientX,y:ev.clientY});if(tp.size===2){const[a,b]=[...tp.values()],B=svg.getBoundingClientRect(),mx=(a.x+b.x)/2,my=(a.y+b.y)/2;
  pinch={d0:Math.hypot(a.x-b.x,a.y-b.y),vb0:{...vb},wx:vb.x+(mx-B.left)/B.width*vb.w,wy:vb.y+(my-B.top)/B.height*vb.h};pan=null;svg.setPointerCapture(ev.pointerId);return}},true);
-svg.addEventListener('pointerdown',ev=>{if(document.activeElement===q)q.blur();res.style.display='none';if(pinch)return;ev.preventDefault();window.getSelection()?.removeAllRanges();if(drag)return;pan={x:ev.clientX,y:ev.clientY,vb:{...vb},s:1/svg.getScreenCTM().a,moved:false,unit:ev.target.classList?.contains('ulab')?ev.target.parentNode.dataset.u:null,node:ev.target.closest?.('.node')?.dataset.pid||null};svg.classList.add('panning');svg.setPointerCapture(ev.pointerId);
+svg.addEventListener('pointerdown',ev=>{if(document.activeElement===q)q.blur();res.style.display='none';if(pinch)return;ev.preventDefault();window.getSelection()?.removeAllRanges();if(drag)return;pan={x:ev.clientX,y:ev.clientY,px:ev.clientX,py:ev.clientY,tm:ev.timeStamp,vx:0,vy:0,vb:{...vb},s:1/svg.getScreenCTM().a,moved:false,unit:ev.target.classList?.contains('ulab')?ev.target.parentNode.dataset.u:null,node:ev.target.closest?.('.node')?.dataset.pid||null};svg.classList.add('panning');svg.setPointerCapture(ev.pointerId);
  if(ev.pointerType!=='mouse'&&pan.node){const pn=pan;pn.lt=setTimeout(()=>{if(pan===pn&&!pn.moved){pn.long=true;select(pn.node)}},550)}}); // долгое касание — описание
 svg.addEventListener('pointermove',ev=>{
  if(tp.has(ev.pointerId))tp.set(ev.pointerId,{x:ev.clientX,y:ev.clientY});
@@ -597,13 +609,16 @@ svg.addEventListener('pointermove',ev=>{
  if(drag){if(!EDIT)return;const p=toWorld(ev.clientX,ev.clientY),dx=p.x-drag.sx,dy=p.y-drag.sy;if(Math.abs(dx)+Math.abs(dy)>3)drag.moved=true;if(!drag.moved)return;
   drag.p.x=drag.ox+dx;drag.p.y=drag.oy+dy;nodeEl[drag.p.id].setAttribute('transform',`translate(${drag.p.x},${drag.p.y})`);
   edges.forEach(e=>{if(e.from===drag.p.id||e.to===drag.p.id){const d=pathD(straight(e));edgeEl.get(e).querySelectorAll('path').forEach(x=>x.setAttribute('d',d))}});return}
- if(pan){const dx=(ev.clientX-pan.x)*pan.s,dy=(ev.clientY-pan.y)*pan.s;if(Math.hypot(ev.clientX-pan.x,ev.clientY-pan.y)>(ev.pointerType==='mouse'?3:10)){pan.moved=true;clearTimeout(pan.lt)}vb.x=pan.vb.x-dx;vb.y=pan.vb.y-dy;setVB()}});
+ if(pan){{const dt=ev.timeStamp-pan.tm;if(dt>0){pan.vx=.4*pan.vx+.6*(ev.clientX-pan.px)/dt;pan.vy=.4*pan.vy+.6*(ev.clientY-pan.py)/dt;pan.px=ev.clientX;pan.py=ev.clientY;pan.tm=ev.timeStamp}} // скорость ведения, px/мс
+  const dx=(ev.clientX-pan.x)*pan.s,dy=(ev.clientY-pan.y)*pan.s;if(Math.hypot(ev.clientX-pan.x,ev.clientY-pan.y)>(ev.pointerType==='mouse'?3:10)){pan.moved=true;clearTimeout(pan.lt)}vb.x=pan.vb.x-dx;vb.y=pan.vb.y-dy;setVB()}});
 const tpEnd=ev=>{tp.delete(ev.pointerId);if(pinch&&tp.size<2){pinch=null;pan=null;svg.classList.remove('panning')}};
 svg.addEventListener('pointercancel',tpEnd);
 svg.addEventListener('pointerup',ev=>{const wasPinch=!!pinch||tp.size>1;tpEnd(ev);if(wasPinch)return;
  if(drag){const p=drag.p;if(drag.moved){p.x=Math.round(p.x/G)*G;p.y=Math.round(p.y/G)*G;nodeEl[p.id].setAttribute('transform',`translate(${p.x},${p.y})`);undoStack.push({id:p.id,x:drag.ox,y:drag.oy});updUndo();savePos();routeAll();drawEdges();reapply()}else select(p.id);drag=null;return}
  if(pan){svg.classList.remove('panning');clearTimeout(pan.lt);if(pan.long){pan=null;return}if(!pan.moved){const touch=ev.pointerType!=='mouse';if(pan.node&&touch){if(sel){sel=null;refresh()}cardHist.length=0;showCard(pan.node,1);hover(pan.node)} // касание: связи + краткое описание
-   else if(pan.node)select(pan.node);else if(pan.unit)select(pan.unit);else{if(touch)hover(null);cardShown()?closeCard():clearSel()}}pan=null}}); // пустое место: сначала закрыть описание, потом снять фильтр
+   else if(pan.node)select(pan.node);else if(pan.unit)select(pan.unit);else{if(touch)hover(null);cardShown()?closeCard():clearSel()}} // пустое место: сначала закрыть описание, потом снять фильтр
+  else if(ev.timeStamp-pan.tm<60&&Math.hypot(pan.vx,pan.vy)>.25){const k=Math.min(1,4/Math.hypot(pan.vx,pan.vy))*300*pan.s;easeTo({...vb,x:vb.x-pan.vx*k,y:vb.y-pan.vy*k},300)} // бросок: схема докатывается
+  pan=null}});
 function startDrag(ev,p){if(!EDIT){ev.target.closest('.node').dataset.pid=p.id;return}ev.stopPropagation();const w=toWorld(ev.clientX,ev.clientY);drag={p,sx:w.x,sy:w.y,ox:p.x,oy:p.y,moved:false};svg.setPointerCapture(ev.pointerId)}
 let anim=null;
 /* Место, занятое панелями (описание, фильтры): перелёт ставит цель в центр свободной части экрана. */
@@ -616,7 +631,7 @@ function flyTo(r,fit){const cw=svg.clientWidth,ch=svg.clientHeight,I=insets(),fw
  const s=fit?Math.max(r.w*1.15/fw,r.h*1.15/fh,700/cw):Math.max(r.h*6/ch,Math.min(Math.max(r.w*6,1600),Math.max(cw/.7,r.w*2))/cw),w=cw*s,h=ch*s;
  const to={x:r.x+r.w/2-(I.l+fw/2)*s,y:r.y+r.h/2-(I.t+fh/2)*s,w,h},fr={...vb},t0=performance.now(),D=900;
  const dist=Math.hypot(to.x+to.w/2-fr.x-fr.w/2,to.y+to.h/2-fr.y-fr.h/2),bump=Math.min(1,dist/1500)*0.6;
- cancelAnimationFrame(anim);const step=now=>{let t=Math.min(1,(now-t0)/D);const e=t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+ cancelAnimationFrame(anim);stopEase();const step=now=>{let t=Math.min(1,(now-t0)/D);const e=t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
   const k=1+bump*Math.sin(Math.PI*t),cw=(fr.w+(to.w-fr.w)*e)*k,ch=(fr.h+(to.h-fr.h)*e)*k;
   const cx=fr.x+fr.w/2+(to.x+to.w/2-fr.x-fr.w/2)*e,cy=fr.y+fr.h/2+(to.y+to.h/2-fr.y-fr.h/2)*e;
   vb={x:cx-cw/2,y:cy-ch/2,w:cw,h:ch};setVB();if(t<1)anim=requestAnimationFrame(step)};anim=requestAnimationFrame(step)}
@@ -769,14 +784,17 @@ document.addEventListener('keydown',e=>{if(e.target.tagName==='INPUT'||e.ctrlKey
  if(e.key==='Escape'){hover(null,0,1);cardShown()?closeCard():clearSel()}
  else if(e.code==='Slash'){e.preventDefault();q.focus()}else if(e.code==='Digit0')document.getElementById('bFit').click()});
 
-/* ===================== ЗУМ и гайд при первом открытии ===================== */
-var ZMIN=250,ZMAX=W*3;
-function zoomTo(w,cx,cy){w=Math.min(Math.max(w,ZMIN),ZMAX);cx??=vb.x+vb.w/2;cy??=vb.y+vb.h/2;const h=vb.h*w/vb.w;vb={x:cx-w/2,y:cy-h/2,w,h};setVB()}
-document.getElementById('zIn').onclick=()=>zoomTo(vb.w/1.4);document.getElementById('zOut').onclick=()=>zoomTo(vb.w*1.4);
+/* ===================== ЗУМ: бегунок и гайд при первом открытии ===================== */
+var ZMIN=250,ZMAX=W*3,zEl=document.getElementById('zoom');
+function syncZoom(){if(zEl)zEl.value=Math.round(1000*Math.log(ZMAX/(tv||vb).w)/Math.log(ZMAX/ZMIN))} // по цели: бегунок не спорит с рукой
+function zoomTo(w){const b=tv||vb;w=Math.min(Math.max(w,ZMIN),ZMAX);const h=b.h*w/b.w;easeTo({x:b.x+b.w/2-w/2,y:b.y+b.h/2-h/2,w,h})}
+zEl.addEventListener('input',()=>zoomTo(ZMAX/Math.pow(ZMAX/ZMIN,zEl.value/1000)));
+document.getElementById('zIn').onclick=()=>zoomTo((tv||vb).w/1.4);document.getElementById('zOut').onclick=()=>zoomTo((tv||vb).w*1.4);
+syncZoom();
 const guide=document.getElementById('guide');let gStep=0,gTok=0;
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 // плавный переход вида; прерывается, если гайд закрыт или перешёл к другому шагу
-function animVB(to,D,tok){const fr={...vb},t0=performance.now();return new Promise(res=>{const st=now=>{if(tok!==gTok)return res();
+function animVB(to,D,tok){stopEase();const fr={...vb},t0=performance.now();return new Promise(res=>{const st=now=>{if(tok!==gTok)return res();
  const t=Math.min(1,(now-t0)/D),e=t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;vb={x:fr.x+(to.x-fr.x)*e,y:fr.y+(to.y-fr.y)*e,w:fr.w+(to.w-fr.w)*e,h:fr.h+(to.h-fr.h)*e};setVB();
  t<1?requestAnimationFrame(st):res()};requestAnimationFrame(st)})}
 const around=(id,w)=>{const r=rectOf(id),h=w*svg.clientHeight/svg.clientWidth;return{x:r.x+r.w/2-w/2,y:r.y+r.h/2-h/2,w,h}};
