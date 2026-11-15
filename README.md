@@ -2,6 +2,10 @@
 
 **Открыть схему:** https://alyuev.github.io/UniverseGenealogy_UrantiaBook_2D/
 
+![Схема космологии личностей по Книге Урантии — тёмная тема](docs/schema.png)
+
+![Схема космологии личностей по Книге Урантии — светлая тема](docs/schema-light.png)
+
 Скачать один файл: раздел [Releases](https://github.com/alyuev/UniverseGenealogy_UrantiaBook_2D/releases) → `cosmology.html`.
 
 Встроить на сайт:
