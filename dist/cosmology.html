@@ -263,7 +263,7 @@ const unitById={};UNITS.forEach(u=>unitById[u.id]=u);
 const UI={
  ru:{_name:'Русский',title:'Космология личностей по Книге Урантии',h1:'Космология личностей<br>по Книге Урантии',search:'Поиск: личность или категория…',dim:'затенять остальное',
   origin:'Происхождение',oA:'Абсолют',oT:'Троица',oF:'Всеобщий Отец',oS:'Вечный Сын',oD:'Бесконечный Дух',oE:'эволюционное происхождение',oF2:'Отец',oS2:'Сын',oD2:'Дух',oE2:'эволюц.',
-  icons:'Пиктограммы',kDeity:'Божество',kTrin:'происхождение от Троицы',kDesc:'нисходящий Сын',kAngel:'ангел',kSpirit:'дух',kLocal:'сын локальной вселенной',kAsc:'восходящий',
+  icons:'Пиктограммы',kDeity:'Божество',kTrin:'происхождение от Троицы',kDesc:'нисходящий Сын',kAngel:'ангел',kSpirit:'дух',kLocal:'сын локальной вселенной',kAsc:'восходящий',kKinds:'Вид карточки',kPerson:'личность (вид существ)',kStage:'стадия восхождения — состояние, а не отдельный вид',kCorps:'корпус — группа личностей разных видов',kGhost:'тень — где личность служит',
   keyTxt:'Точки внутри пиктограммы — происхождение. Полоски над карточкой — категории, заливка — класс по происхождению. Щелчок по названию блока — выделить блок и открыть описание.',
   tabF:'Фильтры',tabK:'Обозначения',back:'Назад',clear:'Очистить',
   cats:'Категории',funcs:'Функции',zHint:'Ctrl + колесо — масштаб · колесо — прокрутка',help:'Как пользоваться',gZoom:'Ctrl + колесо мыши — масштаб схемы. Можно и бегунком вверху.',gScroll:'Колесо мыши — прокрутка вверх и вниз, Shift + колесо — вбок. Схему также можно тянуть мышью.',gSearch:'Поиск: начните вводить имя — схема сама перелетит к карточке, а при наведении видны связи и перелёты.',gWord:'Михаилы',tZoom:'Разведите или сведите два пальца — масштаб схемы. Кнопки − и + вверху тоже работают.',tPan:'Ведите одним пальцем — схема сдвигается.',tSearch:'Поиск: начните вводить имя — схема перелетит к карточке.',tTap:'Коснитесь карточки — покажутся связи и краткое описание. Коснитесь описания — оно раскроется полностью.',gNext:'Дальше',gDone:'Понятно',gSkip:'Пропустить',catsHint:'(клик — выделить)',links:'Связи',lOrigin:'происхождение',classes:'Класс по происхождению (заливка)',cClass:'Класс по происхождению',lAscent:'восхождение',lService:'служение / пребывание',layout:'Раскладка',
@@ -272,7 +272,7 @@ const UI={
   catWord:'категория',none:'Ничего не найдено',theme_light:'Светлая тема',theme_dark:'Тёмная тема',status:'Линий: {n} · трассировка {ms} мс · пересечений: {x}'},
  en:{_name:'English',title:'Cosmology of Personalities in the Urantia Book',h1:'Cosmology of Personalities<br>in the Urantia Book',search:'Search: personality or category…',dim:'dim the rest',
   origin:'Origin',oA:'Absolute',oT:'Trinity',oF:'Universal Father',oS:'Eternal Son',oD:'Infinite Spirit',oE:'evolutionary origin',oF2:'Father',oS2:'Son',oD2:'Spirit',oE2:'evolut.',
-  icons:'Icons',kDeity:'Deity',kTrin:'Trinity origin',kDesc:'descending Son',kAngel:'angel',kSpirit:'spirit',kLocal:'local universe son',kAsc:'ascender',
+  icons:'Icons',kDeity:'Deity',kTrin:'Trinity origin',kDesc:'descending Son',kAngel:'angel',kSpirit:'spirit',kLocal:'local universe son',kAsc:'ascender',kKinds:'Card kind',kPerson:'personality (order of beings)',kStage:'stage of ascension — a state, not a separate order',kCorps:'corps — a group of beings of various orders',kGhost:'shadow — where a personality serves',
   keyTxt:'Dots inside an icon show origin. Stripes above a card are its categories; the tint is its origin class. Click a block title to highlight it and open its description.',
   tabF:'Filters',tabK:'Key',back:'Back',clear:'Clear',
   cats:'Categories',funcs:'Functions',zHint:'Ctrl + wheel — zoom · wheel — scroll',help:'How to use',gZoom:'Ctrl + mouse wheel zooms the map. The slider at the top works too.',gScroll:'Mouse wheel scrolls up and down, Shift + wheel sideways. You can also drag the map.',gSearch:'Search: start typing a name — the map flies to the card; hovering shows links and transfers.',gWord:'Michael',tZoom:'Spread or pinch two fingers to zoom. The − and + buttons at the top work too.',tPan:'Drag with one finger to move the map.',tSearch:'Search: start typing a name — the map flies to the card.',tTap:'Tap a card to see its links and a short description. Tap the description to open it in full.',gNext:'Next',gDone:'Got it',gSkip:'Skip',catsHint:'(click to highlight)',links:'Links',lOrigin:'origin',classes:'Origin class (card tint)',cClass:'Origin class',lAscent:'ascent',lService:'ministry / indwelling',layout:'Layout',
@@ -734,6 +734,13 @@ document.getElementById('found').onclick=e=>{if(e.target.tagName==='BUTTON')retu
 function drawKey(){const k=document.getElementById('key');k.innerHTML='';
  [['kDeity','deity','F'],['kTrin','trin','T'],['kDesc','desc','FS'],['kAngel','angel','D'],['kSpirit','spirit','D'],['kLocal','local','SD'],['kAsc','asc','E']].forEach(([key,c,o])=>{
   const d=document.createElement('div');d.className='row';originGlyph(el('svg',{width:30,height:34,viewBox:'-17 -19 34 38'},d),{origin:o,cats:[c]},0,0);
+  d.appendChild(document.createElement('span')).textContent=t(key);k.appendChild(d)});
+ // виды карточек: обычная, стадия, корпус, тень (место служения)
+ const h=document.createElement('h3');h.textContent=t('kKinds');k.appendChild(h);
+ [['kPerson',''],['kStage','stage'],['kCorps','corps'],['kGhost','ghost']].forEach(([key,cls])=>{
+  const d=document.createElement('div');d.className='row';const sv=el('svg',{width:46,height:30,viewBox:'-2 -8 50 34'},d),g=el('g',{class:'node '+cls},sv);
+  if(cls==='corps')[6,3].forEach(o=>el('rect',{class:'stack',x:o,y:-o,width:40,height:22,rx:5},g));
+  el('rect',{class:'body',width:40,height:22,rx:5},g);if(cls!=='stage')el('rect',{class:'tint',width:40,height:22,rx:5,fill:'#43a047'},g);
   d.appendChild(document.createElement('span')).textContent=t(key);k.appendChild(d)})}
 function drawCats(){document.getElementById('classes').innerHTML=Object.entries(OCLS).map(([k,c])=>`<span class="chip" data-cat="oc:${k}"><i style="background:${c.color};opacity:.55"></i>${L(c.name)} <small>${persons.filter(p=>p.oc===k).length}</small></span>`).join('');
  document.querySelectorAll('#classes .chip').forEach(c=>c.onclick=()=>selectCat(c.dataset.cat));
