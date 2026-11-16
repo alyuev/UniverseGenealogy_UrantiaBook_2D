@@ -259,7 +259,7 @@ persons:
   sonfused: { class: E, origin: E, groups: [asc], refs: ["40:8"] }
   spiritfused: { class: E, origin: E, groups: [asc], refs: ["40:9"] }
   transmid: { class: E, origin: E, groups: [asc], refs: ["40:3"] }
-  persadj: { class: F, origin: F, groups: [asc], refs: ["40:4"] }
+  persadj: { class: F, origin: F, groups: [desc], refs: ["109:7", "107:2"] }
   gravmess: { class: F, origin: F, groups: [spirit], refs: ["31:2"], func: [messeng] }
   adjhav: { class: D, origin: D, groups: [spirit], refs: ["17:5"], func: [minist] }
   circsup: { class: D, origin: D, groups: [spirit], refs: ["24:1"], func: [energy] }

@@ -192,6 +192,14 @@ persons:
   tadj:
     name: Thought Adjuster
     desc: A fragment of the Father indwelling the mortal mind.
+    stages:
+      - { t: "Virgin Adjusters — serving on their initial assignment in the minds of evolutionary candidates", ref: "107:2.2" }
+      - { t: "Advanced Adjusters — have served one or more seasons with will creatures", ref: "107:2.3" }
+      - { t: "Supreme Adjusters — experienced, but their human partners declined eternal life", ref: "107:2.4" }
+      - { t: "Vanished Adjusters — a stage of service about which nothing can be said", ref: "107:2.5" }
+      - { t: "Liberated Adjusters — eternally liberated from the service of time", ref: "107:2.6" }
+      - { t: "Fused Adjusters — finaliters, one with the ascending creatures", ref: "107:2.7", id: adjfused }
+      - { t: "Personalized Adjusters — served with the incarnated Paradise Sons, and others", ref: "107:2.8", id: persadj }
   human:
     name: Mortal man
     desc: An evolutionary being beginning the ascent to Paradise.
