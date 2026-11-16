@@ -195,7 +195,7 @@ units:
                             color: "#00838f"
                             content:
                               - [~adam, ~eve, ~avonal, ~melch]
-                              - [truth, adjutants, seraph, calstaff, midway]
+                              - [truth, adjutants, seraph, ~morontia, midway]
                               - id: mortal
                                 color: "#00838f"
                                 content:
@@ -238,7 +238,7 @@ persons:
   seconaphim: { class: D, origin: FSD, groups: [angel, spirit], refs: ["28"], func: [minist, reflect] }
   stars: { class: L, origin: FSD, groups: [local], refs: ["37:2"], func: [gov, reflect] }
   vorondadek: { class: L, origin: FSD, groups: [local, desc], refs: ["35:6"], func: [gov, justice] }
-  morontia: { class: E, origin: E, groups: [asc], refs: ["48"] }
+  morontia: { class: E, origin: E, groups: [asc], refs: ["48", "66:2"], stage: true }
   mcomp: { class: D, origin: D, groups: [spirit], refs: ["48:3"], func: [minist] }
   adjutants: { class: D, origin: D, groups: [supspirit, spirit], refs: ["36:5"], func: [minist] }
   truth: { class: L, origin: FSD, groups: [spirit, desc], refs: ["194"], func: [minist] }
@@ -300,12 +300,12 @@ persons:
   assocreg: { class: D, origin: D, groups: [local, spirit], refs: ["48:2"], func: [energy] }
   spiritnat: { class: U, origin: "", groups: [spirit], refs: ["30:2"] }
   fathernat: { class: U, origin: "", groups: [unclass], refs: ["30:2"] }
-  mortfin: { class: E, origin: E, groups: [finality, asc], refs: ["31:0"] }
-  parfin: { class: C, origin: "", groups: [finality], refs: ["31:10"] }
-  trinfin: { class: C, origin: "", groups: [finality], refs: ["31:10"] }
-  conjfin: { class: C, origin: "", groups: [finality], refs: ["31:10"] }
-  havfin: { class: C, origin: "", groups: [finality], refs: ["31:10"] }
-  transfin: { class: C, origin: "", groups: [finality], refs: ["31:10"] }
+  mortfin: { class: E, origin: E, groups: [finality, asc], refs: ["31:0"], corps: true }
+  parfin: { class: C, origin: "", groups: [finality], refs: ["31:10"], corps: true }
+  trinfin: { class: C, origin: "", groups: [finality], refs: ["31:10"], corps: true }
+  conjfin: { class: C, origin: "", groups: [finality], refs: ["31:10"], corps: true }
+  havfin: { class: C, origin: "", groups: [finality], refs: ["31:10"], corps: true }
+  transfin: { class: C, origin: "", groups: [finality], refs: ["31:10"], corps: true }
   mosthigh: { class: U, origin: "", groups: [spirit], refs: ["37:4"], func: [gov] }
   architects: { class: X, origin: "", groups: [transcg], refs: ["31:9"], func: [create, gov] }
   transrec: { class: X, origin: "", groups: [transcg], refs: ["23:3"], func: [reflect] }
@@ -321,7 +321,6 @@ persons:
   deityabs: { class: A, origin: A, groups: [deity], refs: ["0:11"] }
   unqabs: { class: A, origin: A, groups: [deity], refs: ["0:11"] }
   univabs: { class: A, origin: A, groups: [deity], refs: ["0:11"] }
-  calstaff: { class: E, origin: E, groups: [asc], refs: ["66:2", "66:4", "77:1"] }
 
 # Связи: [откуда, куда, тип]. Тип по умолчанию origin; service — служение; ascent — восхождение. ~a — от тени.
 links:
@@ -475,5 +474,4 @@ links:
   - [parhav, trinfin, ascent]
   - [destiny, trinfin, ascent]
   - [havnat, conjfin, ascent]
-  - [calstaff, midway]
-  - [morontia, calstaff, ascent]
+  - [~morontia, midway]

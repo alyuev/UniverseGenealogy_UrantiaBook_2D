@@ -236,6 +236,8 @@ persons:
   morontia:
     name: Morontia mortals
     desc: "Ascenders on the mansion worlds after death, in morontia form."
+    serves: "the Caligastia one hundred, corporeal members of the Prince's staff: one hundred ascending citizens of Jerusem given material bodies (66:2); the primary midwayers descend from them (77:1)"
+    there: Caligastia one hundred
   mcomp:
     name: Morontia Companions
     desc: Companions and guides of ascenders on the morontia worlds.
@@ -489,6 +491,3 @@ persons:
   univabs:
     name: Universal Absolute
     desc: "Unifies the Qualified and Unqualified Absolutes and is superadditive to both, encompassing all absolute potential (0:3.18, 0:11.6)."
-  calstaff:
-    name: "Caligastia One Hundred — corporeal members of the Prince's staff"
-    desc: "One hundred rematerialized ascending citizens of Jerusem, volunteers chosen by Caligastia for the Urantia experiment (66:2). The primary midwayers had their genesis in their unique interassociation of the material and the spiritual (77:1)."

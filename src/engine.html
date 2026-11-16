@@ -34,6 +34,8 @@ header label{white-space:nowrap;color:var(--muted);font-size:13px}
 .flyov{position:fixed;left:0;top:0;width:100vw;height:100vh;z-index:6;pointer-events:none;overflow:visible}.flyov .node{filter:drop-shadow(0 8px 14px #0005)}
 .runner{fill:var(--accent);filter:drop-shadow(0 0 5px var(--accent));pointer-events:none}
 .split svg{width:100%;height:100%;display:block}
+.node.stage rect.body{stroke-dasharray:4 3;stroke-width:1.6;stroke:#43a047}.node.stage .tint{fill-opacity:0}.node.stage .lp{fill-opacity:.25}
+.node.corps .stack{fill:var(--panel);stroke:var(--nodeS);stroke-width:1}
 .node.ghost{opacity:.55}.node.ghost rect.body{stroke-dasharray:5 4}.gtag{font-size:10px!important;fill:var(--muted)!important;font-style:italic}
 .pair{fill:none;stroke:#9a6fc4;stroke-opacity:.7;stroke-width:1.6}.pair.ghost{stroke-dasharray:6 5;stroke-opacity:.5}
 .node.fly{pointer-events:none;filter:drop-shadow(0 8px 14px #0005)}
@@ -216,7 +218,7 @@ const FUNCS=Object.fromEntries(Object.entries(D.functions||{}).map(([k,g])=>[k,{
 const OCLS=Object.fromEntries(Object.entries(D.classes).map(([k,c])=>[k,{color:c.color,name:c.name}]));
 const conv=u=>({id:u.id,color:u.color,w:u.width,beside:u.beside,endpoint:u.linkable,_name:u.name,_desc:u.desc,ref:(u.refs||[])[0],kids:u.content.map(k=>Array.isArray(k)?k:conv(k))});
 const TREE={kids:D.units.map(conv)};
-const persons=Object.entries(D.persons).map(([id,p])=>({id,oc:p.class,origin:p.origin,cats:p.groups||[],fn:p.func||[],fuse:p.fuse||[],ref:(p.refs||[])[0]||'',lane:p.lane,x:0,y:0,unit:'',_name:p.name,_aka:p.aka,_desc:p.desc,_stages:p.stages}));
+const persons=Object.entries(D.persons).map(([id,p])=>({id,oc:p.class,origin:p.origin,cats:p.groups||[],fn:p.func||[],fuse:p.fuse||[],ref:(p.refs||[])[0]||'',lane:p.lane,stage:!!p.stage,corps:!!p.corps,x:0,y:0,unit:'',_name:p.name,_aka:p.aka,_desc:p.desc,_stages:p.stages}));
 const edges=D.links.map(([from,to,type])=>({from,to,type:type||'origin'}));
 const PAIR_OF={},SERVES={},GHOST_NAME={};
 Object.entries(D.persons).forEach(([id,p])=>{if(p.pair)PAIR_OF[id]=p.pair;if(p.serves)SERVES[id]=p.serves;if(p.there)GHOST_NAME[id]=p.there});
@@ -266,7 +268,7 @@ const UI={
   tabF:'Фильтры',tabK:'Обозначения',back:'Назад',clear:'Очистить',
   cats:'Категории',funcs:'Функции',zHint:'Ctrl + колесо — масштаб · колесо — прокрутка',help:'Как пользоваться',gZoom:'Ctrl + колесо мыши — масштаб схемы. Можно и бегунком вверху.',gScroll:'Колесо мыши — прокрутка вверх и вниз, Shift + колесо — вбок. Схему также можно тянуть мышью.',gSearch:'Поиск: начните вводить имя — схема сама перелетит к карточке, а при наведении видны связи и перелёты.',gWord:'Михаилы',tZoom:'Разведите или сведите два пальца — масштаб схемы. Кнопки − и + вверху тоже работают.',tPan:'Ведите одним пальцем — схема сдвигается.',tSearch:'Поиск: начните вводить имя — схема перелетит к карточке.',tTap:'Коснитесь карточки — покажутся связи и краткое описание. Коснитесь описания — оно раскроется полностью.',gNext:'Дальше',gDone:'Понятно',gSkip:'Пропустить',catsHint:'(клик — выделить)',links:'Связи',lOrigin:'происхождение',classes:'Класс по происхождению (заливка)',cClass:'Класс по происхождению',lAscent:'восхождение',lService:'служение / пребывание',layout:'Раскладка',
   dragHint:'Карточки можно перетаскивать — линии перестраиваются в обход.',fit:'Вся схема',undo:'Отменить',lLong:'дальние связи всегда',servesHere:'служит здесь',serves:'Функционирует',pairT:'вместе с',export:'Экспорт раскладки',reset:'Сброс',close:'Закрыть',
-  cOrigin:'Происхождение (линия Божеств)',cPlace:'Место служения',cParents:'Порождён(ы)',cChildren:'Порождает',cSource:'Источник',cStages:'Категории (стадии пути)',book:'Книга Урантии',
+  cOrigin:'Происхождение (линия Божеств)',cPlace:'Место служения',cParents:'Порождён(ы)',cChildren:'Порождает',cSource:'Источник',cStages:'Категории (стадии пути)',stageTag:'стадия восхождения',corpsTag:'корпус — группа, а не вид личностей',corpsShort:'корпус (группа)',book:'Книга Урантии',
   catWord:'категория',none:'Ничего не найдено',theme_light:'Светлая тема',theme_dark:'Тёмная тема',status:'Линий: {n} · трассировка {ms} мс · пересечений: {x}'},
  en:{_name:'English',title:'Cosmology of Personalities in the Urantia Book',h1:'Cosmology of Personalities<br>in the Urantia Book',search:'Search: personality or category…',dim:'dim the rest',
   origin:'Origin',oA:'Absolute',oT:'Trinity',oF:'Universal Father',oS:'Eternal Son',oD:'Infinite Spirit',oE:'evolutionary origin',oF2:'Father',oS2:'Son',oD2:'Spirit',oE2:'evolut.',
@@ -275,7 +277,7 @@ const UI={
   tabF:'Filters',tabK:'Key',back:'Back',clear:'Clear',
   cats:'Categories',funcs:'Functions',zHint:'Ctrl + wheel — zoom · wheel — scroll',help:'How to use',gZoom:'Ctrl + mouse wheel zooms the map. The slider at the top works too.',gScroll:'Mouse wheel scrolls up and down, Shift + wheel sideways. You can also drag the map.',gSearch:'Search: start typing a name — the map flies to the card; hovering shows links and transfers.',gWord:'Michael',tZoom:'Spread or pinch two fingers to zoom. The − and + buttons at the top work too.',tPan:'Drag with one finger to move the map.',tSearch:'Search: start typing a name — the map flies to the card.',tTap:'Tap a card to see its links and a short description. Tap the description to open it in full.',gNext:'Next',gDone:'Got it',gSkip:'Skip',catsHint:'(click to highlight)',links:'Links',lOrigin:'origin',classes:'Origin class (card tint)',cClass:'Origin class',lAscent:'ascent',lService:'ministry / indwelling',layout:'Layout',
   dragHint:'Cards can be dragged — lines reroute around them.',fit:'Whole map',undo:'Undo',lLong:'always show long links',servesHere:'serves here',serves:'Functions in',pairT:'together with',export:'Export layout',reset:'Reset',close:'Close',
-  cOrigin:'Origin (Deity lineage)',cPlace:'Place of service',cParents:'Created by',cChildren:'Creates',cSource:'Source',cStages:'Classes (stages of career)',book:'The Urantia Book',
+  cOrigin:'Origin (Deity lineage)',cPlace:'Place of service',cParents:'Created by',cChildren:'Creates',cSource:'Source',cStages:'Classes (stages of career)',stageTag:'stage of ascension',corpsTag:'corps — a group, not an order of beings',corpsShort:'corps (group)',book:'The Urantia Book',
   catWord:'category',none:'Nothing found',theme_light:'Light theme',theme_dark:'Dark theme',status:'Lines: {n} · routing {ms} ms · crossings: {x}'}};
 const qs=new URLSearchParams(location.search);
 // Режим правки раскладки (перетаскивание карточек): только с ?edit в адресе. В релизе выключен.
@@ -420,12 +422,14 @@ function stickSplit(ps){if(!ps)return;const v=ps.getAttribute('viewBox').split('
  const k=Math.max(v[2]/cw,v[3]/ch),left=v[0]+v[2]/2-cw*k/2,m=22*k;
  ps.querySelectorAll('g.unit[data-u] text').forEach(t=>{const u=unitById[t.parentNode.dataset.u];if(!u)return;const lw=t.getBBox().width;t.setAttribute('x',Math.max(u.x+14,Math.min(left+m,u.x+u.w-lw-14)))})}
 function drawNodes(){const g=document.getElementById('gNodes');g.innerHTML='';
- persons.forEach(p=>{const gg=el('g',{class:'node',transform:`translate(${p.x},${p.y})`},g);nodeEl[p.id]=gg;gg.dataset.pid=p.id;
+ persons.forEach(p=>{const gg=el('g',{class:'node'+(p.stage?' stage':'')+(p.corps?' corps':''),transform:`translate(${p.x},${p.y})`},g);nodeEl[p.id]=gg;gg.dataset.pid=p.id;
+  if(p.corps)[8,4].forEach(d=>el('rect',{class:'stack',x:d,y:-d,width:NW,height:NH,rx:10},gg));
   el('rect',{class:'body',width:NW,height:NH,rx:10},gg);
   el('rect',{class:'tint',width:NW,height:NH,rx:10,fill:OCLS[p.oc].color},gg);
   el('path',{class:'lp',fill:OCLS[p.oc].color,d:`M10,1 H44 V${NH-1} H10 A9,9 0 0 1 1,${NH-10} V10 A9,9 0 0 1 10,1z`},gg);
   el('line',{class:'sep',x1:44.5,y1:1,x2:44.5,y2:NH-1},gg);
-  const seg=(NW-58)/p.cats.length;p.cats.forEach((c,i)=>el('rect',{x:52+i*seg,y:-2,width:seg-3,height:5,rx:2.5,fill:CATS[c].color},gg));
+  if(p.stage||p.corps)el('text',{class:'gtag',x:NW/2,y:NH+13,'text-anchor':'middle'},gg).textContent=t(p.stage?'stageTag':'corpsShort');
+  const seg=(NW-58)/p.cats.length;if(!p.stage)p.cats.forEach((c,i)=>el('rect',{x:52+i*seg,y:-2,width:seg-3,height:5,rx:2.5,fill:CATS[c].color},gg));
   originGlyph(gg,p,23,NH/2);
   const L=(()=>{const r=p.name.split(' — ').flatMap(x=>wrap(x,17));if(r.length>3){r.length=3;r[2]+='…'}return r})(),y0=NH/2-(L.length-1)*7+4;
   L.forEach((l,i)=>el('text',{x:52,y:y0+i*14},gg).textContent=l);
@@ -697,7 +701,7 @@ function showCard(id,peek){const p=byId[id],c=card;peek=!!peek;if(!peek&&(splitE
  const orig=p.origin?(p.origin==='T'?t('oT'):p.origin.split('').map(k=>`<span class="dot" style="background:${OC[k]}"></span> ${t(ONAME[k])}`).join('<br>')):'';
  const row=(k,v)=>v&&v.length?`<dt>${t(k)}</dt><dd>${Array.isArray(v)?v.join(', '):v}</dd>`:'';
  // порядок: имя → описание → связи → место → классификация → источник
- c.innerHTML=`<div class="chead"><i class="grip"></i><button class="x" title="${t('close')}">×</button>${cardHist.length?`<button class="bk" title="${t('back')}">← ${byId[cardHist[cardHist.length-1]].name}</button>`:''}<h2>${p.name}</h2>${p.aka?`<div class="aka">${p.aka}</div>`:""}<div class="en">${otherNames(p)}</div></div>
+ c.innerHTML=`<div class="chead"><i class="grip"></i><button class="x" title="${t('close')}">×</button>${cardHist.length?`<button class="bk" title="${t('back')}">← ${byId[cardHist[cardHist.length-1]].name}</button>`:''}<h2>${p.name}</h2>${p.stage||p.corps?`<div class="aka">${t(p.stage?'stageTag':'corpsTag')}</div>`:''}${p.aka?`<div class="aka">${p.aka}</div>`:""}<div class="en">${otherNames(p)}</div></div>
  <div class="cbody"><div class="desc">${p.desc||''}</div>${p.stages?`<div class="stg"><b>${t('cStages')}</b><ol>${p.stages.map(x=>`<li>${x.id&&byId[x.id]?x.t.replace(/^[^—]+/,m=>link(x.id).replace(byId[x.id].name,m.trim())+' '):x.t} <small>${x.ref}</small></li>`).join('')}</ol></div>`:''}<dl>
  ${SERVES[p.id]?row('serves',`${unitById[GHOSTS['~'+p.id].unit].name} — ${L(SERVES[p.id])}${PAIR_OF[p.id]?'; '+t('pairT')+': '+byId[PAIR_OF[p.id]].name:''}`):''}
  ${row('cParents',par)}${row('cChildren',ch)}${row('lService',sv)}${row('lAscent',as)}
