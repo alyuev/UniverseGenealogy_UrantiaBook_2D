@@ -159,6 +159,20 @@ select{font:inherit;font-size:13px;padding:5px 6px;border:1px solid var(--line);
 /* Палец: цели не меньше 40px. */
 @media (pointer:coarse),(max-width:700px){.chip{padding:8px 12px;font-size:13px;margin:3px}button{min-height:40px;min-width:40px}#zoomBox button{width:40px;height:40px}
  #q{padding:10px 12px;font-size:16px}#res{top:46px}#res div{padding:11px 12px}#legend .row{margin:10px 0}#key .row{margin:1px 0}#found li{padding:10px}.tab{padding:8px 12px}}
+#cycle{position:fixed;top:56px;left:0;right:0;bottom:0;z-index:5;background:var(--bg);display:none;touch-action:none;background-image:radial-gradient(var(--dot) 1px,transparent 1px);background-size:20px 20px}#cycle.on{display:block}
+#cysvg{width:100%;height:100%;display:block}#cysvg text{fill:var(--ink);font-size:13px;pointer-events:none}#cysvg .cymut{fill:var(--muted);font-size:11px}
+#cysvg .cyrealm{font-size:22px;font-weight:700;fill:var(--accent);opacity:.75}#cysvg .cydiv{stroke:var(--muted);stroke-dasharray:6 6;opacity:.6}
+#cysvg .cyarc{fill:none;stroke:var(--accent);stroke-width:3.5;stroke-dasharray:14 7;animation:cyflow 1.2s linear infinite}#cysvg .cyah{fill:var(--accent)}
+@keyframes cyflow{to{stroke-dashoffset:-21}}@media (prefers-reduced-motion:reduce){#cysvg .cyarc{animation:none}}
+#cysvg .cyst{cursor:pointer}#cysvg .cyst circle{fill:var(--node);stroke:var(--ink);stroke-width:2}#cysvg .cyst:hover circle,#cysvg .cyst.on circle{stroke:var(--accent);stroke-width:4}
+#cysvg .cyst .nm{font-size:16px;font-weight:700}#cysvg .cyin{stroke:var(--muted);stroke-dasharray:3 4;fill:none}
+#cysvg .cyag{cursor:pointer}#cysvg .cyag rect{fill:var(--panel);stroke:var(--line);stroke-width:1.5}#cysvg .cyag:hover rect,#cysvg .cyag.on rect{stroke:var(--accent);stroke-width:3}
+#cysvg .cylk{stroke:var(--muted);stroke-dasharray:2 4;fill:none}#cysvg .cymt{cursor:pointer}#cysvg .cymt:hover rect{stroke:var(--accent)}#cysvg .cymt rect{fill:var(--bg);stroke:var(--muted);stroke-dasharray:4 3}#cysvg .cymt.open rect{stroke:var(--accent);stroke-dasharray:none}#cysvg .cymi rect{fill:var(--panel);stroke:var(--line);stroke-width:1.2}#cysvg .cymi{cursor:pointer}#cysvg .cymi:hover rect,#cysvg .cymi.on rect{stroke:var(--accent);stroke-width:2.5}#cysvg .cybr{stroke:var(--muted);fill:none;stroke-width:1.5}#cysvg .cynote{font-style:italic}
+#cyBack{position:absolute;top:12px;left:12px;z-index:1;padding:7px 14px;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--ink);font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 2px 10px rgba(0,0,0,.12)}#cyBack:hover{border-color:var(--accent);color:var(--accent)}
+#cyinfo{position:absolute;top:58px;left:12px;width:min(360px,calc(100% - 24px));max-height:calc(100% - 70px);overflow:auto;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:13px;box-shadow:0 4px 18px rgba(0,0,0,.15)}
+#cyinfo h3{margin:0 28px 2px 0;font-size:16px}#cyinfo .bk2{color:var(--muted);margin-bottom:8px}#cyinfo p{margin:6px 0}#cyinfo a{color:var(--accent);cursor:pointer;text-decoration:underline}#cyinfo ul{margin:4px 0;padding-left:18px}
+#cyinfo .cyx{position:absolute;top:6px;right:6px;border:0;background:none;font-size:20px;cursor:pointer;color:var(--ink)}#bCycle.on{color:var(--accent)}
+@media (max-width:700px){#cyinfo{top:auto;bottom:8px;max-height:40%}}
 .stg{margin:10px 0 4px;font-size:13px}.stg ol{margin:4px 0 0;padding-left:20px}.stg li{margin:3px 0}.stg small{color:var(--muted)}
 </style>
 </head>
@@ -168,6 +182,7 @@ select{font:inherit;font-size:13px;padding:5px 6px;border:1px solid var(--line);
   <div id="searchBox"><input id="q" data-i18n-ph="search" placeholder="Поиск: личность или категория…" autocomplete="off"><button id="qx" type="button" data-i18n-title="clear">×</button><div id="res"></div></div>
   <div id="zoomBox"><button id="zOut" title="−">−</button><input type="range" id="zoom" min="0" max="1000" step="1"><button id="zIn" title="+">+</button><button id="bFit" data-i18n-title="fit"><svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M1 5V1h4M9 1h4v4M13 9v4H9M5 13H1V9"/></svg></button><button id="bHelp" data-i18n-title="help" title="?">?</button></div>
   <input type="checkbox" id="dimToggle" checked hidden>
+  <button id="bCycle" class="ico" data-i18n-title="cycle" title="Энергетический цикл"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M13.5 8A5.5 5.5 0 1 1 8 2.5"/><path d="M8 0.5l2.5 2-2.5 2"/><circle cx="8" cy="8" r="1.6" fill="currentColor"/></svg></button>
   <button id="bLang" title="Язык / Language"></button>
   <button id="bTheme" class="ico"></button>
 </header>
@@ -217,6 +232,7 @@ select{font:inherit;font-size:13px;padding:5px 6px;border:1px solid var(--line);
   </div></div>
 </aside>
 <div id="active"></div>
+<div id="cycle"><svg id="cysvg" xmlns="http://www.w3.org/2000/svg" viewBox="-720 -470 1440 960" preserveAspectRatio="xMidYMid meet"></svg><button id="cyBack" data-i18n="cyBack">← К схеме</button><div id="cyinfo"></div></div>
 <div id="compact"><svg id="csvg" xmlns="http://www.w3.org/2000/svg"></svg></div>
 <aside id="card"></aside>
 
@@ -280,7 +296,7 @@ const UI={
   compact:'Только выбранные',compactT:'Компактная схема: только выбранные, каждый на своём уровне; пунктир — связь через скрытых посредников',tabF:'Фильтры',tabK:'Обозначения',back:'Назад',clear:'Очистить',
   cats:'Категории',funcs:'Функции',zHint:'Ctrl + колесо — масштаб · колесо — прокрутка',help:'Как пользоваться',gZoom:'Ctrl + колесо мыши — масштаб схемы. Можно и бегунком вверху.',gScroll:'Колесо мыши — прокрутка вверх и вниз, Shift + колесо — вбок. Схему также можно тянуть мышью.',gSearch:'Поиск: начните вводить имя — схема сама перелетит к карточке, а при наведении видны связи и перелёты.',gWord:'Михаилы',unitWord:'блок',gFilter:'Фильтр: выберите категорию в панели — её личности подсветятся на схеме. Кнопка «Только выбранные» соберёт из них сокращённую схему по уровням администрации.',tZoom:'Разведите или сведите два пальца — масштаб схемы. Кнопки − и + вверху тоже работают.',tPan:'Ведите одним пальцем — схема сдвигается.',tSearch:'Поиск: начните вводить имя — схема перелетит к карточке.',tTap:'Коснитесь карточки — покажутся связи и краткое описание. Коснитесь описания — оно раскроется полностью.',gNext:'Дальше',gDone:'Понятно',gSkip:'Пропустить',catsHint:'(клик — выделить)',links:'Связи',lOrigin:'происхождение',classes:'Класс по происхождению (заливка)',cClass:'Класс по происхождению',lAscent:'восхождение',lService:'служение / пребывание',layout:'Раскладка',
   dragHint:'Карточки можно перетаскивать — линии перестраиваются в обход.',fit:'Вся схема',undo:'Отменить',lLong:'дальние связи всегда',servesHere:'служит здесь',serves:'Функционирует',pairT:'вместе с',export:'Экспорт раскладки',reset:'Сброс',close:'Закрыть',
-  cOrigin:'Происхождение (линия Божеств)',cPlace:'Место служения',cParents:'Порождён(ы)',cChildren:'Порождает',cSource:'Источник',cStages:'Категории (стадии пути)',stageTag:'стадия восхождения',corpsTag:'корпус — группа, а не вид личностей',corpsShort:'корпус (группа)',book:'Книга Урантии',
+  cOrigin:'Происхождение (линия Божеств)',cPlace:'Место служения',cParents:'Порождён(ы)',cChildren:'Порождает',cSource:'Источник',cycle:'Энергетический цикл',cyBack:'← К схеме',cyRow:'Энергия',cStages:'Категории (стадии пути)',stageTag:'стадия восхождения',corpsTag:'корпус — группа, а не вид личностей',corpsShort:'корпус (группа)',book:'Книга Урантии',
   catWord:'категория',none:'Ничего не найдено',theme_light:'Светлая тема',theme_dark:'Тёмная тема',status:'Линий: {n} · трассировка {ms} мс · пересечений: {x}'},
  en:{_name:'English',title:'Cosmology of Personalities in the Urantia Book',h1:'Cosmology of Personalities<br>in the Urantia Book',search:'Search: personality or category…',dim:'dim the rest',
   origin:'Origin',oA:'Absolute',oT:'Trinity',oF:'Universal Father',oS:'Eternal Son',oD:'Infinite Spirit',oE:'evolutionary origin',oF2:'Father',oS2:'Son',oD2:'Spirit',oE2:'evolut.',
@@ -289,7 +305,7 @@ const UI={
   compact:'Selected only',compactT:'Compact view: only the selected, each on its own level; dotted — link through hidden intermediaries',tabF:'Filters',tabK:'Key',back:'Back',clear:'Clear',
   cats:'Categories',funcs:'Functions',zHint:'Ctrl + wheel — zoom · wheel — scroll',help:'How to use',gZoom:'Ctrl + mouse wheel zooms the map. The slider at the top works too.',gScroll:'Mouse wheel scrolls up and down, Shift + wheel sideways. You can also drag the map.',gSearch:'Search: start typing a name — the map flies to the card; hovering shows links and transfers.',unitWord:'block',gWord:'Michael',gFilter:'Filter: pick a category in the panel and its personalities light up on the map. The «Selected only» button builds a compact map of them by administrative level.',tZoom:'Spread or pinch two fingers to zoom. The − and + buttons at the top work too.',tPan:'Drag with one finger to move the map.',tSearch:'Search: start typing a name — the map flies to the card.',tTap:'Tap a card to see its links and a short description. Tap the description to open it in full.',gNext:'Next',gDone:'Got it',gSkip:'Skip',catsHint:'(click to highlight)',links:'Links',lOrigin:'origin',classes:'Origin class (card tint)',cClass:'Origin class',lAscent:'ascent',lService:'ministry / indwelling',layout:'Layout',
   dragHint:'Cards can be dragged — lines reroute around them.',fit:'Whole map',undo:'Undo',lLong:'always show long links',servesHere:'serves here',serves:'Functions in',pairT:'together with',export:'Export layout',reset:'Reset',close:'Close',
-  cOrigin:'Origin (Deity lineage)',cPlace:'Place of service',cParents:'Created by',cChildren:'Creates',cSource:'Source',cStages:'Classes (stages of career)',stageTag:'stage of ascension',corpsTag:'corps — a group, not an order of beings',corpsShort:'corps (group)',book:'The Urantia Book',
+  cOrigin:'Origin (Deity lineage)',cPlace:'Place of service',cParents:'Created by',cChildren:'Creates',cSource:'Source',cycle:'Energy cycle',cyBack:'← Back to map',cyRow:'Energy',cStages:'Classes (stages of career)',stageTag:'stage of ascension',corpsTag:'corps — a group, not an order of beings',corpsShort:'corps (group)',book:'The Urantia Book',
   catWord:'category',none:'Nothing found',theme_light:'Light theme',theme_dark:'Dark theme',status:'Lines: {n} · routing {ms} ms · crossings: {x}'}};
 const qs=new URLSearchParams(location.search);
 // Режим правки раскладки (перетаскивание карточек): только с ?edit в адресе. В релизе выключен.
@@ -468,6 +484,8 @@ function runEdges(list){clearTimeout(runT);document.querySelectorAll('.runner').
 /* Пока открыта вторая часть экрана, мышь должна успеть до неё дойти: закрытие — через 0,7 с после ухода с карточки,
    а чужая карточка по дороге перехватывает подсветку, только если на ней задержаться. */
 let hovT=0;function hoverSoon(id,noFx){clearTimeout(hovT);
+ // после закрытия окна цикла курсор оказывается над схемой: наведение не срабатывает, пока мышь не сдвинется
+ if(cyBlock){if(id===cyBlock.id)return;cyBlock=null} // элемент, оказавшийся под курсором при закрытии, ждёт, пока мышь его покинет
  if(id)hovT=setTimeout(()=>hover(id,noFx),splitEl&&id!==curHover?350:90);
  else if(curHover){if(splitEl)hovT=setTimeout(()=>hover(null),700);else hover(null)}}
 function hover(id,noFx,force){if(splitPin&&!force)return;if(!id)splitPin=null;curHover=id;svg.classList.toggle('hovering',!!id);
@@ -729,13 +747,15 @@ function showCard(id,peek){const p=byId[id],c=card;peek=!!peek;if(!peek&&(splitE
  ${p.oc?row('cClass',`<span class="chip" data-cat="oc:${p.oc}"><i style="background:${OCLS[p.oc].color};opacity:.55"></i>${L(OCLS[p.oc].name)}</span>`):''}
  ${p.cats?row('cats',p.cats.map(k=>`<span class="chip" data-cat="${k}"><i style="background:${CATS[k].color}"></i>${CATS[k].name}</span>`).join('')):''}
  ${p.fn?row('funcs',p.fn.map(k=>`<span class="chip" data-cat="fn:${k}"><i style="background:${FUNCS[k].color};border-radius:2px"></i>${FUNCS[k].name}</span>`).join('')):''}
+ ${cyStage(p.id)?row('cyRow',`<a class="cylink">${EU('show')}: ${cyStage(p.id)==='aside'?EU('aside'):L(EST[cyStage(p.id)].name)}</a>`):''}
  ${row('cOrigin',orig)}
  ${p.ref?row('cSource',t('book')+', '+p.ref):''}</dl></div>`;
  c.classList.toggle('peek',peek);c.dataset.id=id;c.style.display='flex';
  c.querySelector('.x').onclick=()=>{hover(null,0,1);closeCard()};
  const bk=c.querySelector('.bk');if(bk)bk.onclick=()=>select(cardHist.pop(),{hist:1});
  c.querySelectorAll('a[data-id]').forEach(a=>a.onclick=()=>{cardHist.push(id);select(a.dataset.id,{hist:1})});
- c.querySelectorAll('.chip[data-cat]').forEach(a=>a.onclick=()=>{selCat=null;selectCat(a.dataset.cat)})}
+ c.querySelectorAll('.chip[data-cat]').forEach(a=>a.onclick=()=>{selCat=null;selectCat(a.dataset.cat)});
+ const cl=c.querySelector('.cylink');if(cl)cl.onclick=()=>cyOpen(cyStage(id),id)}
 /* Краткий вид: касание раскрывает описание. На телефоне лист тянется за заголовок: вверх — раскрыть, вниз — свернуть, ещё раз вниз — закрыть. */
 let cs=null;
 card.addEventListener('pointerdown',e=>{const pk=card.classList.contains('peek');if(e.target.closest('a,button,.chip')||!(pk||MOB.matches&&e.target.closest('.chead')))return;cs={y:e.clientY};try{card.setPointerCapture(e.pointerId)}catch(x){}});
@@ -954,11 +974,95 @@ function applyLang(){document.documentElement.lang=LANG;document.title=t('title'
 /* Язык — код текущего языка (щелчок переключает), тема — пиктограмма: светлая / тёмная. */
 const bLang=document.getElementById('bLang'),LANGS=Object.keys(UI);
 function updLangBtn(){bLang.textContent=LANG.toUpperCase();bLang.title=UI[LANG]._name+' → '+UI[LANGS[(LANGS.indexOf(LANG)+1)%LANGS.length]]._name}
-bLang.onclick=()=>{LANG=LANGS[(LANGS.indexOf(LANG)+1)%LANGS.length];store.set('ku-lang',LANG);applyLang();render();if(sel)showCard(sel)};
+bLang.onclick=()=>{LANG=LANGS[(LANGS.indexOf(LANG)+1)%LANGS.length];store.set('ku-lang',LANG);applyLang();render();if(sel)showCard(sel);if(cyBox.classList.contains('on'))cyOpen(cyCur,cyAgent)};
 let THEME=qs.get('theme')||store.get('ku-theme');if(THEME!=='light'&&THEME!=='dark')THEME=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
 function applyTheme(){document.documentElement.setAttribute('data-theme',THEME);updThemeBtn()}
 function updThemeBtn(){const b=document.getElementById('bTheme');b.textContent=THEME==='dark'?'☀':'☾';b.title=t(THEME==='dark'?'theme_light':'theme_dark')}
 document.getElementById('bTheme').onclick=()=>{THEME=THEME==='dark'?'light':'dark';store.set('ku-theme',THEME);applyTheme()};
+/* ===================== ЭНЕРГЕТИЧЕСКИЙ ЦИКЛ (42:2) =====================
+   Отдельный вид: стадии энергии по кругу (поток — против часовой стрелки), снаружи — личности, действующие на стадии.
+   Щелчок по стадии — описание; по личности — переход к ней на основной схеме. */
+const EN=D.energy,EST={};(EN?.stages||[]).forEach(s=>EST[s.id]=s);
+const EU=k=>(EN&&(EN.ui[LANG]?.[k]||EN.ui.en?.[k]))||'';
+const cyBox=document.getElementById('cycle'),cySvg=document.getElementById('cysvg'),cyInfo=document.getElementById('cyinfo');
+const CY_ANG={paradise:300,absoluta:255,segregata:215,ultimata:180,gravita:135,triata:80,tranosta:40,monota:0},CY_R=300;
+const cyRad=s=>s.id==='paradise'?80:s.split?70:56,cyPt=(a,r=CY_R)=>[Math.sin(a*Math.PI/180)*r,-Math.cos(a*Math.PI/180)*r];
+var cyBlock=null;let cyCur=null,cyAgent=null,cyMat=false,cyMatCur=null,cyShield=0;const CY_VB='-720 -470 1440 960',CY_VBM='-720 -470 1800 960';
+/* На какой стадии действует личность: сама в списке, её блок или её категория; aside — моронтийные (вне кольца). */
+function cyStage(id){if(!EN||!byId[id])return null;const p=byId[id];
+ const hit=a=>a===id||a===p.unit||(a.startsWith('cat:')&&(p.cats||[]).includes(a.slice(4)));
+ for(const s of EN.stages)if((s.agents||[]).some(hit))return s.id;return (EN.aside||[]).some(hit)?'aside':null}
+const cyAName=a=>a.startsWith('cat:')?CATS[a.slice(4)].name:byId[a].name;
+const cyAColor=a=>a.startsWith('cat:')?CATS[a.slice(4)].color:byId[a].w?byId[a].color:OCLS[byId[a].oc]?.color||'#888';
+function cyText(x,y,str,cls,anchor='middle',par=cySvg){const e=el('text',{x,y,'text-anchor':anchor,class:cls||''},par);e.textContent=str;return e}
+function cyChip(a,x,y,align,par){const g=el('g',{class:'cyag'},par);g.dataset.a=a;const r=el('rect',{x:0,y:-15,width:10,height:30,rx:7},g);
+ el('rect',{x:0,y:-15,width:6,height:30,rx:3,style:`fill:${cyAColor(a)}`},g);const tx=cyText(14,5,cyAName(a),'','start',g);
+ const w=tx.getBBox().width+26;r.setAttribute('width',w);const x0=align<0?x-w:align>0?x:x-w/2;g.setAttribute('transform',`translate(${x0},${y})`);
+ g.onclick=e=>{e.stopPropagation();cyGo(a)};return{g,w,x0}}
+function cyDraw(){cySvg.innerHTML='';if(!EN)return;const S=EN.stages;
+ const mk=el('marker',{id:'cyArr',viewBox:'0 0 10 10',refX:6,refY:5,markerWidth:4,markerHeight:4,orient:'auto'},el('defs',{},cySvg));el('path',{d:'M0,0L10,5L0,10z',class:'cyah'},mk);
+ const yl=10;el('line',{x1:-700,x2:700,y1:yl,y2:yl,class:'cydiv'},cySvg);
+ cyText(0,-120,EU('eternity'),'cyrealm');cyText(0,150,EU('spacetime'),'cyrealm');
+ // стрелки потока между соседними стадиями
+ S.forEach((s,i)=>{const n=S[(i+1)%S.length];const a1=CY_ANG[s.id];let a2=CY_ANG[n.id];if(a2>a1)a2-=360;
+  const d1=cyRad(s)/CY_R*180/Math.PI+2,d2=cyRad(n)/CY_R*180/Math.PI+5,b1=a1-d1,b2=a2+d2;if(b1<=b2)return;
+  const[x1,y1]=cyPt(b1),[x2,y2]=cyPt(b2);el('path',{d:`M${x1},${y1}A${CY_R},${CY_R} 0 ${b1-b2>180?1:0} 0 ${x2},${y2}`,class:'cyarc','marker-end':'url(#cyArr)'},cySvg)});
+ // подписи об организации систем (11:8.7)
+ [['triata','triune'],['gravita','dual']].forEach(([id,k])=>{const[x,y]=cyPt(CY_ANG[id],CY_R-(id==='triata'?175:130));cyText(x,y,EU(k),'cymut cynote')});
+ // стадии
+ S.forEach(s=>{const[x,y]=cyPt(CY_ANG[s.id]),r=cyRad(s),g=el('g',{class:'cyst',transform:`translate(${x},${y})`},cySvg);g.dataset.s=s.id;
+  el('circle',{r},g);g.onclick=e=>{e.stopPropagation();cyShow(s.id)};
+  if(s.id==='paradise'){el('line',{x1:-r+6,x2:r-6,y1:0,y2:0,class:'cyin'},g);cyText(0,-36,EU('upper'),'cymut','middle',g);cyText(0,-8,L(s.name),'nm','middle',g);cyText(0,48,EU('lower'),'cymut','middle',g)}
+  else{const bl=wrap(L(s.book),14),nm=L(s.name),same=nm.toLowerCase()===L(s.book).toLowerCase();
+   cyText(0,same?6:-6-(bl.length-1)*6,nm,'nm','middle',g);if(!same)bl.forEach((t,j)=>cyText(0,14+j*13-(bl.length-1)*6,t,'cymut','middle',g))}
+  if(s.split){el('line',{x1:0,x2:0,y1:r-20,y2:r,class:'cyin'},g);cyText(-8,r+18,EU('force'),'cymut','end',g);cyText(8,r+18,EU('grav'),'cymut','start',g)}});
+ // действующие личности снаружи кольца
+ S.forEach(s=>{const A=s.agents||[];if(!A.length)return;const a=CY_ANG[s.id],[bx,by]=cyPt(a,CY_R+cyRad(s)+(s.split?70:40)),sx=Math.sin(a*Math.PI/180);
+  const align=Math.abs(sx)<.3?0:sx>0?1:-1,y0=by-(A.length-1)*19+(Math.cos(a*Math.PI/180)<-.5?20:0),[nx,ny]=cyPt(a,CY_R+cyRad(s));
+  A.forEach((ag,j)=>{const y=y0+j*38,{g}=cyChip(ag,bx,y,align,cySvg);g.dataset.s=s.id;el('path',{d:`M${nx},${ny}L${bx},${y}`,class:'cylk'},cySvg)});
+  if(EN.matter&&EN.matter.from===s.id)cyMatter(bx,y0+A.length*38+8,nx,ny)});
+ const first=cySvg.querySelector('.cyst');cySvg.querySelectorAll('.cylk').forEach(l=>cySvg.insertBefore(l,first));
+ // моронтийная энергия — вне цикла
+ if(EN.aside?.length){cyText(-700,400,EU('aside'),'cymut','start');EN.aside.forEach((a,j)=>cyChip(a,-700,428+j*38,1,cySvg))}
+ cyMark()}
+/* Ветвь вещества (42:3): кнопка у стадии; раскрытая — столбец из десяти видов справа (это классификация, не последовательность — без стрелок). */
+function cyMatter(bx,ty,nx,ny){const M=EN.matter,g=el('g',{class:'cymt'+(cyMat?' open':'')},cySvg),r=el('rect',{x:0,y:-15,width:10,height:30,rx:15},g);
+ const tx=cyText(16,5,L(M.title)+(cyMat?'  ◂':'  ▸'),'','start',g),w=tx.getBBox().width+32;r.setAttribute('width',w);g.setAttribute('transform',`translate(${bx},${ty})`);
+ el('path',{d:`M${nx},${ny}L${bx},${ty}`,class:'cylk'},cySvg);g.onclick=e=>{e.stopPropagation();cyMat=!cyMat;cyMatCur=null;cyDraw();cyMat?cyShowMatter(null):cyHint()};
+ cySvg.setAttribute('viewBox',cyMat?CY_VBM:CY_VB);if(!cyMat)return;
+ const X=800,step=40,y0=110-((M.items.length-1)*step)/2,yl=y0+(M.items.length-1)*step;
+ el('path',{d:`M${bx+w},${ty}H${X-24}M${X-24},${Math.min(y0,ty)}V${Math.max(yl,ty)}`,class:'cybr'},cySvg);
+ cyText(X,y0-34,L(M.title),'nm','start');
+ M.items.forEach((it,i)=>{const y=y0+i*step,c=el('g',{class:'cymi',transform:`translate(${X},${y})`},cySvg);c.dataset.m=it.id;
+  el('path',{d:`M-24,0H0`,class:'cybr'},c);const rr=el('rect',{x:0,y:-14,width:10,height:28,rx:6},c);
+  const t2=cyText(12,5,`${i+1}. ${L(it.name)}`,'','start',c);rr.setAttribute('width',t2.getBBox().width+24);
+  c.onclick=e=>{e.stopPropagation();cyShowMatter(it.id)}})}
+function cyShowMatter(id){cyMatCur=id;cyCur=null;cyMark();const M=EN.matter,it=M.items.find(x=>x.id===id),n=it?M.items.indexOf(it)+1:0;
+ cyInfo.innerHTML=`<button class="cyx" title="${t('close')}">×</button>`+(it?`<h3>${n}. ${L(it.name)}</h3><div class="bk2">${t('book')}, 42:3.${n+2}</div><p>${L(it.desc)}</p><p class="bk2">${L(M.note)}</p>`:`<h3>${L(M.title)}</h3><div class="bk2">${t('book')}, ${M.ref}</div><p>${L(M.note)}</p>`);cyBind()}
+function cyMark(){cySvg.querySelectorAll('.cymi').forEach(g=>g.classList.toggle('on',g.dataset.m===cyMatCur));cySvg.querySelectorAll('.cyst').forEach(g=>g.classList.toggle('on',g.dataset.s===cyCur));
+ const p=cyAgent&&byId[cyAgent];
+ cySvg.querySelectorAll('.cyag').forEach(g=>{const a=g.dataset.a;g.classList.toggle('on',!!p&&(a===cyAgent||a===p.unit||a.startsWith('cat:')&&(p.cats||[]).includes(a.slice(4))))})}
+function cyShow(id){cyCur=id;cyMatCur=null;cyMark();const s=EST[id];if(!s){cyHint();return}
+ const ag=(s.agents||[]).map(a=>`<li><a data-a="${a}">${cyAName(a)}</a></li>`).join('');
+ cyInfo.innerHTML=`<button class="cyx" title="${t('close')}">×</button><h3>${L(s.name)}</h3><div class="bk2">${L(s.book)} · ${t('book')}, ${s.refs.join(', ')}</div><p>${L(s.desc)||''}</p>${s.id==='paradise'?'':`<b>${EU('agents')}</b>${ag?`<ul>${ag}</ul>`:`<p class="bk2">${EU('none')}</p>`}`}`;
+ cyBind()}
+function cyHint(){cyInfo.innerHTML=`<button class="cyx" title="${t('close')}">×</button><h3>${EU('title')}</h3><div class="bk2">${t('book')}, 42:2 · 11:8 · 29:5</div><p>${EU('hint')}</p>`;cyBind()}
+function cyHide(){cyInfo.style.display='none';cyCur=null;cyMatCur=null;cyMark()}
+function cyBind(){const x=cyInfo.querySelector('.cyx');x.onpointerdown=e=>e.stopPropagation();x.onclick=e=>{e.stopPropagation();cyHide()};cyInfo.style.display='';cyInfo.querySelectorAll('a[data-a]').forEach(x=>x.onclick=()=>cyGo(x.dataset.a))}
+function cyOpen(stage,agent){if(!EN)return;cyAgent=agent||null;
+ // карточка основной схемы не должна ждать под окном цикла: иначе после закрытия она «всплывает», будто щелчок прошёл насквозь
+ hover(null,0,1);if(cardShown())closeCard();cyBox.classList.add('on');document.getElementById('bCycle').classList.add('on');cyDraw();
+ if(stage&&stage!=='aside')cyShow(stage);else{cyCur=null;cyHint();cyMark()}}
+function cyClose(){cyShield=performance.now()+400;cyBox.classList.remove('on');document.getElementById('bCycle').classList.remove('on');cyAgent=null;
+ // сразу (до событий наведения) запоминаем, что оказалось под курсором: оно не подсветится, пока мышь его не покинет
+ const n=document.elementFromPoint(lastP.x,lastP.y),g=n?.closest?.('#map .node'),u=n?.closest?.('#map .ulab, #map text');cyBlock={id:g?g.dataset.pid:u?.parentNode?.dataset?.u||null}}
+function cyGo(a){cyClose();if(a.startsWith('cat:')){selCat=null;selectCat(a.slice(4))}else select(a)}
+['pointerdown','pointerup','click'].forEach(k=>addEventListener(k,e=>{if(performance.now()<cyShield&&!e.target.closest?.('header')){e.stopImmediatePropagation();e.preventDefault()}},true));
+document.getElementById('cyBack').onclick=e=>{e.stopPropagation();cyClose()};
+document.getElementById('bCycle').onclick=()=>cyBox.classList.contains('on')?cyClose():cyOpen(null);
+if(!EN)document.getElementById('bCycle').style.display='none';
+cySvg.addEventListener('click',()=>{cyHide();cyMark()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&cyBox.classList.contains('on')){e.stopImmediatePropagation();cyClose()}},true);
 applyTheme();applyLang();render();
 let seen=0;try{const v=JSON.parse(localStorage.getItem('ku-view')||'null');if(v&&[v.x,v.y,v.w,v.h].every(Number.isFinite)&&v.w>0){vb=v;seen=1}}catch(e){}
 if(!seen){const cw=svg.clientWidth||1,w=Math.min(W,Math.max(700,cw/.6)),T=unitById.trinity; // первый вход: верх Рая в читаемом масштабе, а не вся схема

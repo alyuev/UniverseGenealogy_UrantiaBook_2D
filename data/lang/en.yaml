@@ -491,3 +491,38 @@ persons:
   univabs:
     name: Universal Absolute
     desc: "Unifies the Qualified and Unqualified Absolutes and is superadditive to both, encompassing all absolute potential (0:3.18, 0:11.6)."
+  constfathers:
+    name: Constellation Fathers
+    desc: "An office, not a separate order: three Vorondadek Sons (Most Highs) rule each constellation — the Most High Constellation Father and two associates (43:3). Concerned with constellation legislative functions."
+  syssov:
+    name: System Sovereigns
+    desc: "An office: heads of local systems are chosen from the primary Lanonandeks (35:8.4); they rule from the system capital with an assistant (45:2)."
+  planprince:
+    name: Planetary Princes
+    desc: "An office: rulers of inhabited worlds are chosen from the secondary Lanonandeks (35:8.5, 50:1). Urantia's Prince, Caligastia, defaulted in the Lucifer rebellion."
+
+energy:
+  ui: { title: "Energy cycle", eternity: "Eternity", spacetime: "Time and space", agents: "Acting here", aside: "Morontia energy — outside the cycle", force: "puissant", grav: "gravity", triune: "threefold organization (11:8.7)", dual: "dual organization (11:8.7)", upper: "upper", lower: "nether", show: "Show in the energy cycle", hint: "Click a stage or a personality", none: "No acting personalities are named in the book." }
+  matter:
+    title: "Matter (42:3)"
+    note: "The ten principal forms of matter in the universes of time and space. The classification pertains to the organization of matter; it does not include the stages of energy before emergent energy, nor the eternal materializations of Paradise and the central universe (42:3.13)."
+    items:
+      ultimatonic: { name: "Ultimatonic matter", desc: "The prime physical units of material existence, the energy particles which go to make up electrons (42:3.3)." }
+      subelectronic: { name: "Subelectronic matter", desc: "The explosive and repellent stage of the solar supergases (42:3.4)." }
+      electronic: { name: "Electronic matter", desc: "The electrical stage of material differentiation — electrons, protons, and other units (42:3.5)." }
+      subatomic: { name: "Subatomic matter", desc: "Matter existing extensively in the interior of the hot suns (42:3.6)." }
+      shattered: { name: "Shattered atoms", desc: "Found in the cooling suns and throughout space (42:3.7)." }
+      ionized: { name: "Ionized matter", desc: "Atoms stripped of their outer (chemically active) electrons by electrical, thermal, or X-ray activities and by solvents (42:3.8)." }
+      atomic: { name: "Atomic matter", desc: "The chemical stage of elemental organization, the component units of molecular or visible matter (42:3.9)." }
+      molecular: { name: "Molecular stage of matter", desc: "Matter as it exists on Urantia in a state of relatively stable materialization (42:3.10)." }
+      radioactive: { name: "Radioactive matter", desc: "The disorganizing tendency and activity of the heavier elements under moderate heat and diminished gravity pressure (42:3.11)." }
+      collapsed: { name: "Collapsed matter", desc: "The relatively stationary matter of cold or dead suns; ultimatonic and electronic activity persists, but the units are very close together (42:3.12)." }
+  stages:
+    paradise: { name: Paradise, book: "Isle of Paradise", desc: "All energy is in the Paradise circuit (29:2.14). Monota and tranosta belong to upper Paradise; space potency issues from nether Paradise (42:2.4–7)." }
+    absoluta: { name: absoluta, book: "Space potency", desc: "The free space presence of the Unqualified Absolute; prereality. Subject only to the personal overcontrol of the Universal Father, though seemingly responsive to the Primary Master Force Organizers (42:2.3–6)." }
+    segregata: { name: segregata, book: "Primordial force", desc: "Passive and potential force becomes active and primordial in response to the presence of the Primary Eventuated Master Force Organizers. Sometimes called pure energy (42:2.7–9)." }
+    ultimata: { name: ultimata, book: "Emergent energies", desc: "Two levels: puissant energy (the work of the primary force organizers) and gravity energy, produced by the Associate Transcendental Master Force Organizers once energy responds to Paradise gravity (42:2.10–13, 29:5.5)." }
+    gravita: { name: gravita, book: "Universe power", desc: "Energy is channeled by the Universe Power Directors — the directors, centers and controllers of physical energy in the grand universe. The associate force organizers give way to them when a Creator Son arrives. Gravita systems are dual (42:2.14, 29:5.6, 11:8.7)." }
+    triata: { name: triata, book: "Havona energy", desc: "Here the cycle turns back upon itself. Havona energy systems are not dual, they are triune; the domain of the Conjoint Actor. The Havona Centers act in Havona (42:2.16–17, 29:2.12)." }
+    tranosta: { name: tranosta, book: "Transcendental energy", desc: "Operates on the upper level of Paradise and only among the absonite peoples (42:2.18)." }
+    monota: { name: monota, book: "Monota", desc: "The living, nonspiritual energy of Paradise — an eternal counterpart of the living, spiritual energy of the Original Son; indistinguishable from Paradise spirit (42:2.19–20)." }

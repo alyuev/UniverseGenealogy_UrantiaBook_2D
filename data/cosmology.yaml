@@ -3,7 +3,7 @@
 # Проверка: python tools/validate.py   Сборка: python tools/build.py
 
 meta:
-  version: "1.5.4"
+  version: "1.6.0"
   base_language: en   # если перевода нет, показывается en, затем ru
 
 # Класс по происхождению: ровно один у личности, задаёт тон заливки карточки.
@@ -171,7 +171,7 @@ units:
                       - id: edentia
                         color: "#9c6fd6"
                         content:
-                          - [faithfuls, vorondadek]
+                          - [faithfuls, vorondadek, constfathers]
                           - [univit, concenters]
                       - id: system
                         color: "#2e8b57"
@@ -179,6 +179,7 @@ units:
                           - id: jerusem
                             color: "#2e8b57"
                             content:
+                              - [syssov]
                               - [lanon, adam, eve, cherub]
                               - [morontia, mcomp]
                               - [syscenters]
@@ -194,6 +195,7 @@ units:
                           - id: urantia
                             color: "#00838f"
                             content:
+                              - [planprince]
                               - [~adam, ~eve, ~avonal, ~melch]
                               - [truth, adjutants, seraph, ~morontia, midway]
                               - id: mortal
@@ -321,6 +323,25 @@ persons:
   deityabs: { class: A, origin: A, groups: [deity], refs: ["0:11"] }
   unqabs: { class: A, origin: A, groups: [deity], refs: ["0:11"] }
   univabs: { class: A, origin: A, groups: [deity], refs: ["0:11"] }
+  constfathers: { class: L, origin: FSD, groups: [local, desc], refs: ["43:3"], func: [gov], fuse: [vorondadek] }
+  syssov: { class: L, origin: FSD, groups: [local, desc], refs: ["45:2"], func: [gov], fuse: [lanon] }
+  planprince: { class: L, origin: FSD, groups: [local, desc], refs: ["50:1"], func: [gov], fuse: [lanon] }
+
+# Энергетический цикл (42:2, 11:8): стадии по кругу в направлении потока; agents — кто действует на стадии.
+#   агент: id личности или блока; cat:<группа> — категория целиком.
+energy:
+  stages:
+    - { id: paradise, realm: eternity, refs: ["11:9"] }
+    - { id: absoluta, realm: spacetime, refs: ["42:2"], agents: [] }
+    - { id: segregata, realm: spacetime, refs: ["42:2"], agents: [mfo] }
+    - { id: ultimata, realm: spacetime, refs: ["42:2", "29:5"], split: true, agents: [amfo] }
+    - { id: gravita, realm: spacetime, refs: ["42:2", "29:2"], agents: [sppd, "cat:powercenters", mpc] }
+    - { id: triata, realm: eternity, refs: ["42:2", "11:8"], agents: [havcenters] }
+    - { id: tranosta, realm: eternity, refs: ["42:2"] }
+    - { id: monota, realm: eternity, refs: ["42:2"] }
+  aside: [mps]   # моронтийная энергия — вне кольца
+  # Классификация вещества (42:3) — ветвь от гравиты: вещество только в пространстве-времени (42:3.13).
+  matter: { from: gravita, ref: "42:3", items: [ultimatonic, subelectronic, electronic, subatomic, shattered, ionized, atomic, molecular, radioactive, collapsed] }
 
 # Связи: [откуда, куда, тип]. Тип по умолчанию origin; service — служение; ascent — восхождение. ~a — от тени.
 links:
@@ -475,3 +496,6 @@ links:
   - [destiny, trinfin, ascent]
   - [havnat, conjfin, ascent]
   - [~morontia, midway]
+  - [vorondadek, constfathers, service]
+  - [lanon, syssov, service]
+  - [lanon, planprince, service]

@@ -90,6 +90,34 @@ for pid, p in persons.items():
         elif m.group(2) is None and int(m.group(1)) not in PAPERS: errors.append(f"{pid}: нет документа {ref}")
         elif m.group(2) is not None and (int(m.group(1)), int(m.group(2))) not in SECTIONS: errors.append(f"{pid}: нет раздела {ref}")
 
+# ---------- энергетический цикл ----------
+E = d.get('energy') or {}
+def unit_ids(us):
+    for u in us:
+        yield u['id']; yield from unit_ids([x for x in u.get('content', []) if isinstance(x, dict)])
+UIDS = set(unit_ids(d.get('units', [])))
+for st in E.get('stages', []):
+    sid = st['id']
+    for a in st.get('agents', []) + ([] if st is not E['stages'][-1] else E.get('aside', [])):
+        ok = a[4:] in d.get('groups', {}) if a.startswith('cat:') else (a in persons or a in UIDS)
+        if not ok: errors.append(f"energy/{sid}: нет агента «{a}»")
+    for lang, text in (('ru', RU), ('en', EN)):
+        for f in ('name', 'book'):
+            v = (st.get(f) or {}).get(lang)
+            if not v: errors.append(f"energy/{sid}: нет текста {f} [{lang}]")
+            elif not found(v, text, lang == 'ru'): rows.append((f'energy/{sid}', lang, v))
+    for ref in st.get('refs', []):
+        m = re.fullmatch(r'(\d+)(?::(\d+))?', str(ref))
+        if not m or (m.group(2) and (int(m.group(1)), int(m.group(2))) not in SECTIONS): errors.append(f"energy/{sid}: плохая ссылка {ref}")
+
+M = E.get('matter') or {}
+if M and M.get('from') not in {x['id'] for x in E.get('stages', [])}: errors.append('energy/matter: нет стадии ' + str(M.get('from')))
+for it in M.get('items', []):
+    for lang, text in (('ru', RU), ('en', EN)):
+        v = (it.get('name') or {}).get(lang)
+        if not v: errors.append(f"energy/matter/{it['id']}: нет имени [{lang}]")
+        elif not found(v, text, lang == 'ru'): rows.append((f"matter/{it['id']}", lang, v))
+
 # ---------- отчёт ----------
 print(f"Файл: {path}\nЛичностей: {len(persons)}, блоков: {len(units)}, связей: {len(d.get('links', []))}")
 print(f"\nОшибки структуры: {len(errors)}"); [print('  ✗', e) for e in errors]
