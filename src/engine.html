@@ -159,7 +159,7 @@ select{font:inherit;font-size:13px;padding:5px 6px;border:1px solid var(--line);
 /* Палец: цели не меньше 40px. */
 @media (pointer:coarse),(max-width:700px){.chip{padding:8px 12px;font-size:13px;margin:3px}button{min-height:40px;min-width:40px}#zoomBox button{width:40px;height:40px}
  #q{padding:10px 12px;font-size:16px}#res{top:46px}#res div{padding:11px 12px}#legend .row{margin:10px 0}#key .row{margin:1px 0}#found li{padding:10px}.tab{padding:8px 12px}}
-#cycle{position:fixed;top:56px;left:0;right:0;bottom:0;z-index:5;background:var(--bg);display:none;touch-action:none;background-image:radial-gradient(var(--dot) 1px,transparent 1px);background-size:20px 20px}#cycle.on{display:block}
+#cycle{position:fixed;top:56px;left:0;right:0;bottom:0;z-index:5;background:var(--bg);display:none;touch-action:none;background-image:radial-gradient(var(--dot) 1px,transparent 1px);background-size:20px 20px}#cycle.on{display:block}#cycle{opacity:0;transition:opacity .3s}#cycle.show{opacity:1}#cycle.panning{cursor:grabbing}#cysvg.hovering [data-s]:not(.h),#cysvg.hovering .cyag:not([data-s]),#cysvg.hovering .cyaside,#cysvg.hovering .cyarc:not(.h){opacity:.22;transition:opacity .2s}#cysvg.hovering .cyarc.h{stroke-width:5}#cysvg.hovering .cyst.h circle{stroke:var(--accent);stroke-width:4;filter:drop-shadow(0 0 7px var(--accent))}#cysvg.hovering .cyag.h rect:first-child,#cysvg.hovering .cymi.h rect{stroke:var(--accent)}#cysvg.far .cymut,#cysvg.far .cynote{display:none}#cysvg.far .cyst .nm{font-size:22px}#cysvg .pulse{stroke:var(--accent)}#cycle{cursor:grab}#cycle .cyst,#cycle .cyag,#cycle .cymt,#cycle .cymi{cursor:pointer}
 #cysvg{width:100%;height:100%;display:block}#cysvg text{fill:var(--ink);font-size:13px;pointer-events:none}#cysvg .cymut{fill:var(--muted);font-size:11px}
 #cysvg .cyrealm{font-size:22px;font-weight:700;fill:var(--accent);opacity:.75}#cysvg .cydiv{stroke:var(--muted);stroke-dasharray:6 6;opacity:.6}
 #cysvg .cyarc{fill:none;stroke:var(--accent);stroke-width:3.5;stroke-dasharray:14 7;animation:cyflow 1.2s linear infinite}#cysvg .cyah{fill:var(--accent)}
@@ -961,7 +961,7 @@ if(EDIT)try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s)persons.f
 document.getElementById('bExport').onclick=()=>{const b=new Blob([JSON.stringify(Object.fromEntries(persons.map(p=>[p.id,[p.x,p.y]])),null,1)],{type:'application/json'});
  const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='layout.json';a.click()};
 document.getElementById('bReset').onclick=()=>{persons.forEach(p=>[p.x,p.y]=DEF[p.id]);undoStack.length=0;updUndo();try{localStorage.removeItem(KEY)}catch(e){};render()};
-document.getElementById('bFit').onclick=()=>cOn()?cFit():flyTo({x:0,y:0,w:W,h:H},1);
+document.getElementById('bFit').onclick=()=>cyOn()?cyFit():cOn()?cFit():flyTo({x:0,y:0,w:W,h:H},1);
 
 function render(){const gr=document.getElementById('glow');Object.entries({x:0,y:0,width:W,height:H}).forEach(([k,v])=>gr.setAttribute(k,v));drawUnits();drawNodes();drawGhosts();routeCached();drawEdges();reapply()}
 /* ===================== ЯЗЫК И ТЕМА: переключение ===================== */
@@ -985,8 +985,8 @@ document.getElementById('bTheme').onclick=()=>{THEME=THEME==='dark'?'light':'dar
 const EN=D.energy,EST={};(EN?.stages||[]).forEach(s=>EST[s.id]=s);
 const EU=k=>(EN&&(EN.ui[LANG]?.[k]||EN.ui.en?.[k]))||'';
 const cyBox=document.getElementById('cycle'),cySvg=document.getElementById('cysvg'),cyInfo=document.getElementById('cyinfo');
-const CY_ANG={paradise:300,absoluta:255,segregata:215,ultimata:180,gravita:135,triata:80,tranosta:40,monota:0},CY_R=300;
-const cyRad=s=>s.id==='paradise'?80:s.split?70:56,cyPt=(a,r=CY_R)=>[Math.sin(a*Math.PI/180)*r,-Math.cos(a*Math.PI/180)*r];
+const CY_ANG={paradise:292.5,absoluta:247.5,segregata:202.5,ultimata:157.5,gravita:112.5,triata:67.5,tranosta:22.5,monota:337.5},CY_R=300;
+const cyRad=()=>62,cyPt=(a,r=CY_R)=>[Math.sin(a*Math.PI/180)*r,-Math.cos(a*Math.PI/180)*r];
 var cyBlock=null;let cyCur=null,cyAgent=null,cyMat=false,cyMatCur=null,cyShield=0;const CY_VB='-720 -470 1440 960',CY_VBM='-720 -470 1800 960';
 /* На какой стадии действует личность: сама в списке, её блок или её категория; aside — моронтийные (вне кольца). */
 function cyStage(id){if(!EN||!byId[id])return null;const p=byId[id];
@@ -1001,39 +1001,39 @@ function cyChip(a,x,y,align,par){const g=el('g',{class:'cyag'},par);g.dataset.a=
  g.onclick=e=>{e.stopPropagation();cyGo(a)};return{g,w,x0}}
 function cyDraw(){cySvg.innerHTML='';if(!EN)return;const S=EN.stages;
  const mk=el('marker',{id:'cyArr',viewBox:'0 0 10 10',refX:6,refY:5,markerWidth:4,markerHeight:4,orient:'auto'},el('defs',{},cySvg));el('path',{d:'M0,0L10,5L0,10z',class:'cyah'},mk);
- const yl=10;el('line',{x1:-700,x2:700,y1:yl,y2:yl,class:'cydiv'},cySvg);
- cyText(0,-120,EU('eternity'),'cyrealm');cyText(0,150,EU('spacetime'),'cyrealm');
+ const yl=0;el('line',{x1:-700,x2:700,y1:yl,y2:yl,class:'cydiv'},cySvg);
+ cyText(0,-60,EU('eternity'),'cyrealm');cyText(0,80,EU('spacetime'),'cyrealm');
  // стрелки потока между соседними стадиями
  S.forEach((s,i)=>{const n=S[(i+1)%S.length];const a1=CY_ANG[s.id];let a2=CY_ANG[n.id];if(a2>a1)a2-=360;
   const d1=cyRad(s)/CY_R*180/Math.PI+2,d2=cyRad(n)/CY_R*180/Math.PI+5,b1=a1-d1,b2=a2+d2;if(b1<=b2)return;
-  const[x1,y1]=cyPt(b1),[x2,y2]=cyPt(b2);el('path',{d:`M${x1},${y1}A${CY_R},${CY_R} 0 ${b1-b2>180?1:0} 0 ${x2},${y2}`,class:'cyarc','marker-end':'url(#cyArr)'},cySvg)});
+  const[x1,y1]=cyPt(b1),[x2,y2]=cyPt(b2);{const a=el('path',{d:`M${x1},${y1}A${CY_R},${CY_R} 0 ${b1-b2>180?1:0} 0 ${x2},${y2}`,class:'cyarc','marker-end':'url(#cyArr)'},cySvg);a.dataset.f=s.id;a.dataset.t=n.id}});
  // подписи об организации систем (11:8.7)
- [['triata','triune'],['gravita','dual']].forEach(([id,k])=>{const[x,y]=cyPt(CY_ANG[id],CY_R-(id==='triata'?175:130));cyText(x,y,EU(k),'cymut cynote')});
+ [['triata','triune',1],['gravita','dual',-1]].forEach(([id,k,d])=>{const[x,y]=cyPt(CY_ANG[id]);cyText(x-24,y+d*(cyRad()+16)+(d<0?0:4),EU(k),'cymut cynote','end')});
  // стадии
  S.forEach(s=>{const[x,y]=cyPt(CY_ANG[s.id]),r=cyRad(s),g=el('g',{class:'cyst',transform:`translate(${x},${y})`},cySvg);g.dataset.s=s.id;
   el('circle',{r},g);g.onclick=e=>{e.stopPropagation();cyShow(s.id)};
-  if(s.id==='paradise'){el('line',{x1:-r+6,x2:r-6,y1:0,y2:0,class:'cyin'},g);cyText(0,-36,EU('upper'),'cymut','middle',g);cyText(0,-8,L(s.name),'nm','middle',g);cyText(0,48,EU('lower'),'cymut','middle',g)}
+  if(s.id==='paradise'){el('line',{x1:-r+6,x2:r-6,y1:0,y2:0,class:'cyin'},g);cyText(0,-30,EU('upper'),'cymut','middle',g);cyText(0,-8,L(s.name),'nm','middle',g);cyText(0,40,EU('lower'),'cymut','middle',g)}
   else{const bl=wrap(L(s.book),14),nm=L(s.name),same=nm.toLowerCase()===L(s.book).toLowerCase();
    cyText(0,same?6:-6-(bl.length-1)*6,nm,'nm','middle',g);if(!same)bl.forEach((t,j)=>cyText(0,14+j*13-(bl.length-1)*6,t,'cymut','middle',g))}
   if(s.split){el('line',{x1:0,x2:0,y1:r-20,y2:r,class:'cyin'},g);cyText(-8,r+18,EU('force'),'cymut','end',g);cyText(8,r+18,EU('grav'),'cymut','start',g)}});
  // действующие личности снаружи кольца
- S.forEach(s=>{const A=s.agents||[];if(!A.length)return;const a=CY_ANG[s.id],[bx,by]=cyPt(a,CY_R+cyRad(s)+(s.split?70:40)),sx=Math.sin(a*Math.PI/180);
+ S.forEach(s=>{const A=s.agents||[];if(!A.length)return;const a=CY_ANG[s.id],[bx,by]=cyPt(a,CY_R+cyRad(s)+(s.split?60:40)),sx=Math.sin(a*Math.PI/180);
   const align=Math.abs(sx)<.3?0:sx>0?1:-1,y0=by-(A.length-1)*19+(Math.cos(a*Math.PI/180)<-.5?20:0),[nx,ny]=cyPt(a,CY_R+cyRad(s));
-  A.forEach((ag,j)=>{const y=y0+j*38,{g}=cyChip(ag,bx,y,align,cySvg);g.dataset.s=s.id;el('path',{d:`M${nx},${ny}L${bx},${y}`,class:'cylk'},cySvg)});
+  A.forEach((ag,j)=>{const y=y0+j*38,{g}=cyChip(ag,bx,y,align,cySvg);g.dataset.s=s.id;el('path',{d:`M${nx},${ny}L${bx},${y}`,class:'cylk'},cySvg).dataset.s=s.id});
   if(EN.matter&&EN.matter.from===s.id)cyMatter(bx,y0+A.length*38+8,nx,ny)});
  const first=cySvg.querySelector('.cyst');cySvg.querySelectorAll('.cylk').forEach(l=>cySvg.insertBefore(l,first));
  // моронтийная энергия — вне цикла
- if(EN.aside?.length){cyText(-700,400,EU('aside'),'cymut','start');EN.aside.forEach((a,j)=>cyChip(a,-700,428+j*38,1,cySvg))}
+ if(EN.aside?.length){cyText(0,428,EU('aside'),'cymut cyaside');EN.aside.forEach((a,j)=>cyChip(a,0,456+j*38,0,cySvg))}
  cyMark()}
 /* Ветвь вещества (42:3): кнопка у стадии; раскрытая — столбец из десяти видов справа (это классификация, не последовательность — без стрелок). */
 function cyMatter(bx,ty,nx,ny){const M=EN.matter,g=el('g',{class:'cymt'+(cyMat?' open':'')},cySvg),r=el('rect',{x:0,y:-15,width:10,height:30,rx:15},g);
  const tx=cyText(16,5,L(M.title)+(cyMat?'  ◂':'  ▸'),'','start',g),w=tx.getBBox().width+32;r.setAttribute('width',w);g.setAttribute('transform',`translate(${bx},${ty})`);
- el('path',{d:`M${nx},${ny}L${bx},${ty}`,class:'cylk'},cySvg);g.onclick=e=>{e.stopPropagation();cyMat=!cyMat;cyMatCur=null;cyDraw();cyMat?cyShowMatter(null):cyHint()};
- cySvg.setAttribute('viewBox',cyMat?CY_VBM:CY_VB);if(!cyMat)return;
+ g.dataset.s=M.from;el('path',{d:`M${nx},${ny}L${bx},${ty}`,class:'cylk'},cySvg).dataset.s=M.from;g.onclick=e=>{e.stopPropagation();cyMat=!cyMat;cyMatCur=null;cyDraw();cyMat?cyShowMatter(null):cyHint()};
+ cyFitBase(cyMat?CY_VBM:CY_VB);if(!cyMat)return;
  const X=800,step=40,y0=110-((M.items.length-1)*step)/2,yl=y0+(M.items.length-1)*step;
- el('path',{d:`M${bx+w},${ty}H${X-24}M${X-24},${Math.min(y0,ty)}V${Math.max(yl,ty)}`,class:'cybr'},cySvg);
+ el('path',{d:`M${bx+w},${ty}H${X-24}M${X-24},${Math.min(y0,ty)}V${Math.max(yl,ty)}`,class:'cybr'},cySvg).dataset.s=M.from;
  cyText(X,y0-34,L(M.title),'nm','start');
- M.items.forEach((it,i)=>{const y=y0+i*step,c=el('g',{class:'cymi',transform:`translate(${X},${y})`},cySvg);c.dataset.m=it.id;
+ M.items.forEach((it,i)=>{const y=y0+i*step,c=el('g',{class:'cymi',transform:`translate(${X},${y})`},cySvg);c.dataset.m=it.id;c.dataset.s=M.from;
   el('path',{d:`M-24,0H0`,class:'cybr'},c);const rr=el('rect',{x:0,y:-14,width:10,height:28,rx:6},c);
   const t2=cyText(12,5,`${i+1}. ${L(it.name)}`,'','start',c);rr.setAttribute('width',t2.getBBox().width+24);
   c.onclick=e=>{e.stopPropagation();cyShowMatter(it.id)}})}
@@ -1042,22 +1042,98 @@ function cyShowMatter(id){cyMatCur=id;cyCur=null;cyMark();const M=EN.matter,it=M
 function cyMark(){cySvg.querySelectorAll('.cymi').forEach(g=>g.classList.toggle('on',g.dataset.m===cyMatCur));cySvg.querySelectorAll('.cyst').forEach(g=>g.classList.toggle('on',g.dataset.s===cyCur));
  const p=cyAgent&&byId[cyAgent];
  cySvg.querySelectorAll('.cyag').forEach(g=>{const a=g.dataset.a;g.classList.toggle('on',!!p&&(a===cyAgent||a===p.unit||a.startsWith('cat:')&&(p.cats||[]).includes(a.slice(4))))})}
-function cyShow(id){cyCur=id;cyMatCur=null;cyMark();const s=EST[id];if(!s){cyHint();return}
+function cyShow(id){cyCur=id;cyMatCur=null;cyHash&&cyOn()&&setTimeout(cyHash);cyMark();const s=EST[id];if(!s){cyHint();return}
  const ag=(s.agents||[]).map(a=>`<li><a data-a="${a}">${cyAName(a)}</a></li>`).join('');
  cyInfo.innerHTML=`<button class="cyx" title="${t('close')}">×</button><h3>${L(s.name)}</h3><div class="bk2">${L(s.book)} · ${t('book')}, ${s.refs.join(', ')}</div><p>${L(s.desc)||''}</p>${s.id==='paradise'?'':`<b>${EU('agents')}</b>${ag?`<ul>${ag}</ul>`:`<p class="bk2">${EU('none')}</p>`}`}`;
  cyBind()}
 function cyHint(){cyInfo.innerHTML=`<button class="cyx" title="${t('close')}">×</button><h3>${EU('title')}</h3><div class="bk2">${t('book')}, 42:2 · 11:8 · 29:5</div><p>${EU('hint')}</p>`;cyBind()}
-function cyHide(){cyInfo.style.display='none';cyCur=null;cyMatCur=null;cyMark()}
-function cyBind(){const x=cyInfo.querySelector('.cyx');x.onpointerdown=e=>e.stopPropagation();x.onclick=e=>{e.stopPropagation();cyHide()};cyInfo.style.display='';cyInfo.querySelectorAll('a[data-a]').forEach(x=>x.onclick=()=>cyGo(x.dataset.a))}
+function cyHide(){cyInfo.style.display='none';cyRefit();cyCur=null;cyMatCur=null;cyMark()}
+function cyBind(){const x=cyInfo.querySelector('.cyx');x.onpointerdown=e=>e.stopPropagation();x.onclick=e=>{e.stopPropagation();cyHide()};cyInfo.style.display='';cyRefit();cyInfo.querySelectorAll('a[data-a]').forEach(x=>x.onclick=()=>cyGo(x.dataset.a))}
 function cyOpen(stage,agent){if(!EN)return;cyAgent=agent||null;
  // карточка основной схемы не должна ждать под окном цикла: иначе после закрытия она «всплывает», будто щелчок прошёл насквозь
- hover(null,0,1);if(cardShown())closeCard();cyBox.classList.add('on');document.getElementById('bCycle').classList.add('on');cyDraw();
- if(stage&&stage!=='aside')cyShow(stage);else{cyCur=null;cyHint();cyMark()}}
-function cyClose(){cyShield=performance.now()+400;cyBox.classList.remove('on');document.getElementById('bCycle').classList.remove('on');cyAgent=null;
+ hover(null,0,1);if(cardShown())closeCard();cyvb=null;cyTapA=null;cyBox.classList.add('on');requestAnimationFrame(()=>cyBox.classList.add('show'));document.getElementById('bCycle').classList.add('on');cyDraw();
+ if(stage&&stage!=='aside')cyShow(stage);else{cyCur=null;cyHint();cyMark()}
+ if(agent)setTimeout(()=>cySvg.querySelectorAll('.cyag.on').forEach(cyPulse),350);cyHash()}
+function cyHash(){try{history.replaceState(null,'',cyOn()?'#cycle'+(cyCur?'/'+cyCur:''):sel?'#'+sel:location.pathname+location.search)}catch(e){}}
+function cyClose(){cyShield=performance.now()+400;cyBox.classList.remove('on','show','panning');cyHov(null);setTimeout(syncZoom);document.getElementById('bCycle').classList.remove('on');cyAgent=null;cyHash();
  // сразу (до событий наведения) запоминаем, что оказалось под курсором: оно не подсветится, пока мышь его не покинет
  const n=document.elementFromPoint(lastP.x,lastP.y),g=n?.closest?.('#map .node'),u=n?.closest?.('#map .ulab, #map text');cyBlock={id:g?g.dataset.pid:u?.parentNode?.dataset?.u||null}}
 function cyGo(a){cyClose();if(a.startsWith('cat:')){selCat=null;selectCat(a.slice(4))}else select(a)}
 ['pointerdown','pointerup','click'].forEach(k=>addEventListener(k,e=>{if(performance.now()<cyShield&&!e.target.closest?.('header')){e.stopImmediatePropagation();e.preventDefault()}},true));
+
+/* Вид цикла — как на основной и краткой схемах: вид равен экрану (без полей), колесо и кнопки задают цель, текущий вид
+   догоняет её по экспоненте (шаг привязан ко времени), бросок докатывается, край цикла доводится максимум до середины экрана,
+   издали мелкие подписи скрываются. Мышь: наведение — стадия со своими личностями и стрелками, щелчок — описание/переход.
+   Касание: первое — подсветка и описание, повторное или долгое — переход к личности на основной схеме. */
+var cyvb=null,cyFitted=true,cyBaseS='',cyTv=null,cyRaf=0,cyLast=0,cyTau=80;
+function cyOn(){return cyBox.classList.contains('on')}
+const cyParse=v=>{const[x,y,w,h]=v.split(' ').map(Number);return{x,y,w,h}};
+const cyBounds=()=>cyParse(cyBaseS||CY_VB);
+function cyNorm(v){const cw=cyBox.clientWidth,ch=cyBox.clientHeight;v={...v};if(cw&&ch){const k=Math.max(v.w/cw,v.h/ch),cx=v.x+v.w/2,cy=v.y+v.h/2;v.w=cw*k;v.h=ch*k;v.x=cx-v.w/2;v.y=cy-v.h/2}
+ const b=cyBounds();v.x=Math.min(Math.max(v.x,b.x-v.w/2),b.x+b.w-v.w/2);v.y=Math.min(Math.max(v.y,b.y-v.h/2),b.y+b.h-v.h/2);return v}
+/* Вписать в свободную часть экрана: сверху — кнопка «К схеме», на узком экране снизу — лист описания (как insets() основной схемы). */
+function cyFitView(){const cw=cyBox.clientWidth||1,ch=cyBox.clientHeight||1,B=cyBounds(),narrow=cw/ch<.8,b=narrow?{x:-500,y:B.y,w:1000,h:B.h}:B;
+ const T=narrow?60:0,Bo=narrow&&cyInfo.style.display!=='none'&&cyInfo.offsetHeight?cyInfo.offsetHeight+16:0,ah=Math.max(120,ch-T-Bo),k=Math.max(b.w/cw,b.h/ah);
+ return{x:b.x+b.w/2-cw*k/2,y:b.y+b.h/2-(T+ah/2)*k,w:cw*k,h:ch*k}}
+function cyFitBase(b){if(b!==cyBaseS||!cyvb){cyBaseS=b;cyStop();cyvb=cyFitView();cyFitted=true}cySetVB()}
+function cySetVB(){cyvb=cyNorm(cyvb);cySvg.setAttribute('viewBox',`${cyvb.x} ${cyvb.y} ${cyvb.w} ${cyvb.h}`);cySvg.classList.toggle('far',(cyBox.clientWidth||1)/cyvb.w<.45);syncZoom()}
+const cyStop=()=>{cyTv=null;cancelAnimationFrame(cyRaf);cyRaf=0};
+function cyEase(to,tau=80){cyTv=cyNorm(to);cyTau=tau;if(cyRaf)return;cyLast=performance.now();
+ const step=now=>{if(!cyTv){cyRaf=0;return}const k=1-Math.exp(-Math.min(50,now-cyLast)/cyTau);cyLast=now;
+  cyvb={x:cyvb.x+(cyTv.x-cyvb.x)*k,y:cyvb.y+(cyTv.y-cyvb.y)*k,w:cyvb.w+(cyTv.w-cyvb.w)*k,h:cyvb.h+(cyTv.h-cyvb.h)*k};const px=cyvb.w/(cyBox.clientWidth||1)*.5;
+  if(!(Math.abs(cyTv.x-cyvb.x)>px||Math.abs(cyTv.y-cyvb.y)>px||Math.abs(cyTv.w-cyvb.w)>px)){cyvb=cyTv;cyTv=null;cyRaf=0;cySetVB();return}
+  cySetVB();cyRaf=requestAnimationFrame(step)};cyRaf=requestAnimationFrame(step)}
+const CYZ=()=>{const f=cyFitView();return{max:f.w*1.6,min:f.w/6}};
+function cyZoomTo(w,fx=.5,fy=.5){cyFitted=false;const z=CYZ(),b=cyTv||cyvb;w=Math.min(Math.max(w,z.min),z.max);const h=b.h*w/b.w,px=b.x+b.w*fx,py=b.y+b.h*fy;cyEase({x:px-fx*w,y:py-fy*h,w,h})}
+function cyRefit(){if(cyOn()&&cyvb&&cyFitted&&cyBox.clientWidth/cyBox.clientHeight<.8)requestAnimationFrame(()=>cyEase(cyFitView(),120))}
+function cyFit(){cyFitted=true;cyEase(cyFitView(),120)}
+function cySlider(){const z=CYZ();return Math.round(1000*Math.log(z.max/(cyTv||cyvb).w)/Math.log(z.max/z.min))}
+function cyFromSlider(v){const z=CYZ();cyZoomTo(z.max/Math.pow(z.max/z.min,v/1000))}
+cyBox.addEventListener('wheel',ev=>{if(ev.target.closest('#cyinfo'))return;ev.preventDefault();const b=cyTv||cyvb,B=cyBox.getBoundingClientRect();
+ if(!ev.ctrlKey){cyFitted=false;const k=b.w/B.width*(ev.deltaMode===1?16:1);cyEase(ev.shiftKey?{...b,x:b.x+(ev.deltaY||ev.deltaX)*k}:{...b,x:b.x+ev.deltaX*k,y:b.y+ev.deltaY*k});return}
+ cyZoomTo(b.w*Math.exp(ev.deltaY*0.0015),(ev.clientX-B.left)/B.width,(ev.clientY-B.top)/B.height)},{passive:false});
+// что под указателем: стадия, личность (агент), вид вещества, кнопка вещества
+const cyHit=t=>{const g=t.closest?.('.cyst,.cyag,.cymi,.cymt');return g?{g,s:g.dataset.s||null,a:g.dataset.a||null,m:g.dataset.m||null,st:g.classList.contains('cyst')}:null};
+const cyPtrs=new Map();let cyPan=null,cyPinch=null,cyEat=0;
+cyBox.addEventListener('contextmenu',e=>e.preventDefault());
+cyBox.addEventListener('pointerdown',ev=>{if(ev.target.closest('#cyinfo,#cyBack'))return;cyStop();if(document.activeElement===q)q.blur();res.style.display='none';
+ cyPtrs.set(ev.pointerId,{x:ev.clientX,y:ev.clientY});
+ if(cyPtrs.size===2){const[a,b]=[...cyPtrs.values()],B=cyBox.getBoundingClientRect(),mx=(a.x+b.x)/2,my=(a.y+b.y)/2;
+  cyFitted=false;cyPinch={d0:Math.hypot(a.x-b.x,a.y-b.y),v0:{...cyvb},wx:cyvb.x+(mx-B.left)/B.width*cyvb.w,wy:cyvb.y+(my-B.top)/B.height*cyvb.h};if(cyPan)clearTimeout(cyPan.lt);cyPan=null;cyEat=performance.now()+500;return}
+ const h=cyHit(ev.target);cyPan={x:ev.clientX,y:ev.clientY,px:ev.clientX,py:ev.clientY,tm:ev.timeStamp,vx:0,vy:0,v:{...cyvb},s:cyvb.w/cyBox.clientWidth,moved:false,hit:h};
+ if(ev.pointerType!=='mouse'&&h?.a){const pn=cyPan;pn.lt=setTimeout(()=>{if(cyPan===pn&&!pn.moved){pn.long=true;cyEat=performance.now()+500;cyGo(h.a)}},550)}}); // долгое касание личности — переход
+cyBox.addEventListener('pointermove',ev=>{if(!cyPtrs.has(ev.pointerId))return;cyPtrs.set(ev.pointerId,{x:ev.clientX,y:ev.clientY});
+ if(cyPinch&&cyPtrs.size>=2){const[a,b]=[...cyPtrs.values()],B=cyBox.getBoundingClientRect(),mx=(a.x+b.x)/2,my=(a.y+b.y)/2,v=cyPinch.v0,z=CYZ();
+  const w=Math.min(Math.max(v.w*cyPinch.d0/Math.max(10,Math.hypot(a.x-b.x,a.y-b.y)),z.min),z.max),h=v.h*w/v.w;cyvb={x:cyPinch.wx-(mx-B.left)/B.width*w,y:cyPinch.wy-(my-B.top)/B.height*h,w,h};cySetVB();return}
+ if(!cyPan)return;const dt=ev.timeStamp-cyPan.tm;if(dt>0){cyPan.vx=.4*cyPan.vx+.6*(ev.clientX-cyPan.px)/dt;cyPan.vy=.4*cyPan.vy+.6*(ev.clientY-cyPan.py)/dt;cyPan.px=ev.clientX;cyPan.py=ev.clientY;cyPan.tm=ev.timeStamp}
+ if(!cyPan.moved&&Math.hypot(ev.clientX-cyPan.x,ev.clientY-cyPan.y)>(ev.pointerType==='mouse'?3:10)){cyPan.moved=true;cyFitted=false;clearTimeout(cyPan.lt);cyBox.classList.add('panning');cyHov(null)}
+ if(cyPan.moved){cyvb={...cyPan.v,x:cyPan.v.x-(ev.clientX-cyPan.x)*cyPan.s,y:cyPan.v.y-(ev.clientY-cyPan.y)*cyPan.s};cySetVB()}});
+const cyEnd=ev=>{cyPtrs.delete(ev.pointerId);if(cyPinch&&cyPtrs.size<2){cyPinch=null;cyPan=null;cyBox.classList.remove('panning')}};
+cyBox.addEventListener('pointercancel',cyEnd);
+cyBox.addEventListener('pointerup',ev=>{const wasPinch=!!cyPinch||cyPtrs.size>1;cyEnd(ev);if(wasPinch||!cyPan)return;const p=cyPan;cyPan=null;cyBox.classList.remove('panning');clearTimeout(p.lt);if(p.long)return;
+ if(p.moved){cyEat=performance.now()+500;if(ev.timeStamp-p.tm<60&&Math.hypot(p.vx,p.vy)>.25){const k=Math.min(1,4/Math.hypot(p.vx,p.vy))*300*p.s;cyEase({...cyvb,x:cyvb.x-p.vx*k,y:cyvb.y-p.vy*k},300)}return} // бросок: докатывается
+ if(ev.pointerType==='mouse'||!p.hit)return; // мышь — обычный щелчок ниже; касание пустого места — тоже щелчок (закрыть описание)
+ // касание: первое — подсветка и описание; повторное по той же личности — переход
+ const h=p.hit;if(!h.a&&!h.m&&!h.st)return; // кнопка «Вещество» — обычным щелчком
+ cyEat=performance.now()+500;
+ if(h.a){if(cyTapA===h.a)return cyGo(h.a);cyTapA=h.a;cyHov(h.s);h.s?cyShow(h.s):cyHint();cyPulse(h.g);return}
+ cyTapA=null;cyHov(h.s);h.m?cyShowMatter(h.m):cyShow(h.s)});
+let cyTapA=null;
+// после перетаскивания, щипка или обработанного касания щелчок не должен срабатывать ещё раз
+cyBox.addEventListener('click',e=>{if(performance.now()<cyEat&&!e.target.closest('#cyinfo,#cyBack')){e.stopPropagation();e.preventDefault();cyEat=0}},true);
+/* Наведение мышью: стадия, её личности, линии и стрелки входа/выхода светятся, остальное приглушается. */
+let cyHovCur=null,cyHovT=0;
+function cyHov(sid){clearTimeout(cyHovT);if(sid===cyHovCur)return;cyHovCur=sid;cySvg.classList.toggle('hovering',!!sid);cySvg.querySelectorAll('.h').forEach(x=>x.classList.remove('h'));if(!sid)return;
+ cySvg.querySelectorAll(`[data-s="${sid}"]`).forEach(x=>x.classList.add('h'));cySvg.querySelectorAll(`.cyarc[data-f="${sid}"],.cyarc[data-t="${sid}"]`).forEach(x=>x.classList.add('h'))}
+/* Мышь: подсветка включается сразу, а гаснет с задержкой — промежутки между карточками и строками списка не дают мигания. */
+function cyHovSoon(sid){clearTimeout(cyHovT);if(sid)return cyHov(sid);if(cyHovCur)cyHovT=setTimeout(()=>cyHov(null),220)}
+cySvg.addEventListener('pointerover',e=>{if(e.pointerType!=='mouse'||cyPan?.moved)return;const h=cyHit(e.target);cyHovSoon(h?.s||null)});
+cySvg.addEventListener('pointerleave',e=>{if(e.pointerType==='mouse')cyHovSoon(null)});
+/* Пульс вокруг элемента — как при переходе к личности на основной схеме. */
+function cyPulse(g){if(!g)return;const b=g.getBBox(),m=g.getCTM(),sm=cySvg.getCTM().inverse().multiply(m),x=sm.e+b.x*sm.a,y=sm.f+b.y*sm.d,w=b.width*sm.a,h=b.height*sm.d;
+ const r=el('rect',{class:'pulse',x:x-5,y:y-5,width:w+10,height:h+10,rx:14,style:`transform-origin:${x+w/2}px ${y+h/2}px;transform-box:view-box`},cySvg);setTimeout(()=>r.remove(),2600)}
+addEventListener('resize',()=>{if(!cyOn()||!cyvb)return;cyStop();if(cyFitted)cyvb=cyFitView();cySetVB()});
+
 document.getElementById('cyBack').onclick=e=>{e.stopPropagation();cyClose()};
 document.getElementById('bCycle').onclick=()=>cyBox.classList.contains('on')?cyClose():cyOpen(null);
 if(!EN)document.getElementById('bCycle').style.display='none';
@@ -1069,18 +1145,18 @@ if(!seen){const cw=svg.clientWidth||1,w=Math.min(W,Math.max(700,cw/.6)),T=unitBy
  vb={x:Math.min(Math.max(0,T.x+T.w/2-w/2),W-w),y:0,w,h:w*svg.clientHeight/cw}}
 setVB();
 const hashId=()=>{try{return decodeURIComponent(location.hash.slice(1))}catch(e){return''}};
-if(byId[hashId()])select(hashId());
-window.addEventListener('hashchange',()=>{const h=hashId();if(h!==sel&&byId[h])select(h)});
+if(byId[hashId()])select(hashId());else if(/^cycle(\/|$)/.test(hashId())){const st=hashId().split('/')[1];cyOpen(EST[st]?st:null)}
+window.addEventListener('hashchange',()=>{const h=hashId();if(/^cycle(\/|$)/.test(h)){if(!cyOn()){const st=h.split('/')[1];cyOpen(EST[st]?st:null)}return}if(cyOn())cyClose();if(h!==sel&&byId[h])select(h)});
 document.addEventListener('keydown',e=>{if(e.target.tagName==='INPUT'||e.ctrlKey||e.metaKey||e.altKey)return;
  if(e.key==='Escape'){hover(null,0,1);cardShown()?closeCard():clearSel()}
  else if(e.code==='Slash'){e.preventDefault();q.focus()}else if(e.code==='Digit0')document.getElementById('bFit').click()});
 
 /* ===================== ЗУМ: бегунок и гайд при первом открытии ===================== */
 var ZMIN=250,ZMAX=W*3,zEl=document.getElementById('zoom');
-function syncZoom(){if(zEl)zEl.value=Math.round(1000*Math.log(ZMAX/(cOn()?ctv||cvb:tv||vb).w)/Math.log(ZMAX/ZMIN))} // по цели: бегунок не спорит с рукой
-function zoomTo(w){if(cOn())return cZoomTo(w);const b=tv||vb;w=Math.min(Math.max(w,ZMIN),ZMAX);const h=b.h*w/b.w;easeTo({x:b.x+b.w/2-w/2,y:b.y+b.h/2-h/2,w,h})}
-zEl.addEventListener('input',()=>zoomTo(ZMAX/Math.pow(ZMAX/ZMIN,zEl.value/1000)));
-const curW=()=>(cOn()?ctv||cvb:tv||vb).w;document.getElementById('zIn').onclick=()=>zoomTo(curW()/1.4);document.getElementById('zOut').onclick=()=>zoomTo(curW()*1.4);
+function syncZoom(){if(zEl&&cyOn()&&cyvb){zEl.value=cySlider();return}if(zEl)zEl.value=Math.round(1000*Math.log(ZMAX/(cOn()?ctv||cvb:tv||vb).w)/Math.log(ZMAX/ZMIN))} // по цели: бегунок не спорит с рукой
+function zoomTo(w){if(cyOn())return cyZoomTo(w);if(cOn())return cZoomTo(w);const b=tv||vb;w=Math.min(Math.max(w,ZMIN),ZMAX);const h=b.h*w/b.w;easeTo({x:b.x+b.w/2-w/2,y:b.y+b.h/2-h/2,w,h})}
+zEl.addEventListener('input',()=>cyOn()?cyFromSlider(+zEl.value):zoomTo(ZMAX/Math.pow(ZMAX/ZMIN,zEl.value/1000)));
+const curW=()=>(cyOn()?cyTv||cyvb:cOn()?ctv||cvb:tv||vb).w;document.getElementById('zIn').onclick=()=>zoomTo(curW()/1.4);document.getElementById('zOut').onclick=()=>zoomTo(curW()*1.4);
 syncZoom();
 const guide=document.getElementById('guide');let gStep=0,gTok=0;
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
