@@ -25,7 +25,11 @@ header label{white-space:nowrap;color:var(--muted);font-size:13px}
 #map{position:fixed;top:56px;left:0;right:0;bottom:0;width:100%;height:calc(100% - 56px);cursor:grab;touch-action:none;
  background-image:radial-gradient(var(--dot) 1px,transparent 1px);background-size:20px 20px}
 #map.panning{cursor:grabbing}
-#map,#map *,header h1,#legend{-webkit-user-select:none;user-select:none}
+/* фон под цвет выбранного фильтра */
+/* ореол цвета фильтра вокруг схемы: размытый прямоугольник под схемой, сходит на нет за её краями */
+/* фон схемы — лёгкая заливка цветом фильтра, по краю — мягкий ореол, который за пределами схемы быстро сходит на нет */
+.ubase{fill:var(--bg);pointer-events:none}.glow{fill:var(--cat,transparent);fill-opacity:.06;stroke:var(--cat,transparent);stroke-width:60;stroke-opacity:.28;opacity:0;transition:opacity .6s;pointer-events:none;filter:url(#glowF)}body.tint .glow{opacity:1}#compact .glow{filter:url(#glowC);stroke-width:30}
+#map,#map *,#compact,#compact *,header h1,#legend{-webkit-user-select:none;user-select:none}
 .unit rect.box{stroke-width:1.5}
 .unit text{font-size:13px;font-weight:600;letter-spacing:.03em;text-transform:uppercase;paint-order:stroke;stroke:var(--bg);stroke-width:5px;stroke-linejoin:round} /* обводка цветом фона — линии связей не просвечивают сквозь буквы */
 .node{cursor:pointer}
@@ -64,6 +68,7 @@ svg.dim .unit{opacity:.55}
 svg.hideOrigin .edge.origin,svg.hideService .edge.service{display:none}
 /* --- наведение: блоки --- */
 .unit rect.box{transition:fill-opacity .25s,stroke-width .25s,stroke-opacity .25s}
+.unit.uh1 rect.box{fill-opacity:calc(var(--unitA) * 2.6);stroke:var(--accent);stroke-width:2.8;stroke-opacity:1;filter:drop-shadow(0 0 7px var(--accent))}.unit.uh1 text{fill:var(--accent);font-weight:700}
 .unit:hover rect.box{fill-opacity:calc(var(--unitA) * 2.6);stroke-width:2.6;stroke-opacity:1}
 .unit text{transition:opacity .25s}.unit:hover text{opacity:1;font-weight:700}
 /* --- наведение: личность (градация h0 > h1 > h2) --- */
@@ -99,6 +104,10 @@ aside{position:fixed;background:var(--panel);border:1px solid var(--line);border
 #found li{padding:5px 10px;cursor:pointer;border-top:1px solid var(--line)}#found li:hover,#found li.on{background:var(--hov)}
 #active{position:fixed;top:66px;left:50%;transform:translateX(-50%);z-index:4;display:none;align-items:center;gap:7px;padding:4px 4px 4px 12px;border-radius:999px;background:var(--panel);
  border:1px solid var(--accent);box-shadow:0 4px 16px #0002;font-size:13px;cursor:pointer;max-width:calc(100% - 16px);white-space:nowrap}
+#compact{position:fixed;top:56px;left:0;right:0;bottom:0;z-index:3;background:var(--bg);display:none;cursor:grab;touch-action:none;
+ background-image:radial-gradient(var(--dot) 1px,transparent 1px);background-size:20px 20px}#compact.on{display:block}#compact.panning{cursor:grabbing}#compact{background-color:transparent;transition:background-color .45s}#compact.show{background-color:var(--bg)}#compact .cfade{opacity:0;transition:opacity .4s}#compact.full .cfade{opacity:1}#compact svg{width:100%;height:100%;display:block}
+#compact .unit text{text-transform:uppercase}#compact .node:hover rect.body,#compact .node:hover rect.stack{stroke:var(--accent);stroke-width:2.8;filter:drop-shadow(0 0 7px var(--accent))}.edge.via path.line{stroke:var(--edge);stroke-dasharray:2 5;stroke-linecap:round;stroke-width:1.6}
+#active .cm{font-size:12px;padding:2px 9px;border:1px solid var(--line);border-radius:999px;margin-left:4px}#active .cm.on{background:var(--hov);border-color:var(--accent);color:var(--accent)}
 #active.on{display:flex}#active i{width:10px;height:10px;border-radius:3px;flex:none;box-shadow:0 0 0 1px #0003}#active span{overflow:hidden;text-overflow:ellipsis}#active small{color:var(--muted)}
 .chip{display:inline-flex;align-items:center;gap:6px;padding:3px 8px;border-radius:999px;border:1px solid var(--line);margin:2px;cursor:pointer;font-size:12px;background:var(--panel);color:var(--ink)}
 body:not(.edit) .edit-only{display:none!important}
@@ -172,8 +181,9 @@ select{font:inherit;font-size:13px;padding:5px 6px;border:1px solid var(--line);
     <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
       <path d="M0,1 L10,5 L0,9 z" fill="context-stroke"/>
     </marker>
+    <filter id="glowF" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="70"/></filter><filter id="glowC" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="35"/></filter>
   </defs>
-  <g id="world"><g id="gUnits"></g><g id="gPairs"></g><g id="gEdges"></g><g id="gULab"></g><g id="gNodes"></g><g id="gFx"></g></g>
+  <g id="world"><rect id="glow" class="glow" rx="60"/><g id="gUnits"></g><g id="gPairs"></g><g id="gEdges"></g><g id="gULab"></g><g id="gNodes"></g><g id="gFx"></g></g>
 </svg>
 <aside id="legend">
   <div class="lhead"><button class="tab" data-tab="f" data-i18n="tabF"></button><button class="tab" data-tab="k" data-i18n="tabK"></button><button id="lgToggle"><b></b><span data-i18n="tabF"></span></button></div>
@@ -207,6 +217,7 @@ select{font:inherit;font-size:13px;padding:5px 6px;border:1px solid var(--line);
   </div></div>
 </aside>
 <div id="active"></div>
+<div id="compact"><svg id="csvg" xmlns="http://www.w3.org/2000/svg"></svg></div>
 <aside id="card"></aside>
 
 <script>/*@COSMO@*/</script>
@@ -266,7 +277,7 @@ const UI={
   origin:'Происхождение',oA:'Абсолют',oT:'Троица',oF:'Всеобщий Отец',oS:'Вечный Сын',oD:'Бесконечный Дух',oE:'эволюционное происхождение',oF2:'Отец',oS2:'Сын',oD2:'Дух',oE2:'эволюц.',
   icons:'Пиктограммы',kDeity:'Божество',kTrin:'происхождение от Троицы',kDesc:'нисходящий Сын',kAngel:'ангел',kSpirit:'дух',kLocal:'сын локальной вселенной',kAsc:'восходящий',kKinds:'Вид карточки',kPerson:'личность (вид существ)',kStage:'стадия восхождения — состояние, а не отдельный вид',kCorps:'корпус — группа личностей разных видов',kGhost:'тень — где личность служит',
   keyTxt:'Точки внутри пиктограммы — происхождение. Полоски над карточкой — категории, заливка — класс по происхождению. Щелчок по названию блока — выделить блок и открыть описание.',
-  tabF:'Фильтры',tabK:'Обозначения',back:'Назад',clear:'Очистить',
+  compact:'Только выбранные',compactT:'Компактная схема: только выбранные, каждый на своём уровне; пунктир — связь через скрытых посредников',tabF:'Фильтры',tabK:'Обозначения',back:'Назад',clear:'Очистить',
   cats:'Категории',funcs:'Функции',zHint:'Ctrl + колесо — масштаб · колесо — прокрутка',help:'Как пользоваться',gZoom:'Ctrl + колесо мыши — масштаб схемы. Можно и бегунком вверху.',gScroll:'Колесо мыши — прокрутка вверх и вниз, Shift + колесо — вбок. Схему также можно тянуть мышью.',gSearch:'Поиск: начните вводить имя — схема сама перелетит к карточке, а при наведении видны связи и перелёты.',gWord:'Михаилы',tZoom:'Разведите или сведите два пальца — масштаб схемы. Кнопки − и + вверху тоже работают.',tPan:'Ведите одним пальцем — схема сдвигается.',tSearch:'Поиск: начните вводить имя — схема перелетит к карточке.',tTap:'Коснитесь карточки — покажутся связи и краткое описание. Коснитесь описания — оно раскроется полностью.',gNext:'Дальше',gDone:'Понятно',gSkip:'Пропустить',catsHint:'(клик — выделить)',links:'Связи',lOrigin:'происхождение',classes:'Класс по происхождению (заливка)',cClass:'Класс по происхождению',lAscent:'восхождение',lService:'служение / пребывание',layout:'Раскладка',
   dragHint:'Карточки можно перетаскивать — линии перестраиваются в обход.',fit:'Вся схема',undo:'Отменить',lLong:'дальние связи всегда',servesHere:'служит здесь',serves:'Функционирует',pairT:'вместе с',export:'Экспорт раскладки',reset:'Сброс',close:'Закрыть',
   cOrigin:'Происхождение (линия Божеств)',cPlace:'Место служения',cParents:'Порождён(ы)',cChildren:'Порождает',cSource:'Источник',cStages:'Категории (стадии пути)',stageTag:'стадия восхождения',corpsTag:'корпус — группа, а не вид личностей',corpsShort:'корпус (группа)',book:'Книга Урантии',
@@ -275,7 +286,7 @@ const UI={
   origin:'Origin',oA:'Absolute',oT:'Trinity',oF:'Universal Father',oS:'Eternal Son',oD:'Infinite Spirit',oE:'evolutionary origin',oF2:'Father',oS2:'Son',oD2:'Spirit',oE2:'evolut.',
   icons:'Icons',kDeity:'Deity',kTrin:'Trinity origin',kDesc:'descending Son',kAngel:'angel',kSpirit:'spirit',kLocal:'local universe son',kAsc:'ascender',kKinds:'Card kind',kPerson:'personality (order of beings)',kStage:'stage of ascension — a state, not a separate order',kCorps:'corps — a group of beings of various orders',kGhost:'shadow — where a personality serves',
   keyTxt:'Dots inside an icon show origin. Stripes above a card are its categories; the tint is its origin class. Click a block title to highlight it and open its description.',
-  tabF:'Filters',tabK:'Key',back:'Back',clear:'Clear',
+  compact:'Selected only',compactT:'Compact view: only the selected, each on its own level; dotted — link through hidden intermediaries',tabF:'Filters',tabK:'Key',back:'Back',clear:'Clear',
   cats:'Categories',funcs:'Functions',zHint:'Ctrl + wheel — zoom · wheel — scroll',help:'How to use',gZoom:'Ctrl + mouse wheel zooms the map. The slider at the top works too.',gScroll:'Mouse wheel scrolls up and down, Shift + wheel sideways. You can also drag the map.',gSearch:'Search: start typing a name — the map flies to the card; hovering shows links and transfers.',gWord:'Michael',tZoom:'Spread or pinch two fingers to zoom. The − and + buttons at the top work too.',tPan:'Drag with one finger to move the map.',tSearch:'Search: start typing a name — the map flies to the card.',tTap:'Tap a card to see its links and a short description. Tap the description to open it in full.',gNext:'Next',gDone:'Got it',gSkip:'Skip',catsHint:'(click to highlight)',links:'Links',lOrigin:'origin',classes:'Origin class (card tint)',cClass:'Origin class',lAscent:'ascent',lService:'ministry / indwelling',layout:'Layout',
   dragHint:'Cards can be dragged — lines reroute around them.',fit:'Whole map',undo:'Undo',lLong:'always show long links',servesHere:'serves here',serves:'Functions in',pairT:'together with',export:'Export layout',reset:'Reset',close:'Close',
   cOrigin:'Origin (Deity lineage)',cPlace:'Place of service',cParents:'Created by',cChildren:'Creates',cSource:'Source',cStages:'Classes (stages of career)',stageTag:'stage of ascension',corpsTag:'corps — a group, not an order of beings',corpsShort:'corps (group)',book:'The Urantia Book',
@@ -410,7 +421,7 @@ function wrap(s,m=18){const w=s.split(' '),L=[];let c='';for(const x of w){if((c
  if(L.length>3){L.length=3;L[2]+='…'}return L}
 const nodeEl={},edgeEl=new Map();
 function drawUnits(){const g=document.getElementById('gUnits'),gl=document.getElementById('gULab');g.innerHTML='';gl.innerHTML=''; // названия — отдельным слоем поверх связей
- UNITS.forEach(u=>{const gg=el('g',{class:'unit'},g);
+ UNITS.forEach(u=>{const gg=el('g',{class:'unit'},g);if(!u.parent)el('rect',{class:'ubase',x:u.x,y:u.y,width:u.w,height:u.h,rx:14},gg); // подложка: фон фильтра не меняет цвет блоков
   el('rect',{class:'box',x:u.x,y:u.y,width:u.w,height:u.h,rx:14,fill:u.color,stroke:u.color,'stroke-opacity':.6},gg);
   const lg=el('g',{class:'unit'},gl);lg.dataset.u=u.id;const tx=el('text',{x:u.x+14,y:u.y+20,fill:u.color},lg);tx.textContent=u.name;u.lw=tx.getBBox().width;u.tx=tx;
   gg.dataset.u=u.id;tx.classList.add('ulab');tx.style.cursor='pointer';
@@ -460,13 +471,13 @@ let hovT=0;function hoverSoon(id,noFx){clearTimeout(hovT);
  if(id)hovT=setTimeout(()=>hover(id,noFx),splitEl&&id!==curHover?350:90);
  else if(curHover){if(splitEl)hovT=setTimeout(()=>hover(null),700);else hover(null)}}
 function hover(id,noFx,force){if(splitPin&&!force)return;if(!id)splitPin=null;curHover=id;svg.classList.toggle('hovering',!!id);
- document.querySelectorAll('.h0,.h1,.h2,.he1,.he2').forEach(e=>e.classList.remove('h0','h1','h2','he1','he2'));if(!id){clearTimeout(runT);linkSplit(null);transfer(null);document.querySelectorAll('.runner').forEach(x=>x.remove());return}
+ document.querySelectorAll('.h0,.h1,.h2,.he1,.he2,.uh1').forEach(e=>e.classList.remove('h0','h1','h2','he1','he2','uh1'));if(!id){clearTimeout(runT);linkSplit(null);transfer(null);document.querySelectorAll('.runner').forEach(x=>x.remove());return}
  if(unitById[id]){const U=unitById[id],inU=q=>{let c=unitById[q.unit];while(c){if(c===U)return true;c=c.parent}return false},mem=new Set(persons.filter(inU).map(q=>q.id));
   if(id==='trinity')['father','son','spirit'].forEach(x=>mem.add(x));const b=x=>String(x).replace('~','');
   edges.forEach(e=>{const g=edgeEl.get(e);if(e.from===id||e.to===id){g.classList.add('he1');nodeEl[e.from===id?e.to:e.from]?.classList.add('h1')}else if(mem.has(b(e.from))&&mem.has(b(e.to)))g.classList.add('he2')});
   mem.forEach(x=>nodeEl[x]?.classList.add('h0'));hoverEdges=edges.filter(e=>e.from===id||e.to===id);return}
  const m=x=>x===id||x==='~'+id,p=byId[id],cat=new Set(persons.filter(q=>q.id!==id&&q.cats.some(c=>p.cats.includes(c))).map(q=>q.id));
- edges.forEach(e=>{const g=edgeEl.get(e);if(m(e.from)||m(e.to)){g.classList.add('he1');const o=m(e.from)?e.to:e.from;nodeEl[o]?.classList.add('h1')}
+ edges.forEach(e=>{const g=edgeEl.get(e);if(m(e.from)||m(e.to)){g.classList.add('he1');const o=m(e.from)?e.to:e.from;nodeEl[o]?.classList.add('h1');if(unitById[o])document.querySelectorAll(`#gUnits g[data-u="${o}"],#gULab g[data-u="${o}"]`).forEach(x=>x.classList.add('uh1'))} // связь идёт к блоку — подсвечиваем и его рамку
   else if((cat.has(e.from)||e.from===id)&&(cat.has(e.to)||e.to===id))g.classList.add('he2')});
  cat.forEach(c=>{if(!nodeEl[c].classList.contains('h1'))nodeEl[c].classList.add('h2')});nodeEl[id].classList.add('h0');nodeEl['~'+id]?.classList.add('h1');
  if(PAIR_OF[id]){nodeEl[PAIR_OF[id]].classList.add('h1');nodeEl['~'+PAIR_OF[id]]?.classList.add('h1')}
@@ -556,16 +567,20 @@ function linkSplit(id){clearTimeout(linkT);linkPending=false;if(!id)return;linkP
    const o=off(ks);for(const tp of order){const set=o.filter(r=>tp?r.y<src.y:r.y>=src.y);if(set.length&&!(tp?fr<1/3:fr>2/3)){R=set;top=tp;break}}if(R)break}
   if(!R){runEdges(hoverEdges);return}
   const sp=showSplit(R,src,top);
-  if(sp){const ks=new Set(R.map(q=>q.k));setTimeout(()=>bridge(edges.filter(e=>(m(e.to)&&ks.has(e.from))||(m(e.from)&&ks.has(e.to)))),300);runT=setTimeout(()=>runEdges(hoverEdges),600)}
+  if(sp){const ks=new Set(R.map(q=>q.k));setTimeout(()=>bridge(edges.filter(e=>(m(e.to)&&ks.has(e.from))||(m(e.from)&&ks.has(e.to))),R),300);runT=setTimeout(()=>runEdges(hoverEdges),600)}
   else runEdges(hoverEdges)},250)}
 /* Линия связи может изгибаться в пропущенной середине схемы. Сдвигаем панель по горизонтали на величину изгиба,
    чтобы линия выходила из одной половины и входила в другую в одной и той же точке. */
 function crossX(pts,Y){for(let i=1;i<pts.length;i++){const[a,b]=[pts[i-1],pts[i]];if(a[0]===b[0]&&Math.min(a[1],b[1])<=Y&&Math.max(a[1],b[1])>=Y)return a[0]}return null}
-function bridge(list){if(!splitEl)return;const ps=splitEl.querySelector('svg');
+function bridge(list,R){if(!splitEl)return;const ps=splitEl.querySelector('svg');
  const Yb=splitEl.yb,M1=svg.getScreenCTM(),M2=ps.getScreenCTM();
  for(const e of list){if(!e.pts)continue;const x1=crossX(e.pts,(Yb-M1.f)/M1.d),x2=crossX(e.pts,(Yb-M2.f)/M2.d);if(x1==null||x2==null)continue;
-  const dx=(M1.a*x1+M1.e-(M2.a*x2+M2.e))/M2.a;if(Math.abs(dx)<.5)return;   // сдвиг в мировых единицах панели
+  let dx=(M1.a*x1+M1.e-(M2.a*x2+M2.e))/M2.a;   // сдвиг в мировых единицах панели
   const v=ps.getAttribute('viewBox').split(' ').map(Number),x0=v[0],t0=performance.now();
+  // сдвиг не больше, чем позволяют цели: карточки в панели не должны уезжать за её края (линия тогда стыкуется не точно — это лучше)
+  if(R?.length){const vw=ps.clientWidth*Math.max(v[2]/ps.clientWidth,v[3]/ps.clientHeight),Lv=v[0]+v[2]/2-vw/2,Rv=Lv+vw,
+   lo=Lv-Math.min(...R.map(r=>r.x))+20,hi=Rv-Math.max(...R.map(r=>r.x+r.w))-20;dx=lo>hi?(lo+hi)/2:Math.min(Math.max(dx,lo),hi)}
+  if(Math.abs(dx)<.5)return;
   const st=now=>{const t=Math.min(1,(now-t0)/220),k=1-Math.pow(1-t,3);v[0]=x0-dx*k;ps.setAttribute('viewBox',v.join(' '));stickSplit(ps);if(t<1&&splitEl?.querySelector('svg')===ps)requestAnimationFrame(st)};
   requestAnimationFrame(st);return}}
 function transfer(id,up){if(id&&flyEls.id===id+(up||''))return;if(!id)hideSplit(flyEls.split?0:450);if(flyEls.length){if(flyEls.split){flyEls.tgt=-1;clearTimeout(flyEls.timer);flyEls.ov?.remove();flyEls.forEach(f=>f.c.remove())}else animFly(flyEls,0)}flyEls=[];if(!id)return;if(cardOpen())return; // открыто описание — без перелёта
@@ -688,8 +703,8 @@ function refresh(){hl=null;const id=sel;
   hl={nodes:ns,edgeSet:es}}
  else if(selCat){const ns=catSet(selCat);hl={nodes:ns,edgeSet:new Set(edges.filter(e=>ns.has(e.from)&&ns.has(e.to)))}}
  reapply();markChips();drawActive()}
-function selectCat(c){sel=null;selCat=selCat===c?null:c;cardHist.length=0;hideCard();setHash();refresh();
- if(!selCat)return;document.querySelector('.lbody').scrollTop=0;
+function selectCat(c,keep){sel=null;selCat=selCat===c?null:c;cardHist.length=0;hideCard();setHash();refresh();
+ if(!selCat)return;if(!keep)document.querySelector('.lbody').scrollTop=0;
  const ns=hl.nodes,R=[...ns].map(rectOf),x0=Math.min(...R.map(r=>r.x)),y0=Math.min(...R.map(r=>r.y)),x1=Math.max(...R.map(r=>r.x+r.w)),y1=Math.max(...R.map(r=>r.y+r.h));
  flyTo({x:x0,y:y0,w:x1-x0,h:y1-y0},1);ns.forEach(pulse)}
 function closeCard(){sel=null;cardHist.length=0;hideCard();setHash();refresh()}
@@ -726,13 +741,149 @@ card.addEventListener('pointerup',e=>{if(!cs)return;const dy=e.clientY-cs.y,pk=c
  else if(pk&&dy<10)select(card.dataset.id,{hist:1});else if(dy<-30)card.classList.remove('peek')});
 card.addEventListener('pointercancel',()=>cs=null);
 const hideCard=()=>document.getElementById('card').style.display='none';
+/* Щелчок по фильтру в панели: над списком появляется (или исчезает) перечень найденного — прокрутку правим так,
+   чтобы под курсором остался тот же фильтр. */
+function selChip(c){const b=document.querySelector('.lbody'),y=c.getBoundingClientRect().top;selectCat(c.dataset.cat,1);b.scrollTop+=c.getBoundingClientRect().top-y}
 function markChips(){document.querySelectorAll('#cats .chip,#classes .chip,#funcs .chip').forEach(c=>c.classList.toggle('on',c.dataset.cat===selCat))}
-function drawActive(){const a=document.getElementById('active'),f=document.getElementById('found');a.classList.toggle('on',!!selCat);f.classList.toggle('on',!!selCat);if(!selCat){f.innerHTML='';return}
+function drawActive(){document.body.classList.toggle('tint',!!selCat);if(selCat)document.body.style.setProperty('--cat',catInfo(selCat).color);const a=document.getElementById('active'),f=document.getElementById('found');a.classList.toggle('on',!!selCat);f.classList.toggle('on',!!selCat);if(!selCat){f.innerHTML='';compactSync();return}
  const i=catInfo(selCat),ids=[...catSet(selCat)].sort((x,y)=>byId[x].y-byId[y].y||byId[x].x-byId[y].x); // в порядке схемы: сверху вниз
- a.innerHTML=`<i style="background:${i.color}"></i><span>${i.name}</span><small>${ids.length}</small><button title="${t('close')}">×</button>`;
+ a.innerHTML=`<i style="background:${i.color}"></i><span>${i.name}</span><small>${ids.length}</small><button class="cm${compact?' on':''}" title="${t('compactT')}">${t('compact')}</button><button title="${t('close')}">×</button>`;compactSync();
  f.innerHTML=`<b><i class="dot" style="background:${i.color};border-radius:3px"></i>${i.name} · ${ids.length}<button title="${t('close')}">×</button></b><ul>${ids.map(x=>`<li data-id="${x}"${x===sel?' class="on"':''}>${byId[x].name}</li>`).join('')}</ul>`}
-document.getElementById('active').onclick=e=>{if(e.target.tagName==='BUTTON')return clearSel();const lg=document.getElementById('legend');lg.classList.remove('min','k');lg.querySelector('.lbody').scrollTop=0}; // открыть список найденного
+document.getElementById('active').onclick=e=>{if(e.target.classList.contains('cm')){compact=!compact;if(compact)cKey='';return drawActive()}if(e.target.tagName==='BUTTON')return clearSel();const lg=document.getElementById('legend');lg.classList.remove('min','k');lg.querySelector('.lbody').scrollTop=0}; // открыть список найденного
 document.getElementById('found').onclick=e=>{if(e.target.tagName==='BUTTON')return clearSel();const li=e.target.closest('li');if(li)select(li.dataset.id)};
+/* ===================== КОМПАКТНАЯ СХЕМА =====================
+   «Только выбранные»: те же уровни (блоки), но в них — лишь отобранные личности; блок занимает ровно столько места,
+   сколько нужно им. Порядок внутри ряда — как на полной схеме. Связь через скрытых посредников — пунктир. Полная схема не меняется. */
+let compact=false,cKey='',cvb=null;const cBox=document.getElementById('compact'),csvg=document.getElementById('csvg');
+const CPAD=24,CTOP=40,CGP=36,CRG=34;
+function compactSync(){const on=compact&&!!selCat;
+ if(!on){if(cKey&&cBox.classList.contains('on'))cFly(1);cKey='';return}cBox.classList.add('on');
+ const k=selCat+'|'+LANG;if(k!==cKey){cKey=k;drawCompact()}
+ csvg.querySelectorAll('.node').forEach(n=>n.classList.toggle('sel',n.dataset.pid===sel))}
+function drawCompact(){const S=catSet(selCat),vis=p=>S.has(p.id)||(p.ghost&&S.has(p.of)),pos=new Map();
+ // 1) размеры снизу вверх: блок без отобранных выпадает
+ const meas=u=>{const it=[],ks=u.kids;
+  for(let i=0;i<ks.length;i++){const k=ks[i];
+   if(Array.isArray(k)){const P=k.map(id=>id[0]==='~'?GHOSTS[id]:byId[id]).filter(p=>p&&vis(p)).sort((a,b)=>a.x-b.x);
+    if(P.length)it.push({row:P,w:P.length*NW+(P.length-1)*CGP,h:NH+CRG});continue}
+   if(ks[i+1]&&ks[i+1].beside){const grp=[k];while(ks[i+1]&&!Array.isArray(ks[i+1])&&ks[i+1].beside)grp.push(ks[++i]);
+    const cs=grp.map(meas).filter(Boolean);if(cs.length)it.push({side:cs,w:cs.reduce((a,c)=>a+c.w,0)+(cs.length-1)*30,h:Math.max(...cs.map(c=>c.h))+24});continue}
+   const c=meas(k);if(c)it.push({unit:c,w:c.w,h:c.h+24})}
+  if(!it.length)return null;
+  return{u,it,w:Math.max(labelW(u)+20,...it.map(x=>x.w+2*CPAD)),h:CTOP+it.reduce((a,x)=>a+x.h,0)-10+CPAD/2}};
+ const tops=TREE.kids.map(meas).filter(Boolean);
+ // 2) места сверху вниз: вложенные блоки растягиваются на ширину родителя, ряды — по центру
+ const U=[];const place=(n,x,y,w,h)=>{n.x=x;n.y=y;n.W=w;n.H=h||n.h;U.push(n);let cy=y+CTOP;
+  n.it.forEach(t=>{if(t.row){let sx=x+(w-t.w)/2;t.row.forEach(p=>{pos.set(p.id,{x:sx,y:cy,w:NW,h:NH,p});sx+=NW+CGP})}
+   else if(t.unit)place(t.unit,x+CPAD,cy,w-2*CPAD);
+   else{const ex=(w-2*CPAD-t.w)/t.side.length;let sx=x+CPAD;t.side.forEach(c=>{place(c,sx,cy,c.w+ex,t.h-24);sx+=c.w+ex+30})}
+   cy+=t.h})};
+ const TW=Math.max(...tops.map(n=>n.w),NW+2*CPAD);let y=0;tops.forEach(n=>{place(n,0,y,TW);y+=n.h+30});const TH=y-30;cBounds={x:0,y:0,w:TW,h:TH};
+ // 3) связи: прямые и через скрытых посредников (до трёх шагов)
+ const out={};edges.forEach(e=>(out[e.from]||(out[e.from]=[])).push(e));
+ const E=[],has=new Set();edges.forEach(e=>{if(pos.has(e.from)&&pos.has(e.to)&&e.from!==e.to){E.push({from:e.from,to:e.to,type:e.type});has.add(e.from+'>'+e.to)}});
+ pos.forEach((_,a)=>{const seen=new Set([a]);let fr=(out[a]||[]).filter(e=>!pos.has(e.to)).map(e=>e.to);
+  for(let d=0;d<3&&fr.length;d++){const nx=[];fr.forEach(x=>{if(seen.has(x))return;seen.add(x);(out[x]||[]).forEach(e=>{
+   if(pos.has(e.to)){const k=a+'>'+e.to;if(e.to!==a&&!has.has(k)){has.add(k);E.push({from:a,to:e.to,type:'via'})}}else nx.push(e.to)})});fr=nx}});
+ // 4) отрисовка
+ csvg.innerHTML='';cNodes=[];cUnits=[];cEdges=[];cStop();cFlyEls=[];cPos=pos;const gU=el('g',{class:'cfade'},csvg),gE=el('g',{class:'cfade'},csvg),gN=el('g',{},csvg),gL=el('g',{class:'cfade'},csvg);cFx=el('g',{},csvg);csvg.insertBefore(el('rect',{class:'glow',x:-20,y:-20,width:TW+40,height:TH+40,rx:40}),gU);
+ U.forEach(n=>{const u=n.u,g=el('g',{class:'unit'},gU);if(tops.includes(n))el('rect',{class:'ubase',x:n.x,y:n.y,width:n.W,height:n.H,rx:14},g);el('rect',{class:'box',x:n.x,y:n.y,width:n.W,height:n.H,rx:14,fill:u.color,stroke:u.color,'stroke-opacity':.6},g);
+  const lg=el('g',{class:'unit'},gL);n.tx=el('text',{x:n.x+14,y:n.y+20,fill:u.color},lg);n.tx.textContent=u.name;cUnits.push(n)});
+ const ORD={via:0,service:1,ascent:2,origin:3};
+ E.sort((a,b)=>ORD[a.type]-ORD[b.type]).forEach(e=>{const a=pos.get(e.from),b=pos.get(e.to),ax=a.x+NW/2,bx=b.x+NW/2;let pts;
+  if(Math.abs(a.y-b.y)<5){const l=a.x<b.x;pts=[[l?a.x+NW:a.x,a.y+NH/2],[l?b.x:b.x+NW,b.y+NH/2]]}
+  else{const dn=b.y>a.y,y0=dn?a.y+NH:a.y,y1=dn?b.y:b.y+NH,my=dn?b.y-CRG/2-6:b.y+NH+CRG/2+6;
+   pts=ax===bx?[[ax,y0],[bx,y1]]:[[ax,y0],[ax,my],[bx,my],[bx,y1]]}
+  const g=el('g',{class:'edge '+e.type},gE),d=pathD(pts);cEdges.push({from:e.from,to:e.to,g});el('path',{class:'halo',d},g);el('path',{class:'line',d,'marker-end':'url(#arr)'},g)});
+ pos.forEach((r,id)=>{const src=nodeEl[id];if(!src)return;const c=src.cloneNode(true);c.setAttribute('class','node'+(r.p.ghost?' ghost':'')+(r.p.stage?' stage':'')+(r.p.corps?' corps':''));
+  c.setAttribute('transform',`translate(${r.x},${r.y})`);const pid=r.p.ghost?r.p.of:id;c.dataset.pid=pid;c.dataset.k=id;gN.appendChild(c);cNodes.push({c,x:r.x,y:r.y,id})});
+ // вид: вся компактная схема по ширине; если высокая — сверху, с прокруткой
+ const cw=cBox.clientWidth||innerWidth,ch=cBox.clientHeight||innerHeight-56,m=40,k=Math.min(Math.max((TW+2*m)/cw,(TH+2*m)/ch),Math.max((TW+2*m)/cw,1.4));
+ cvb={x:TW/2-cw*k/2,y:(TH+2*m)/ch>k?-m:TH/2-ch*k/2,w:cw*k,h:ch*k};cHover(null);cSet();cFly(0)}
+/* Сборка: карточки слетаются с мест на полной схеме в компактную раскладку, затем проявляются блоки и связи.
+   Разборка (back) — в обратном порядке, после неё слой скрывается. */
+let cNodes=[],cUnits=[],cTok=0,cBounds=null;
+function cFly(back){const tok=++cTok,M=svg.getScreenCTM(),B=cBox.getBoundingClientRect(),k=cvb.w/(cBox.clientWidth||1),f=M.a*k;
+ const from=n=>{const r=rectOf(n.id);return{x:cvb.x+(M.a*r.x+M.e-B.left)*k,y:cvb.y+(M.d*r.y+M.f-B.top)*k}};
+ const P=cNodes.map(n=>({n,a:from(n)})),D=back?550:800,t0=performance.now()+(back?250:0);
+ if(back){cBox.classList.remove('full');setTimeout(()=>tok===cTok&&cBox.classList.remove('show'),250)}
+ else{cBox.classList.remove('full','show');void cBox.offsetWidth;cBox.classList.add('show')}
+ const ease=t=>t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;
+ const st=now=>{if(tok!==cTok)return;let done=true;
+  P.forEach(({n,a},i)=>{const d=back?0:Math.min(250,i*12);let t=Math.min(1,Math.max(0,(now-t0-d)/D));if(t<1)done=false;let e=ease(t);if(back)e=1-e;
+   const x=a.x+(n.x-a.x)*e,y=a.y+(n.y-a.y)*e,s=f+(1-f)*e;n.c.setAttribute('transform',`translate(${x},${y}) scale(${s})`)});
+  if(!done)return requestAnimationFrame(st);
+  if(back){cBox.classList.remove('on','show','panning');csvg.innerHTML='';cNodes=[];cBounds=null;syncZoom()}else cBox.classList.add('full')};
+ requestAnimationFrame(st)}
+function cSet(){const cw=cBox.clientWidth,ch=cBox.clientHeight;if(cw&&ch){const k=Math.max(cvb.w/cw,cvb.h/ch),cx=cvb.x+cvb.w/2,cy=cvb.y+cvb.h/2;cvb={x:cx-cw*k/2,y:cy-ch*k/2,w:cw*k,h:ch*k}}
+ csvg.setAttribute('viewBox',`${cvb.x} ${cvb.y} ${cvb.w} ${cvb.h}`);csvg.classList.toggle('far',(cw||1)/cvb.w<.33);syncZoom();
+ const m=14*cvb.w/(cw||1);cUnits.forEach(n=>{const lw=n.tx.getBBox().width;n.tx.setAttribute('x',Math.max(n.x+14,Math.min(cvb.x+m,n.x+n.W-lw-14)))})} // названия держатся у левого края, как на полной схеме
+/* Управление — как на полной схеме: плавное колесо и Ctrl+колесо (к цели, щелчки складываются), бросок с докатом,
+   два пальца — масштаб, край схемы доводится максимум до середины экрана. Касание карточки — связи и краткое описание,
+   щелчок — описание, щелчок по пустому месту — закрыть описание, затем снять фильтр. */
+const cOn=()=>cBox.classList.contains('on')&&!!cNodes.length;
+let ctv=null,ctvRaf=0,ctvLast=0,ctvTau=80;
+const cNorm=v=>{const cw=cBox.clientWidth,ch=cBox.clientHeight;v={...v};if(cw&&ch){const k=Math.max(v.w/cw,v.h/ch),cx=v.x+v.w/2,cy=v.y+v.h/2;v.w=cw*k;v.h=ch*k;v.x=cx-v.w/2;v.y=cy-v.h/2}
+ const b=cBounds;if(b){v.x=Math.min(Math.max(v.x,b.x-v.w/2),b.x+b.w-v.w/2);v.y=Math.min(Math.max(v.y,b.y-v.h/2),b.y+b.h-v.h/2)}return v};
+const cStop=()=>{ctv=null;cancelAnimationFrame(ctvRaf);ctvRaf=0};
+function cEase(to,tau=80){ctv=cNorm(to);ctvTau=tau;if(ctvRaf)return;ctvLast=performance.now();
+ const step=now=>{if(!ctv){ctvRaf=0;return}const k=1-Math.exp(-Math.min(50,now-ctvLast)/ctvTau);ctvLast=now;
+  cvb={x:cvb.x+(ctv.x-cvb.x)*k,y:cvb.y+(ctv.y-cvb.y)*k,w:cvb.w+(ctv.w-cvb.w)*k,h:cvb.h+(ctv.h-cvb.h)*k};const px=cvb.w/cBox.clientWidth*.5;
+  if(!(Math.abs(ctv.x-cvb.x)>px||Math.abs(ctv.y-cvb.y)>px||Math.abs(ctv.w-cvb.w)>px)){cvb=ctv;ctv=null;ctvRaf=0;cSet();return}
+  cSet();ctvRaf=requestAnimationFrame(step)};ctvRaf=requestAnimationFrame(step)}
+function cZoomTo(w,fx=.5,fy=.5){const b=ctv||cvb;w=Math.min(Math.max(w,ZMIN),ZMAX);const h=b.h*w/b.w,px=b.x+b.w*fx,py=b.y+b.h*fy;cEase({x:px-fx*w,y:py-fy*h,w,h})}
+function cFit(){const b=cBounds;if(!b)return;const cw=cBox.clientWidth,ch=cBox.clientHeight,m=40,k=Math.max((b.w+2*m)/cw,(b.h+2*m)/ch);cEase({x:b.x+b.w/2-cw*k/2,y:b.y+b.h/2-ch*k/2,w:cw*k,h:ch*k})}
+cBox.addEventListener('wheel',ev=>{ev.preventDefault();const b=ctv||cvb;
+ if(!ev.ctrlKey){const k=b.w/cBox.clientWidth*(ev.deltaMode===1?16:1);cEase(ev.shiftKey?{...b,x:b.x+(ev.deltaY||ev.deltaX)*k}:{...b,x:b.x+ev.deltaX*k,y:b.y+ev.deltaY*k});return}
+ const B=cBox.getBoundingClientRect();cZoomTo(b.w*Math.exp(ev.deltaY*0.0015),(ev.clientX-B.left)/B.width,(ev.clientY-B.top)/B.height)},{passive:false});
+const ctp=new Map();let cPan=null,cPinch=null;
+cBox.addEventListener('contextmenu',e=>e.preventDefault());
+cBox.addEventListener('pointerdown',ev=>{cStop();ev.preventDefault();window.getSelection()?.removeAllRanges();if(document.activeElement===q)q.blur();res.style.display='none';
+ ctp.set(ev.pointerId,{x:ev.clientX,y:ev.clientY});cBox.setPointerCapture(ev.pointerId);
+ if(ctp.size===2){const[a,b]=[...ctp.values()],B=cBox.getBoundingClientRect(),mx=(a.x+b.x)/2,my=(a.y+b.y)/2;
+  cPinch={d0:Math.hypot(a.x-b.x,a.y-b.y),v0:{...cvb},wx:cvb.x+(mx-B.left)/B.width*cvb.w,wy:cvb.y+(my-B.top)/B.height*cvb.h};cPan=null;return}
+ const n=ev.target.closest('.node');cPan={x:ev.clientX,y:ev.clientY,px:ev.clientX,py:ev.clientY,tm:ev.timeStamp,vx:0,vy:0,v:{...cvb},s:cvb.w/cBox.clientWidth,moved:false,node:n?.dataset.pid||null,key:n?.dataset.k||null};
+ cBox.classList.add('panning');
+ if(ev.pointerType!=='mouse'&&cPan.node){const pn=cPan;pn.lt=setTimeout(()=>{if(cPan===pn&&!pn.moved){pn.long=true;cOpen(pn.node)}},550)}}); // долгое касание — описание
+cBox.addEventListener('pointermove',ev=>{if(ctp.has(ev.pointerId))ctp.set(ev.pointerId,{x:ev.clientX,y:ev.clientY});
+ if(cPinch&&ctp.size>=2){const[a,b]=[...ctp.values()],B=cBox.getBoundingClientRect(),mx=(a.x+b.x)/2,my=(a.y+b.y)/2,v=cPinch.v0;
+  const w=Math.min(Math.max(v.w*cPinch.d0/Math.max(10,Math.hypot(a.x-b.x,a.y-b.y)),ZMIN),ZMAX),h=v.h*w/v.w;cvb=cNorm({x:cPinch.wx-(mx-B.left)/B.width*w,y:cPinch.wy-(my-B.top)/B.height*h,w,h});cSet();return}
+ if(!cPan)return;const dt=ev.timeStamp-cPan.tm;if(dt>0){cPan.vx=.4*cPan.vx+.6*(ev.clientX-cPan.px)/dt;cPan.vy=.4*cPan.vy+.6*(ev.clientY-cPan.py)/dt;cPan.px=ev.clientX;cPan.py=ev.clientY;cPan.tm=ev.timeStamp}
+ if(Math.hypot(ev.clientX-cPan.x,ev.clientY-cPan.y)>(ev.pointerType==='mouse'?3:10)){cPan.moved=true;clearTimeout(cPan.lt)}
+ if(!cPan.moved)return;cvb=cNorm({...cPan.v,x:cPan.v.x-(ev.clientX-cPan.x)*cPan.s,y:cPan.v.y-(ev.clientY-cPan.y)*cPan.s});cSet()});
+const cEnd=ev=>{ctp.delete(ev.pointerId);if(cPinch&&ctp.size<2){cPinch=null;cPan=null;cBox.classList.remove('panning')}};
+cBox.addEventListener('pointercancel',cEnd);
+cBox.addEventListener('pointerup',ev=>{const wasPinch=!!cPinch||ctp.size>1;cEnd(ev);if(wasPinch||!cPan)return;const p=cPan;cPan=null;cBox.classList.remove('panning');clearTimeout(p.lt);if(p.long)return;
+ if(p.moved){if(ev.timeStamp-p.tm<60&&Math.hypot(p.vx,p.vy)>.25){const k=Math.min(1,4/Math.hypot(p.vx,p.vy))*300*p.s;cEase({...cvb,x:cvb.x-p.vx*k,y:cvb.y-p.vy*k},300)}return} // бросок: докатывается
+ const touch=ev.pointerType!=='mouse';
+ if(p.node&&touch){if(sel){sel=null;refresh()}cardHist.length=0;showCard(p.node,1);cHover(p.key)} // касание: связи + краткое описание
+ else if(p.node)cOpen(p.node);else{if(touch)cHover(null);cardShown()?closeCard():clearSel()}}); // пустое место: сначала описание, потом фильтр
+function cOpen(id){sel=id;cardHist.length=0;showCard(id);refresh();setHash()} // описание открывается, компактная схема остаётся
+/* Наведение: карточка светится, её связи и соседи выделяются, остальное приглушается — как на полной схеме. */
+let cEdges=[];
+/* Перелёты — как на полной схеме: личность при наведении перелетает туда, где служит (к своей «тени»), сливающиеся — к результату слияния;
+   при наведении на тень восходящие возвращаются к месту происхождения. Летят, только если обе точки есть на компактной схеме. */
+let cFlyEls=[],cPos=new Map(),cFx=null;
+function cAnimFly(list,target){const t0=performance.now(),D=target?850:450,k0=list.map(f=>f.k||0);list.tgt=target;
+ const step=now=>{if(list.tgt!==target)return;const t=Math.min(1,(now-t0)/D),e=t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2;
+  list.forEach((f,i)=>{f.k=k0[i]+(target-k0[i])*e;const x=f.a.x+(f.b.x-f.a.x)*f.k+Math.sin(Math.PI*f.k)*(i?-110:110),y=f.a.y+(f.b.y-f.a.y)*f.k;
+   f.c.setAttribute('transform',`translate(${x},${y})`);f.c.style.opacity=target?Math.min(1,Math.max(0,(1-e)/.45)):Math.min(1,f.k*3+(1-e))});
+  if(t<1)requestAnimationFrame(step);else if(!target)list.forEach(f=>f.c.remove());
+  else list.forEach(f=>{const p=el('rect',{class:'pulse',x:f.b.x-4,y:f.b.y-4,width:NW+8,height:NH+8,rx:12,style:`transform-origin:${f.b.x+NW/2}px ${f.b.y+NH/2}px;transform-box:view-box`},cFx);setTimeout(()=>p.remove(),2600)})};
+ requestAnimationFrame(step)}
+function cTransfer(k){if(k&&cFlyEls.key===k)return;if(cFlyEls.length)cAnimFly(cFlyEls,0);cFlyEls=[];if(!k||cardOpen()||!cFx)return;
+ const up=k[0]==='~',id=up?k.slice(1):k,P=byId[id],mk=(from,a,b)=>{const c=csvg.querySelector(`.node[data-k="${from}"]`).cloneNode(true);c.setAttribute('class','node fly h0');c.querySelector('.gtag')?.remove();cFx.appendChild(c);return{c,a,b}};
+ let L=[];
+ if(!up&&P.fuse?.length)L=P.fuse.filter(i=>cPos.has(i)).map(i=>mk(i,cPos.get(i),cPos.get(id)));
+ else if(SERVES[id]){const down=up&&(!P.cats.some(c=>c==='asc'||c==='finality')||!!GHOST_NAME[id]);
+  L=[id,PAIR_OF[id]].filter(i=>i&&cPos.has(i)&&cPos.has('~'+i)).map(i=>up&&!down?mk('~'+i,cPos.get('~'+i),cPos.get(i)):mk(i,cPos.get(i),cPos.get('~'+i)))}
+ if(!L.length)return;cFlyEls=L;L.key=k;cAnimFly(L,1)}
+function cHover(k){cTransfer(k);csvg.classList.toggle('hovering',!!k);csvg.querySelectorAll('.h0,.h1,.he1').forEach(x=>x.classList.remove('h0','h1','he1'));if(!k)return;
+ const ns=new Set([k]);cEdges.forEach(e=>{if(e.from===k||e.to===k){e.g.classList.add('he1');ns.add(e.from);ns.add(e.to)}});
+ csvg.querySelectorAll('.node').forEach(n=>{if(ns.has(n.dataset.k))n.classList.add(n.dataset.k===k?'h0':'h1')})}
+csvg.addEventListener('pointerover',e=>{if(e.pointerType!=='mouse'||cPan?.moved)return;const n=e.target.closest('.node');cHover(n?n.dataset.k:null)});
+csvg.addEventListener('pointerleave',e=>{if(e.pointerType==='mouse')cHover(null)});
+addEventListener('resize',()=>{if(cBox.classList.contains('on')){cvb=cNorm(cvb);cSet()}});
 function drawKey(){const k=document.getElementById('key');k.innerHTML='';
  [['kDeity','deity','F'],['kTrin','trin','T'],['kDesc','desc','FS'],['kAngel','angel','D'],['kSpirit','spirit','D'],['kLocal','local','SD'],['kAsc','asc','E']].forEach(([key,c,o])=>{
   const d=document.createElement('div');d.className='row';originGlyph(el('svg',{width:30,height:34,viewBox:'-17 -19 34 38'},d),{origin:o,cats:[c]},0,0);
@@ -745,11 +896,11 @@ function drawKey(){const k=document.getElementById('key');k.innerHTML='';
   el('rect',{class:'body',width:40,height:22,rx:5},g);if(cls!=='stage')el('rect',{class:'tint',width:40,height:22,rx:5,fill:'#43a047'},g);
   d.appendChild(document.createElement('span')).textContent=t(key);k.appendChild(d)})}
 function drawCats(){document.getElementById('classes').innerHTML=Object.entries(OCLS).map(([k,c])=>`<span class="chip" data-cat="oc:${k}"><i style="background:${c.color};opacity:.55"></i>${L(c.name)} <small>${persons.filter(p=>p.oc===k).length}</small></span>`).join('');
- document.querySelectorAll('#classes .chip').forEach(c=>c.onclick=()=>selectCat(c.dataset.cat));
+ document.querySelectorAll('#classes .chip').forEach(c=>c.onclick=()=>selChip(c));
  document.getElementById('cats').innerHTML=Object.entries(CATS).map(([k,c])=>`<span class="chip" data-cat="${k}"><i style="background:${c.color}"></i>${c.name} <small>${persons.filter(p=>p.cats.includes(k)).length}</small></span>`).join('');
-document.querySelectorAll('#cats .chip').forEach(c=>c.onclick=()=>selectCat(c.dataset.cat));
+document.querySelectorAll('#cats .chip').forEach(c=>c.onclick=()=>selChip(c));
  document.getElementById('funcs').innerHTML=Object.entries(FUNCS).map(([k,c])=>`<span class="chip" data-cat="fn:${k}"><i style="background:${c.color};border-radius:2px"></i>${c.name} <small>${persons.filter(p=>p.fn.includes(k)).length}</small></span>`).join('');
- document.querySelectorAll('#funcs .chip').forEach(c=>c.onclick=()=>selectCat(c.dataset.cat));markChips()}
+ document.querySelectorAll('#funcs .chip').forEach(c=>c.onclick=()=>selChip(c));markChips()}
 // поиск
 const q=document.getElementById('q'),res=document.getElementById('res');let items=[],cur=0;
 const norm=s=>s.toLowerCase().replace(/ё/g,'е');
@@ -786,9 +937,9 @@ if(EDIT)try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s)persons.f
 document.getElementById('bExport').onclick=()=>{const b=new Blob([JSON.stringify(Object.fromEntries(persons.map(p=>[p.id,[p.x,p.y]])),null,1)],{type:'application/json'});
  const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='layout.json';a.click()};
 document.getElementById('bReset').onclick=()=>{persons.forEach(p=>[p.x,p.y]=DEF[p.id]);undoStack.length=0;updUndo();try{localStorage.removeItem(KEY)}catch(e){};render()};
-document.getElementById('bFit').onclick=()=>flyTo({x:0,y:0,w:W,h:H},1);
+document.getElementById('bFit').onclick=()=>cOn()?cFit():flyTo({x:0,y:0,w:W,h:H},1);
 
-function render(){drawUnits();drawNodes();drawGhosts();routeCached();drawEdges();reapply()}
+function render(){const gr=document.getElementById('glow');Object.entries({x:0,y:0,width:W,height:H}).forEach(([k,v])=>gr.setAttribute(k,v));drawUnits();drawNodes();drawGhosts();routeCached();drawEdges();reapply()}
 /* ===================== ЯЗЫК И ТЕМА: переключение ===================== */
 function applyLang(){document.documentElement.lang=LANG;document.title=t('title');
  document.querySelectorAll('[data-i18n]').forEach(e=>e.textContent=t(e.dataset.i18n));
@@ -818,10 +969,10 @@ document.addEventListener('keydown',e=>{if(e.target.tagName==='INPUT'||e.ctrlKey
 
 /* ===================== ЗУМ: бегунок и гайд при первом открытии ===================== */
 var ZMIN=250,ZMAX=W*3,zEl=document.getElementById('zoom');
-function syncZoom(){if(zEl)zEl.value=Math.round(1000*Math.log(ZMAX/(tv||vb).w)/Math.log(ZMAX/ZMIN))} // по цели: бегунок не спорит с рукой
-function zoomTo(w){const b=tv||vb;w=Math.min(Math.max(w,ZMIN),ZMAX);const h=b.h*w/b.w;easeTo({x:b.x+b.w/2-w/2,y:b.y+b.h/2-h/2,w,h})}
+function syncZoom(){if(zEl)zEl.value=Math.round(1000*Math.log(ZMAX/(cOn()?ctv||cvb:tv||vb).w)/Math.log(ZMAX/ZMIN))} // по цели: бегунок не спорит с рукой
+function zoomTo(w){if(cOn())return cZoomTo(w);const b=tv||vb;w=Math.min(Math.max(w,ZMIN),ZMAX);const h=b.h*w/b.w;easeTo({x:b.x+b.w/2-w/2,y:b.y+b.h/2-h/2,w,h})}
 zEl.addEventListener('input',()=>zoomTo(ZMAX/Math.pow(ZMAX/ZMIN,zEl.value/1000)));
-document.getElementById('zIn').onclick=()=>zoomTo((tv||vb).w/1.4);document.getElementById('zOut').onclick=()=>zoomTo((tv||vb).w*1.4);
+const curW=()=>(cOn()?ctv||cvb:tv||vb).w;document.getElementById('zIn').onclick=()=>zoomTo(curW()/1.4);document.getElementById('zOut').onclick=()=>zoomTo(curW()*1.4);
 syncZoom();
 const guide=document.getElementById('guide');let gStep=0,gTok=0;
 const sleep=ms=>new Promise(r=>setTimeout(r,ms));
