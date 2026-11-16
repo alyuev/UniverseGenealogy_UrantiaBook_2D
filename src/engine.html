@@ -68,7 +68,7 @@ svg.dim .unit{opacity:.55}
 svg.hideOrigin .edge.origin,svg.hideService .edge.service{display:none}
 /* --- наведение: блоки --- */
 .unit rect.box{transition:fill-opacity .25s,stroke-width .25s,stroke-opacity .25s}
-.unit.uh1 rect.box{fill-opacity:calc(var(--unitA) * 2.6);stroke:var(--accent);stroke-width:2.8;stroke-opacity:1;filter:drop-shadow(0 0 7px var(--accent))}.unit.uh1 text{fill:var(--accent);font-weight:700}
+.unit.usel rect.box,.unit.uh1 rect.box{fill-opacity:calc(var(--unitA) * 2.6);stroke:var(--accent);stroke-width:2.8;stroke-opacity:1;filter:drop-shadow(0 0 7px var(--accent))}.unit.usel text,.unit.uh1 text{fill:var(--accent);font-weight:700}
 .unit:hover rect.box{fill-opacity:calc(var(--unitA) * 2.6);stroke-width:2.6;stroke-opacity:1}
 .unit text{transition:opacity .25s}.unit:hover text{opacity:1;font-weight:700}
 /* --- наведение: личность (градация h0 > h1 > h2) --- */
@@ -278,7 +278,7 @@ const UI={
   icons:'Пиктограммы',kDeity:'Божество',kTrin:'происхождение от Троицы',kDesc:'нисходящий Сын',kAngel:'ангел',kSpirit:'дух',kLocal:'сын локальной вселенной',kAsc:'восходящий',kKinds:'Вид карточки',kPerson:'личность (вид существ)',kStage:'стадия восхождения — состояние, а не отдельный вид',kCorps:'корпус — группа личностей разных видов',kGhost:'тень — где личность служит',
   keyTxt:'Точки внутри пиктограммы — происхождение. Полоски над карточкой — категории, заливка — класс по происхождению. Щелчок по названию блока — выделить блок и открыть описание.',
   compact:'Только выбранные',compactT:'Компактная схема: только выбранные, каждый на своём уровне; пунктир — связь через скрытых посредников',tabF:'Фильтры',tabK:'Обозначения',back:'Назад',clear:'Очистить',
-  cats:'Категории',funcs:'Функции',zHint:'Ctrl + колесо — масштаб · колесо — прокрутка',help:'Как пользоваться',gZoom:'Ctrl + колесо мыши — масштаб схемы. Можно и бегунком вверху.',gScroll:'Колесо мыши — прокрутка вверх и вниз, Shift + колесо — вбок. Схему также можно тянуть мышью.',gSearch:'Поиск: начните вводить имя — схема сама перелетит к карточке, а при наведении видны связи и перелёты.',gWord:'Михаилы',gFilter:'Фильтр: выберите категорию в панели — её личности подсветятся на схеме. Кнопка «Только выбранные» соберёт из них сокращённую схему по уровням администрации.',tZoom:'Разведите или сведите два пальца — масштаб схемы. Кнопки − и + вверху тоже работают.',tPan:'Ведите одним пальцем — схема сдвигается.',tSearch:'Поиск: начните вводить имя — схема перелетит к карточке.',tTap:'Коснитесь карточки — покажутся связи и краткое описание. Коснитесь описания — оно раскроется полностью.',gNext:'Дальше',gDone:'Понятно',gSkip:'Пропустить',catsHint:'(клик — выделить)',links:'Связи',lOrigin:'происхождение',classes:'Класс по происхождению (заливка)',cClass:'Класс по происхождению',lAscent:'восхождение',lService:'служение / пребывание',layout:'Раскладка',
+  cats:'Категории',funcs:'Функции',zHint:'Ctrl + колесо — масштаб · колесо — прокрутка',help:'Как пользоваться',gZoom:'Ctrl + колесо мыши — масштаб схемы. Можно и бегунком вверху.',gScroll:'Колесо мыши — прокрутка вверх и вниз, Shift + колесо — вбок. Схему также можно тянуть мышью.',gSearch:'Поиск: начните вводить имя — схема сама перелетит к карточке, а при наведении видны связи и перелёты.',gWord:'Михаилы',unitWord:'блок',gFilter:'Фильтр: выберите категорию в панели — её личности подсветятся на схеме. Кнопка «Только выбранные» соберёт из них сокращённую схему по уровням администрации.',tZoom:'Разведите или сведите два пальца — масштаб схемы. Кнопки − и + вверху тоже работают.',tPan:'Ведите одним пальцем — схема сдвигается.',tSearch:'Поиск: начните вводить имя — схема перелетит к карточке.',tTap:'Коснитесь карточки — покажутся связи и краткое описание. Коснитесь описания — оно раскроется полностью.',gNext:'Дальше',gDone:'Понятно',gSkip:'Пропустить',catsHint:'(клик — выделить)',links:'Связи',lOrigin:'происхождение',classes:'Класс по происхождению (заливка)',cClass:'Класс по происхождению',lAscent:'восхождение',lService:'служение / пребывание',layout:'Раскладка',
   dragHint:'Карточки можно перетаскивать — линии перестраиваются в обход.',fit:'Вся схема',undo:'Отменить',lLong:'дальние связи всегда',servesHere:'служит здесь',serves:'Функционирует',pairT:'вместе с',export:'Экспорт раскладки',reset:'Сброс',close:'Закрыть',
   cOrigin:'Происхождение (линия Божеств)',cPlace:'Место служения',cParents:'Порождён(ы)',cChildren:'Порождает',cSource:'Источник',cStages:'Категории (стадии пути)',stageTag:'стадия восхождения',corpsTag:'корпус — группа, а не вид личностей',corpsShort:'корпус (группа)',book:'Книга Урантии',
   catWord:'категория',none:'Ничего не найдено',theme_light:'Светлая тема',theme_dark:'Тёмная тема',status:'Линий: {n} · трассировка {ms} мс · пересечений: {x}'},
@@ -287,7 +287,7 @@ const UI={
   icons:'Icons',kDeity:'Deity',kTrin:'Trinity origin',kDesc:'descending Son',kAngel:'angel',kSpirit:'spirit',kLocal:'local universe son',kAsc:'ascender',kKinds:'Card kind',kPerson:'personality (order of beings)',kStage:'stage of ascension — a state, not a separate order',kCorps:'corps — a group of beings of various orders',kGhost:'shadow — where a personality serves',
   keyTxt:'Dots inside an icon show origin. Stripes above a card are its categories; the tint is its origin class. Click a block title to highlight it and open its description.',
   compact:'Selected only',compactT:'Compact view: only the selected, each on its own level; dotted — link through hidden intermediaries',tabF:'Filters',tabK:'Key',back:'Back',clear:'Clear',
-  cats:'Categories',funcs:'Functions',zHint:'Ctrl + wheel — zoom · wheel — scroll',help:'How to use',gZoom:'Ctrl + mouse wheel zooms the map. The slider at the top works too.',gScroll:'Mouse wheel scrolls up and down, Shift + wheel sideways. You can also drag the map.',gSearch:'Search: start typing a name — the map flies to the card; hovering shows links and transfers.',gWord:'Michael',gFilter:'Filter: pick a category in the panel and its personalities light up on the map. The «Selected only» button builds a compact map of them by administrative level.',tZoom:'Spread or pinch two fingers to zoom. The − and + buttons at the top work too.',tPan:'Drag with one finger to move the map.',tSearch:'Search: start typing a name — the map flies to the card.',tTap:'Tap a card to see its links and a short description. Tap the description to open it in full.',gNext:'Next',gDone:'Got it',gSkip:'Skip',catsHint:'(click to highlight)',links:'Links',lOrigin:'origin',classes:'Origin class (card tint)',cClass:'Origin class',lAscent:'ascent',lService:'ministry / indwelling',layout:'Layout',
+  cats:'Categories',funcs:'Functions',zHint:'Ctrl + wheel — zoom · wheel — scroll',help:'How to use',gZoom:'Ctrl + mouse wheel zooms the map. The slider at the top works too.',gScroll:'Mouse wheel scrolls up and down, Shift + wheel sideways. You can also drag the map.',gSearch:'Search: start typing a name — the map flies to the card; hovering shows links and transfers.',unitWord:'block',gWord:'Michael',gFilter:'Filter: pick a category in the panel and its personalities light up on the map. The «Selected only» button builds a compact map of them by administrative level.',tZoom:'Spread or pinch two fingers to zoom. The − and + buttons at the top work too.',tPan:'Drag with one finger to move the map.',tSearch:'Search: start typing a name — the map flies to the card.',tTap:'Tap a card to see its links and a short description. Tap the description to open it in full.',gNext:'Next',gDone:'Got it',gSkip:'Skip',catsHint:'(click to highlight)',links:'Links',lOrigin:'origin',classes:'Origin class (card tint)',cClass:'Origin class',lAscent:'ascent',lService:'ministry / indwelling',layout:'Layout',
   dragHint:'Cards can be dragged — lines reroute around them.',fit:'Whole map',undo:'Undo',lLong:'always show long links',servesHere:'serves here',serves:'Functions in',pairT:'together with',export:'Export layout',reset:'Reset',close:'Close',
   cOrigin:'Origin (Deity lineage)',cPlace:'Place of service',cParents:'Created by',cChildren:'Creates',cSource:'Source',cStages:'Classes (stages of career)',stageTag:'stage of ascension',corpsTag:'corps — a group, not an order of beings',corpsShort:'corps (group)',book:'The Urantia Book',
   catWord:'category',none:'Nothing found',theme_light:'Light theme',theme_dark:'Dark theme',status:'Lines: {n} · routing {ms} ms · crossings: {x}'}};
@@ -692,8 +692,9 @@ function reapply(){const on=!!hl;svg.classList.toggle('dim',on&&dimT.checked);
 dimT.onchange=reapply;
 let sel=null,selCat=null;
 function select(id,o={}){if(!byId[id]||id[0]==='~')return;sel=id;if(!o.hist)cardHist.length=0;showCard(id);refresh();flyTo(rectOf(id),unitById[id]?1:0);pulse(id);setHash()}
-const catSet=c=>new Set(persons.filter(p=>c.startsWith('oc:')?p.oc===c.slice(3):c.startsWith('fn:')?p.fn.includes(c.slice(3)):p.cats.includes(c)).map(p=>p.id));
-const catInfo=c=>c.startsWith('oc:')?{color:OCLS[c.slice(3)].color,name:L(OCLS[c.slice(3)].name)}:c.startsWith('fn:')?FUNCS[c.slice(3)]:CATS[c];
+const inUnit=(uid,id)=>{for(let u=unitById[id];u;u=u.parent)if(u.id===uid)return true;return false}; // блок и все вложенные
+const catSet=c=>new Set(persons.filter(p=>c.startsWith('u:')?inUnit(c.slice(2),p.unit):c.startsWith('oc:')?p.oc===c.slice(3):c.startsWith('fn:')?p.fn.includes(c.slice(3)):p.cats.includes(c)).map(p=>p.id));
+const catInfo=c=>c.startsWith('u:')?{color:'#7b3fa0',name:unitById[c.slice(2)].name}:c.startsWith('oc:')?{color:OCLS[c.slice(3)].color,name:L(OCLS[c.slice(3)].name)}:c.startsWith('fn:')?FUNCS[c.slice(3)]:CATS[c];
 /* Подсветка: выбранная личность (или блок) со связями; иначе — активный фильтр. Закрыли описание — фильтр возвращается. */
 function refresh(){hl=null;const id=sel;
  if(id){const ns=new Set([id]),es=new Set();edges.forEach(e=>{if(e.from===id||e.to===id||e.from==='~'+id||e.to==='~'+id){es.add(e);ns.add(e.from);ns.add(e.to)}});
@@ -703,12 +704,13 @@ function refresh(){hl=null;const id=sel;
   hl={nodes:ns,edgeSet:es}}
  else if(selCat){const ns=catSet(selCat);hl={nodes:ns,edgeSet:new Set(edges.filter(e=>ns.has(e.from)&&ns.has(e.to)))}}
  reapply();markChips();drawActive()}
-function selectCat(c,keep){sel=null;selCat=selCat===c?null:c;cardHist.length=0;hideCard();setHash();refresh();
+function selectCat(c,keep){sel=null;selCat=selCat===c?null:c;document.querySelectorAll('.usel').forEach(e=>e.classList.remove('usel'));cardHist.length=0;hideCard();setHash();refresh();
  if(!selCat)return;if(!keep)document.querySelector('.lbody').scrollTop=0;
+ if(selCat.startsWith('u:')){const u=unitById[selCat.slice(2)];document.querySelectorAll(`#gUnits g[data-u="${u.id}"],#gULab g[data-u="${u.id}"]`).forEach(e=>e.classList.add('usel'));flyTo({x:u.x,y:u.y,w:u.w,h:u.h},1);hl.nodes.forEach(pulse);return}
  const ns=hl.nodes,R=[...ns].map(rectOf),x0=Math.min(...R.map(r=>r.x)),y0=Math.min(...R.map(r=>r.y)),x1=Math.max(...R.map(r=>r.x+r.w)),y1=Math.max(...R.map(r=>r.y+r.h));
  flyTo({x:x0,y:y0,w:x1-x0,h:y1-y0},1);ns.forEach(pulse)}
 function closeCard(){sel=null;cardHist.length=0;hideCard();setHash();refresh()}
-function clearSel(){selCat=null;closeCard()}
+function clearSel(){selCat=null;document.querySelectorAll('.usel').forEach(e=>e.classList.remove('usel'));closeCard()}
 const link=id=>`<a data-id="${id}">${byId[id].name}</a>`;
 function unitChain(u){const r=[];let cur=unitById[u];while(cur){r.unshift(cur.name.split(' — ')[0]);cur=cur.parent}return r.join(' › ')}
 function showCard(id,peek){const p=byId[id],c=card;peek=!!peek;if(!peek&&(splitEl||flyEls.length))hover(null,0,1);if(MOB.matches)document.getElementById('legend').classList.add('min');
@@ -907,6 +909,7 @@ const norm=s=>s.toLowerCase().replace(/ё/g,'е');
 function doSearch(){const s=norm(q.value.trim());
  const all=[...Object.entries(CATS).map(([k,c])=>({kind:'cat',id:k,name:c.name,hint:t('catWord'),color:c.color})),
   ...Object.entries(FUNCS).map(([k,c])=>({kind:'cat',id:'fn:'+k,name:c.name,hint:t('funcs'),color:c.color})),
+  ...UNITS.filter(u=>u.id!=='trinity').map(u=>({kind:'cat',id:'u:'+u.id,name:u.name,hint:u.parent?u.parent.name.split(' — ')[0]:t('unitWord')})),
   {kind:'node',id:'trinity',name:byId.trinity.name,all:allNames(byId.trinity),hint:byId.paradise.name},
   ...persons.map(p=>({kind:'node',id:p.id,name:p.name,all:allNames(p),hint:unitById[p.unit].name.split(' — ')[0],color:CATS[p.cats[0]].color}))];
  items=s?all.filter(i=>norm(i.name+' '+(i.all||'')).includes(s)):all;cur=0;
