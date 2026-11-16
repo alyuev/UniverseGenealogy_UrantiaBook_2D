@@ -440,7 +440,7 @@ function drawNodes(){const g=document.getElementById('gNodes');g.innerHTML='';
   el('rect',{class:'tint',width:NW,height:NH,rx:10,fill:OCLS[p.oc].color},gg);
   el('path',{class:'lp',fill:OCLS[p.oc].color,d:`M10,1 H44 V${NH-1} H10 A9,9 0 0 1 1,${NH-10} V10 A9,9 0 0 1 10,1z`},gg);
   el('line',{class:'sep',x1:44.5,y1:1,x2:44.5,y2:NH-1},gg);
-  if(p.stage||p.corps)el('text',{class:'gtag',x:NW/2,y:NH+13,'text-anchor':'middle'},gg).textContent=t(p.stage?'stageTag':'corpsShort');
+  if(p.stage)el('text',{class:'gtag',x:NW/2,y:NH+13,'text-anchor':'middle'},gg).textContent=t('stageTag');
   const seg=(NW-58)/p.cats.length;if(!p.stage)p.cats.forEach((c,i)=>el('rect',{x:52+i*seg,y:-2,width:seg-3,height:5,rx:2.5,fill:CATS[c].color},gg));
   originGlyph(gg,p,23,NH/2);
   const L=(()=>{const r=p.name.split(' — ').flatMap(x=>wrap(x,17));if(r.length>3){r.length=3;r[2]+='…'}return r})(),y0=NH/2-(L.length-1)*7+4;
