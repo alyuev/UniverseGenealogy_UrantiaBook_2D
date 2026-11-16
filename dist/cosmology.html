@@ -479,8 +479,8 @@ function pathD(pts,r=9){let d=`M${pts[0][0]},${pts[0][1]}`;
  const z=pts[pts.length-1];return d+` L${z[0]},${z[1]}`}
 function drawGhosts(){const g=document.getElementById('gNodes');
  Object.values(GHOSTS).forEach(h=>{const c=nodeEl[h.of].cloneNode(true);c.setAttribute('class','node ghost');c.setAttribute('transform',`translate(${h.x},${h.y})`);
-  if(GHOST_NAME[h.of]){c.querySelectorAll('text[x="52"]').forEach(x=>x.remove());const nm=L(GHOST_NAME[h.of]);el('text',{x:52,y:NH/2+4},c).textContent=nm}
-  el('text',{class:'gtag',x:NW/2,y:NH+13,'text-anchor':'middle'},c).textContent=t('servesHere');
+  if(GHOST_NAME[h.of]){c.querySelectorAll('text[x="52"]').forEach(x=>x.remove());const ls=wrap(L(GHOST_NAME[h.of]),17),y0=NH/2-(ls.length-1)*7+4;ls.forEach((l,i)=>el('text',{x:52,y:y0+i*14},c).textContent=l)}
+  c.querySelectorAll('.gtag').forEach(x=>x.remove());el('text',{class:'gtag',x:NW/2,y:NH+13,'text-anchor':'middle'},c).textContent=t('servesHere');
   c.addEventListener('pointerenter',e=>{if(e.pointerType==='mouse'&&!drag&&!pan)hoverSoon(h.of,'up')});c.addEventListener('pointerleave',e=>{if(e.pointerType==='mouse')hoverSoon(null)});
   c.addEventListener('pointerdown',ev=>{ev.stopPropagation();if(ev.pointerType==='mouse')return select(h.of);c._lt=setTimeout(()=>{c._lt=0;select(h.of)},550)});
   c.addEventListener('pointerup',ev=>{if(ev.pointerType!=='mouse'&&c._lt){clearTimeout(c._lt);c._lt=0;hideCard();hover(h.of,'up')}});g.appendChild(c);nodeEl[h.id]=c})}
