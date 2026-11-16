@@ -587,7 +587,8 @@ function transfer(id,up){if(id&&flyEls.id===id+(up||''))return;if(!id)hideSplit(
   list.timer=setTimeout(()=>screenFly(list),330);return}animFly(flyEls,1)}
 const LONG=1300; // «дальняя» связь: показывается только при наведении/выделении (или если включено в легенде)
 function drawEdges(){drawPairs();const g=document.getElementById('gEdges');g.innerHTML='';edgeEl.clear();
- edges.forEach(e=>{const a=rectOf(e.from),b=rectOf(e.to),lng=Math.abs(a.y-b.y)+Math.abs(a.x-b.x)>LONG;const gg=el('g',{class:'edge '+e.type+(lng?' long':'')},g);const d=pathD(e.pts);
+ const ORD={service:0,ascent:1,origin:2}; // служение — снизу, сплошные связи происхождения — поверх
+ [...edges].sort((x,y)=>(ORD[x.type]??1)-(ORD[y.type]??1)).forEach(e=>{const a=rectOf(e.from),b=rectOf(e.to),lng=Math.abs(a.y-b.y)+Math.abs(a.x-b.x)>LONG;const gg=el('g',{class:'edge '+e.type+(lng?' long':'')},g);const d=pathD(e.pts);
   el('path',{class:'halo',d},gg);el('path',{class:'line',d,'marker-end':'url(#arr)'},gg);
   
   edgeEl.set(e,gg)})}
