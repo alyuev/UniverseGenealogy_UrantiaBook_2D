@@ -40,11 +40,11 @@ header label{white-space:nowrap;color:var(--muted);font-size:13px}
 .pair{fill:none;stroke:#9a6fc4;stroke-opacity:.7;stroke-width:1.6}.pair.ghost{stroke-dasharray:6 5;stroke-opacity:.5}
 .node.fly{pointer-events:none;filter:drop-shadow(0 8px 14px #0005)}
 .node rect.body{fill:var(--node);stroke:var(--nodeS);stroke-width:1.2} /* без тени: фильтр на каждой карточке тормозит панораму и зум */
-.node:hover rect.body{stroke:var(--accent)}
+.node:hover rect.body,.node:hover rect.stack{stroke:var(--accent)}
 .node .tint{fill-opacity:var(--tintA);pointer-events:none}.node .lp{fill-opacity:var(--lpA)}.node .sep{stroke:var(--nodeS)}
 .unit rect.box{fill-opacity:var(--unitA)}
 .node text{font-size:12px;fill:var(--ink);pointer-events:none}
-.node.sel rect.body{stroke:var(--accent);stroke-width:2.5}
+.node.sel rect.body,.node.sel rect.stack{stroke:var(--accent);stroke-width:2.5}
 .edge path.halo{fill:none;stroke:var(--bg);stroke-width:6;stroke-linejoin:round}
 .edge path.line{fill:none;stroke-width:1.5;stroke-linejoin:round;transition:stroke .2s,stroke-width .2s}
 .edge.origin path.line{stroke:var(--edge)}
@@ -67,13 +67,13 @@ svg.hideOrigin .edge.origin,svg.hideService .edge.service{display:none}
 .unit:hover rect.box{fill-opacity:calc(var(--unitA) * 2.6);stroke-width:2.6;stroke-opacity:1}
 .unit text{transition:opacity .25s}.unit:hover text{opacity:1;font-weight:700}
 /* --- наведение: личность (градация h0 > h1 > h2) --- */
-.node rect.body{transition:stroke .2s,stroke-width .2s,filter .25s}
+.node rect.body,.node rect.stack{transition:stroke .2s,stroke-width .2s,filter .25s}
 svg.hovering .node:not(.h0):not(.h1):not(.h2){opacity:.28}
 svg.hovering .edge:not(.he1):not(.he2){opacity:.08}
 svg.hovering .node.h0,svg.hovering .node.h1,svg.hovering .node.h2,svg.hovering .edge.he1,svg.hovering .edge.he2{opacity:1!important}
-.node.h0 rect.body{stroke:var(--accent);stroke-width:2.8;filter:drop-shadow(0 0 7px var(--accent))}
-.node.h1 rect.body{stroke:var(--accent);stroke-width:1.8;filter:drop-shadow(0 0 3px var(--accent))}
-.node.h2 rect.body{stroke:var(--accent);stroke-width:2.2;stroke-dasharray:6 3;filter:drop-shadow(0 0 2px var(--accent))}
+.node.h0 rect.body,.node.h0 rect.stack{stroke:var(--accent);stroke-width:2.8;filter:drop-shadow(0 0 7px var(--accent))}
+.node.h1 rect.body,.node.h1 rect.stack{stroke:var(--accent);stroke-width:1.8;filter:drop-shadow(0 0 3px var(--accent))}
+.node.h2 rect.body,.node.h2 rect.stack{stroke:var(--accent);stroke-width:2.2;stroke-dasharray:6 3;filter:drop-shadow(0 0 2px var(--accent))}
 .edge.he1 path.line{stroke:var(--edgeHi)!important;stroke-width:2.8}
 .edge.he2 path.line{stroke:var(--edgeHi)!important;stroke-width:2.2;stroke-opacity:.85}
 .pulse{fill:none;stroke:#5b3fa0;stroke-width:3;animation:pulse 1.2s ease-out 2}
@@ -575,7 +575,7 @@ function transfer(id,up){if(id&&flyEls.id===id+(up||''))return;if(!id)hideSplit(
   animFly(flyEls,1);return}
  if(!SERVES[id])return;
  const fx=document.getElementById('gFx'),ids=[id,PAIR_OF[id]].filter(i=>i&&GHOSTS['~'+i]);
- const down=up&&!P.cats.some(c=>c==='asc'||c==='finality'); // нисходящие: и при наведении на тень летят из Рая к месту служения
+ const down=up&&(!P.cats.some(c=>c==='asc'||c==='finality')||!!GHOST_NAME[id]); // и тень со своим именем (Калигастийская сотня) — перелёт к ней // нисходящие: и при наведении на тень летят из Рая к месту служения
  flyEls=ids.map(i=>{const c=nodeEl[up&&!down?'~'+i:i].cloneNode(true);c.setAttribute('class','node fly h0');c.querySelector('title')?.remove();c.querySelector('.gtag')?.remove();fx.appendChild(c);const a=byId[i],b=GHOSTS['~'+i];return up&&!down?{c,a:b,b:a}:{c,a,b}});
  flyEls.id=id+(up||'');
  if(down&&flyEls.length){const sp=showSplit(flyEls.map(f=>rectOf(f.a.id)),rectOf(flyEls[0].b.id));
