@@ -79,7 +79,7 @@ units:
       - [execs, inspired, parcit]
       - [persadj, gravmess, persaids, associnsp]
       - [sentinels, omniaphim]
-      - [sppd, supcentsup, spiritnat, fathernat, adjcit]
+      - [sppd, supcentsup, spiritnat, fathernat]
       - [majeston]
       - id: transc
         color: "#7a7a8c"
@@ -300,7 +300,6 @@ persons:
   assocreg: { class: D, origin: D, groups: [local, spirit], refs: ["48:2"], func: [energy] }
   spiritnat: { class: U, origin: "", groups: [spirit], refs: ["30:2"] }
   fathernat: { class: U, origin: "", groups: [unclass], refs: ["30:2"] }
-  adjcit: { class: E, origin: E, groups: [asc], refs: ["30:2"] }
   mortfin: { class: E, origin: E, groups: [finality, asc], refs: ["31:0"] }
   parfin: { class: C, origin: "", groups: [finality], refs: ["31:10"] }
   trinfin: { class: C, origin: "", groups: [finality], refs: ["31:10"] }
@@ -430,7 +429,6 @@ links:
   - [parcit, destiny]
   - [msp, sppd]
   - [~mother, mps]
-  - [adjfused, adjcit]
   - [parcit, parfin]
   - [havnat, havfin]
   - [melch, midsonite]

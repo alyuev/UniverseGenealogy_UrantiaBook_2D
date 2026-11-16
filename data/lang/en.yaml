@@ -416,9 +416,6 @@ persons:
   fathernat:
     name: Natives of the Father’s Paradise Spheres
     desc: "Natives of the Father’s Paradise Spheres, permanent citizens of Paradise."
-  adjcit:
-    name: Adjuster-fused Mortal Citizens of Paradise
-    desc: "Adjuster-fused mortal Citizens of Paradise, permanent residents of Paradise."
   mortfin:
     name: Corps of Mortal Finaliters
     desc: "The Corps of Mortal Finaliters, the present known destination of Adjuster-fused ascenders."
