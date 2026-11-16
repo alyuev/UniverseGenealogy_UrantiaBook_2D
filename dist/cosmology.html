@@ -76,6 +76,7 @@ svg.hovering .node.h0,svg.hovering .node.h1,svg.hovering .node.h2,svg.hovering .
 .node.h2 rect.body,.node.h2 rect.stack{stroke:var(--accent);stroke-width:2.2;stroke-dasharray:6 3;filter:drop-shadow(0 0 2px var(--accent))}
 .edge.he1 path.line{stroke:var(--edgeHi)!important;stroke-width:2.8}
 .edge.he2 path.line{stroke:var(--edgeHi)!important;stroke-width:2.2;stroke-opacity:.85}
+.edge.service.he1 path.line,.edge.service.he2 path.line{stroke:var(--svc)!important;stroke-width:2;stroke-opacity:.75} /* служение при наведении остаётся зелёным и тоньше связей происхождения */
 .pulse{fill:none;stroke:#5b3fa0;stroke-width:3;animation:pulse 1.2s ease-out 2}
 @keyframes pulse{from{opacity:1;stroke-width:6}to{opacity:0;stroke-width:1;transform:scale(1.25)}}
 aside{position:fixed;background:var(--panel);border:1px solid var(--line);border-radius:12px;box-shadow:0 6px 24px #0001;z-index:4}
