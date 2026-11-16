@@ -215,18 +215,23 @@ const FUNCS=Object.fromEntries(Object.entries(D.functions||{}).map(([k,g])=>[k,{
 const OCLS=Object.fromEntries(Object.entries(D.classes).map(([k,c])=>[k,{color:c.color,name:c.name}]));
 const conv=u=>({id:u.id,color:u.color,w:u.width,beside:u.beside,endpoint:u.linkable,_name:u.name,_desc:u.desc,ref:(u.refs||[])[0],kids:u.content.map(k=>Array.isArray(k)?k:conv(k))});
 const TREE={kids:D.units.map(conv)};
-const persons=Object.entries(D.persons).map(([id,p])=>({id,oc:p.class,origin:p.origin,cats:p.groups||[],fn:p.func||[],fuse:p.fuse||[],ref:(p.refs||[])[0]||'',x:0,y:0,unit:'',_name:p.name,_aka:p.aka,_desc:p.desc}));
+const persons=Object.entries(D.persons).map(([id,p])=>({id,oc:p.class,origin:p.origin,cats:p.groups||[],fn:p.func||[],fuse:p.fuse||[],ref:(p.refs||[])[0]||'',lane:p.lane,x:0,y:0,unit:'',_name:p.name,_aka:p.aka,_desc:p.desc}));
 const edges=D.links.map(([from,to,type])=>({from,to,type:type||'origin'}));
 const PAIR_OF={},SERVES={},GHOST_NAME={};
 Object.entries(D.persons).forEach(([id,p])=>{if(p.pair)PAIR_OF[id]=p.pair;if(p.serves)SERVES[id]=p.serves;if(p.there)GHOST_NAME[id]=p.there});
 const PAIRS=Object.keys(PAIR_OF).filter(a=>a<PAIR_OF[a]).map(a=>[a,PAIR_OF[a]]);
 
 /* ===================== ГЕОМЕТРИЯ ===================== */
-const NW=170,NH=50,G=10,W=1900;
+const NW=170,NH=50,G=10,W=2500;
 const byId={};persons.forEach(p=>byId[p.id]=p);
 const UNITS=[];
 /* Автораскладка: блоки вкладываются с отступом PAD, ряды центрируются. */
 const PAD=30,TOP=40,RGAP=60,CGAP=70,sn=v=>Math.round(v/G)*G;
+/* Вертикальные колонки: слева — происхождение от Троицы, справа — восходящие; остальные — в центре ряда.
+   Колонку можно задать явно полем lane: L|C|R у личности. «Тень» стоит в колонке своего владельца. */
+const LANE_X=320,LGAP=20;
+const laneOf=p=>{if(p.ghost)p=byId[p.of];if(p.lane)return p.lane;if(p.origin==='T')return 'L';
+ if(p.cats.includes('asc')||p.cats.includes('finality'))return 'R';return 'C'};
 /* Пары и место функционирования: личность рисуется на уровне происхождения и «тенью» там, где служит. */
 const GHOSTS={};const ghostOf=id=>GHOSTS[id]||(GHOSTS[id]={id,of:id.slice(1),ghost:true});
 function layout(u,x,y,w,parent){u.x=sn(x);u.y=sn(y);u.w=sn(w);u.parent=parent;UNITS.push(u);let cy=u.y+TOP;
@@ -234,8 +239,13 @@ function layout(u,x,y,w,parent){u.x=sn(x);u.y=sn(y);u.w=sn(w);u.parent=parent;UN
   if(!Array.isArray(k)&&ks[i+1]&&ks[i+1].beside){const grp=[k];while(ks[i+1]&&!Array.isArray(ks[i+1])&&ks[i+1].beside)grp.push(ks[++i]);
    const ws=grp.map(g=>g.w||(u.w-2*PAD)/grp.length-20),tot=ws.reduce((a,b)=>a+b,0)+(grp.length-1)*40;let sx=u.x+(u.w-tot)/2,bot=cy;
    grp.forEach((g,j)=>{layout(g,sx,cy,ws[j],u);sx+=ws[j]+40});const mh=Math.max(...grp.map(g=>g.h));grp.forEach(g=>g.h=sn(mh));cy=cy+mh+30;continue}
-  if(Array.isArray(k)){const tot=k.length*NW+(k.length-1)*CGAP;let sx=u.x+(u.w-tot)/2;
-   k.forEach((id,i)=>{const p=id[0]==='~'?ghostOf(id):byId[id];p.x=sn(sx+i*(NW+CGAP));p.y=sn(cy+10);p.unit=u.id});cy+=NH+RGAP}
+  if(Array.isArray(k)){const P=k.map(id=>id[0]==='~'?ghostOf(id):byId[id]),y=sn(cy+10);
+   const gL=P.filter(p=>laneOf(p)==='L'),gR=P.filter(p=>laneOf(p)==='R'),gC=P.filter(p=>laneOf(p)==='C');
+   let l0=u.x+PAD,r1=u.x+u.w-PAD;
+   if(gL.length){let x=Math.max(LANE_X,u.x+PAD);gL.forEach(p=>{p.x=sn(x);x+=NW+LGAP});l0=x-LGAP+CGAP}
+   if(gR.length){let x=Math.min(W-LANE_X,u.x+u.w-PAD)-NW;gR.forEach(p=>{p.x=sn(x);x-=NW+LGAP});r1=x+NW+LGAP-CGAP}
+   const tot=gC.length*NW+(gC.length-1)*CGAP;let sx=l0+(r1-l0-tot)/2;
+   gC.forEach((p,i)=>p.x=sn(sx+i*(NW+CGAP)));P.forEach(p=>{p.y=y;p.unit=u.id});cy+=NH+RGAP}
   else{const cw=k.w||u.w-2*PAD;layout(k,u.x+(u.w-cw)/2,cy,cw,u);cy=k.y+k.h+30}}
  u.h=sn(cy-u.y);return u}
 let H=20;TREE.kids.forEach(u=>{layout(u,20,H,W-40,null);H=u.y+u.h+40});H=sn(H);

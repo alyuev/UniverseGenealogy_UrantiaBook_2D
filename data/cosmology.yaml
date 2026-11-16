@@ -318,7 +318,7 @@ persons:
   majeston: { class: DU, origin: "", groups: [supspirit, unclass], refs: ["17:2"], func: [reflect] }
   midsonite: { class: L, origin: FSD, groups: [local, unclass], refs: ["36:4"] }
   unclcenters: { class: D, origin: D, groups: [powercenters, spirit], refs: ["29:2"], func: [energy] }
-  supbeing: { class: T, origin: T, groups: [deity], refs: ["0:2", "115", "116", "117"], func: [create] }
+  supbeing: { class: T, origin: T, groups: [deity], refs: ["0:2", "115", "116", "117"], func: [create], lane: C }
   deityabs: { class: A, origin: A, groups: [deity], refs: ["0:11"] }
   unqabs: { class: A, origin: A, groups: [deity], refs: ["0:11"] }
   univabs: { class: A, origin: A, groups: [deity], refs: ["0:11"] }
