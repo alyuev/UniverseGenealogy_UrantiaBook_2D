@@ -69,8 +69,8 @@ svg.hideOrigin .edge.origin,svg.hideService .edge.service{display:none}
 /* --- наведение: блоки --- */
 .unit rect.box{transition:fill-opacity .25s,stroke-width .25s,stroke-opacity .25s}
 .unit.usel rect.box,.unit.uh1 rect.box{fill-opacity:calc(var(--unitA) * 2.6);stroke:var(--accent);stroke-width:2.8;stroke-opacity:1;filter:drop-shadow(0 0 7px var(--accent))}.unit.usel text,.unit.uh1 text{fill:var(--accent);font-weight:700}
-.unit:hover rect.box{fill-opacity:calc(var(--unitA) * 2.6);stroke-width:2.6;stroke-opacity:1}
-.unit text{transition:opacity .25s}.unit:hover text{opacity:1;font-weight:700}
+.unit.uhov rect.box{fill-opacity:calc(var(--unitA) * 2.6);stroke-width:2.6;stroke-opacity:1}
+.unit text{transition:opacity .25s}.unit.uhov text{opacity:1;font-weight:700}
 /* --- наведение: личность (градация h0 > h1 > h2) --- */
 .node rect.body,.node rect.stack{transition:stroke .2s,stroke-width .2s,filter .25s}
 svg.hovering .node:not(.h0):not(.h1):not(.h2){opacity:.28}
@@ -961,6 +961,11 @@ if(EDIT)try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s)persons.f
 document.getElementById('bExport').onclick=()=>{const b=new Blob([JSON.stringify(Object.fromEntries(persons.map(p=>[p.id,[p.x,p.y]])),null,1)],{type:'application/json'});
  const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='layout.json';a.click()};
 document.getElementById('bReset').onclick=()=>{persons.forEach(p=>[p.x,p.y]=DEF[p.id]);undoStack.length=0;updUndo();try{localStorage.removeItem(KEY)}catch(e){};render()};
+/* Наведение на блок: подсветка поля включается только если курсор задержался над ним (0,35 с) — проход между карточками
+   не вызывает вспышек; гаснет сразу. */
+let uhovT=0,uhovEl=null;
+function uhovSet(g){clearTimeout(uhovT);if(g===uhovEl)return;uhovEl?.classList.remove('uhov');uhovEl=null;if(g)uhovT=setTimeout(()=>{uhovEl=g;g.classList.add('uhov')},350)}
+addEventListener('pointerover',e=>{if(e.pointerType!=='mouse')return;const g=e.target.closest?.('#map .unit,#csvg .unit');uhovSet(g&&!pan?.moved&&!cPan?.moved?g:null)});
 document.getElementById('bFit').onclick=()=>cyOn()?cyFit():cOn()?cFit():flyTo({x:0,y:0,w:W,h:H},1);
 
 function render(){const gr=document.getElementById('glow');Object.entries({x:0,y:0,width:W,height:H}).forEach(([k,v])=>gr.setAttribute(k,v));drawUnits();drawNodes();drawGhosts();routeCached();drawEdges();reapply()}
